@@ -10,16 +10,16 @@ namespace AmadeusW.Shutterino.App.Devices
     public class DAccelerometer : Device
     {
         public double Roll => IsAvailable ? _currentReading.AccelerationX : 0d;
-        public double Pitch => IsAvailable ? _currentReading.AccelerationY : 0d;
-        public double Yaw => IsAvailable ? _currentReading.AccelerationZ : 0d;
+        public double Yaw => IsAvailable ? _currentReading.AccelerationY : 0d;
+        public double Pitch => IsAvailable ? _currentReading.AccelerationZ : 0d;
 
         public double CapturedRoll { get; private set; }
         public double CapturedPitch { get; private set; }
         public double CapturedYaw { get; private set; }
 
-        public double DeltaRoll => Pitch - CapturedPitch;
-        public double DeltaPitch => Pitch - CapturedPitch;
-        public double DeltaYaw => Pitch - CapturedPitch;
+        public double DeltaRoll => Math.Abs(Pitch - CapturedPitch);
+        public double DeltaPitch => Math.Abs(Pitch - CapturedPitch);
+        public double DeltaYaw => Math.Abs(Pitch - CapturedPitch);
 
         private readonly Accelerometer _accelerometer = Accelerometer.GetDefault();
         private AccelerometerReading _currentReading;

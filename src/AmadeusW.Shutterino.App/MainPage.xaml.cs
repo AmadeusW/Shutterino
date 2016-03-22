@@ -58,7 +58,7 @@ namespace AmadeusW.Shutterino.App
 
             _timer = new DispatcherTimer()
             {
-                Interval = TimeSpan.FromMilliseconds(50)
+                Interval = TimeSpan.FromMilliseconds(20)
             };
             _timer.Tick += _timer_Tick;
             _timer.Start();
@@ -140,14 +140,16 @@ namespace AmadeusW.Shutterino.App
             var scaleY = canvasMiddle.Y;
             var scaleX = canvasMiddle.X;
 
-            // Left-Right shows yaw (Z)
+            // Left-Right shows yaw (Y)
             Canvas.SetLeft(currentYaw, canvasMiddle.X + Devices.DAccelerometer.Instance.Yaw * scaleX);
             Canvas.SetLeft(capturedYaw, canvasMiddle.X + Devices.DAccelerometer.Instance.CapturedYaw * scaleX);
-            // Top-Bottom shows pitch (Y)
-            Canvas.SetLeft(currentPitch, canvasMiddle.X + Devices.DAccelerometer.Instance.Pitch * scaleY);
-            Canvas.SetLeft(capturedPitch, canvasMiddle.X + Devices.DAccelerometer.Instance.CapturedPitch * scaleY);
+            // Top-Bottom shows pitch (Z)
+            Canvas.SetTop(currentPitch, canvasMiddle.Y + Devices.DAccelerometer.Instance.Pitch * scaleY);
+            Canvas.SetTop(capturedPitch, canvasMiddle.Y + Devices.DAccelerometer.Instance.CapturedPitch * scaleY);
             // Rotation shows roll (X)
             Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
+            Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+            Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
             Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
             currentRoll.RenderTransform = new RotateTransform() { Angle = Devices.DAccelerometer.Instance.Roll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
             capturedRoll.RenderTransform = new RotateTransform() { Angle = Devices.DAccelerometer.Instance.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
@@ -156,17 +158,17 @@ namespace AmadeusW.Shutterino.App
                 Devices.DAccelerometer.Instance.DeltaYaw < ShutterinoLogic.HIGH_PRECISION ? highPrecisionBrush
                 : Devices.DAccelerometer.Instance.DeltaYaw < ShutterinoLogic.LOW_PRECISION ? lowPrecisionBrush
                 : Devices.DAccelerometer.Instance.DeltaYaw < ShutterinoLogic.HINT_PRECISION ? hintPrecisionBrush
-                : hintPrecisionBrush;
+                : noPrecisionBrush;
             currentPitch.Stroke =
                 Devices.DAccelerometer.Instance.DeltaPitch < ShutterinoLogic.HIGH_PRECISION ? highPrecisionBrush
                 : Devices.DAccelerometer.Instance.DeltaPitch < ShutterinoLogic.LOW_PRECISION ? lowPrecisionBrush
                 : Devices.DAccelerometer.Instance.DeltaPitch < ShutterinoLogic.HINT_PRECISION ? hintPrecisionBrush
-                : hintPrecisionBrush;
+                : noPrecisionBrush;
             currentRollRectangle.Stroke =
                 Devices.DAccelerometer.Instance.DeltaRoll < ShutterinoLogic.HIGH_PRECISION ? highPrecisionBrush
                 : Devices.DAccelerometer.Instance.DeltaRoll < ShutterinoLogic.LOW_PRECISION ? lowPrecisionBrush
                 : Devices.DAccelerometer.Instance.DeltaRoll < ShutterinoLogic.HINT_PRECISION ? hintPrecisionBrush
-                : hintPrecisionBrush;
+                : noPrecisionBrush;
         }
     }
 }

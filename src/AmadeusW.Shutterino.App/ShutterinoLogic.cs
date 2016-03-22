@@ -25,7 +25,7 @@ namespace AmadeusW.Shutterino.App
 
         public static ShutterinoLogic Instance { get; private set; }
 
-        private DispatcherTimer _timer;
+        private DispatcherTimer _photoTakingTimer;
         private DateTime lastPhotoTime;
         private bool _takingPhotos;
 
@@ -49,7 +49,7 @@ namespace AmadeusW.Shutterino.App
                 _camera.CleanUpAsync(),
                 _orientation.CleanUpAsync()
             );
-            _timer.Stop();
+            _photoTakingTimer.Stop();
         }
 
         public async Task InitializeAsync()
@@ -61,14 +61,14 @@ namespace AmadeusW.Shutterino.App
                 _camera.InitializeAsync(),
                 _orientation.InitializeAsync()
             );
-            _timer = new DispatcherTimer()
+            _photoTakingTimer = new DispatcherTimer()
             {
-                Interval = TimeSpan.FromMilliseconds(20)
+                Interval = TimeSpan.FromMilliseconds(50)
             };
-            _timer.Tick += _timer_Tick;
+            _photoTakingTimer.Tick += photoTakingTimerTick;
         }
 
-        private async void _timer_Tick(object sender, object e)
+        private async void photoTakingTimerTick(object sender, object e)
         {
             if (_takingPhotos && DateTime.UtcNow > lastPhotoTime + TimeSpan.FromSeconds(2) && IsPhotoOpportunity())
             {
@@ -85,10 +85,12 @@ namespace AmadeusW.Shutterino.App
         internal void BeginTakingPhotos()
         {
             _takingPhotos = true;
+            _photoTakingTimer.Start();
         }
 
         internal void EndTakingPhotos()
         {
+            _photoTakingTimer.Stop();
             _takingPhotos = false;
         }
 
