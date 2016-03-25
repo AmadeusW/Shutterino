@@ -1,4 +1,5 @@
 ﻿using AmadeusW.Shutterino.App.Devices;
+using AmadeusW.Shutterino.Arduino;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,11 @@ namespace AmadeusW.Shutterino.App
         DAccelerometer _accelerometer = new DAccelerometer();
         DCamera _camera = new DCamera();
         DOrientation _orientation = new DOrientation();
+        ArduinoConnection _arduino = null;
 
         public CoreDispatcher Dispatcher { get; }
         public CaptureElement CameraPreviewControl { get; set; }
-        public double Precision { get; private set; }
+        public double Precision { get; private set; } = LOW_PRECISION;
 
         public static ShutterinoLogic Instance { get; private set; }
 
@@ -68,6 +70,21 @@ namespace AmadeusW.Shutterino.App
             _photoTakingTimer.Tick += photoTakingTimerTick;
         }
 
+        public async Task<bool> initializeArduino(byte servoPin, byte servoIdle, byte servoOff, byte servoPressed, string host, ushort port)
+        {
+            _arduino = new ArduinoConnection(servoPin, servoIdle, servoOff, servoPressed);
+            return await _arduino.Connect(host, port);
+        }
+
+        internal async Task<bool> disableArduino()
+        {
+            if (_arduino != null)
+            {
+                return await _arduino.Disconnect();
+            }
+            return false;
+        }
+
         private async void photoTakingTimerTick(object sender, object e)
         {
             if (_takingPhotos && DateTime.UtcNow > lastPhotoTime + TimeSpan.FromSeconds(2) && IsPhotoOpportunity())
@@ -79,7 +96,19 @@ namespace AmadeusW.Shutterino.App
 
         public async Task TakePhoto()
         {
-            await _camera.TakePhotoAsync();
+            Task<bool> servoTask = null;
+            if (_arduino != null)
+            {
+                servoTask = _arduino.MoveServo();
+            }
+
+            //await _camera.TakePhotoAsync();
+
+            if (servoTask != null)
+            {
+                var shutterPressed = await servoTask;
+                System.Diagnostics.Debug.WriteLine("Shutter: " + (shutterPressed ? "pressed" : "failure"));
+            }
         }
 
         internal void BeginTakingPhotos()
@@ -115,6 +144,5 @@ namespace AmadeusW.Shutterino.App
                 && _accelerometer.DeltaPitch < Precision
                 && _accelerometer.DeltaYaw < Precision;
         }
-
     }
 }

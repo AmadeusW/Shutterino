@@ -76,6 +76,12 @@
                     <SymbolIcon Symbol="Trim"/>
                 </Viewbox>
             </Button>
+
+            <ToggleButton Name="ArduinoButton" IsEnabled="True" Checked="ArduinoButton_Checked">
+                <Viewbox MaxHeight="40" MaxWidth="40">
+                    <SymbolIcon Symbol="Download"/>
+                </Viewbox>
+            </ToggleButton>
         </StackPanel>
     </Grid>
 </Page>

@@ -132,6 +132,28 @@ namespace AmadeusW.Shutterino.App
             _logic.Callibrate();
         }
 
+        private async void ArduinoButton_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ArduinoButton.IsChecked.Value)
+                {
+                    var status = await _logic.initializeArduino(4, 30, 90, 10, "192.168.1.113", 3030);
+                    System.Diagnostics.Debug.WriteLine("Connection: " + status.ToString());
+                }
+                else
+                {
+                    var status = await _logic.disableArduino();
+                    System.Diagnostics.Debug.WriteLine("Disconnecting: " + status.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                System.Diagnostics.Debugger.Break();
+            }
+        }
+
         private void placeShapes()
         {
             var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
