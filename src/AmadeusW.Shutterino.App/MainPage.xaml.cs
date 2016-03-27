@@ -65,7 +65,8 @@ namespace AmadeusW.Shutterino.App
 
         private void _timer_Tick(object sender, object e)
         {
-            placeShapes();
+            if (Devices.DAccelerometer.Instance.IsAvailable)
+                placeShapes();
         }
 
         private async void Application_Suspending(object sender, SuspendingEventArgs e)
@@ -131,6 +132,7 @@ namespace AmadeusW.Shutterino.App
             _logic.Callibrate();
         }
 
+        /*
         private async void ArduinoButton_Checked(object sender, RoutedEventArgs e)
         {
             try
@@ -151,6 +153,12 @@ namespace AmadeusW.Shutterino.App
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 System.Diagnostics.Debugger.Break();
             }
+        }*/
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            rootFrame.Navigate(typeof(SettingsPage));
         }
 
         private void placeShapes()

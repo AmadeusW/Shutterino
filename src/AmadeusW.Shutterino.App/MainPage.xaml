@@ -77,11 +77,11 @@
                 </Viewbox>
             </Button>
 
-            <ToggleButton Name="ArduinoButton" IsEnabled="True" Checked="ArduinoButton_Checked">
+            <Button Name="SettingsButton" IsEnabled="True" Click="SettingsButton_Click" >
                 <Viewbox MaxHeight="40" MaxWidth="40">
                     <SymbolIcon Symbol="Download"/>
                 </Viewbox>
-            </ToggleButton>
+            </Button>
         </StackPanel>
     </Grid>
 </Page>
