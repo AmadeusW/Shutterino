@@ -22,7 +22,7 @@ namespace AmadeusW.Shutterino.App.Devices
         public double DeltaYaw => Math.Abs(Pitch - CapturedPitch);
 
         private readonly Accelerometer _accelerometer = Accelerometer.GetDefault();
-        private AccelerometerReading _currentReading;
+        private AccelerometerReading _currentReading = default(AccelerometerReading);
 
         public static DAccelerometer Instance { get; private set; }
 

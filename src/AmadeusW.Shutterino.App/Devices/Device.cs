@@ -9,7 +9,7 @@ namespace AmadeusW.Shutterino.App.Devices
 {
     public abstract class Device
     {
-        public static bool IsAvailable { get; protected set; }
+        public bool IsAvailable { get; protected set; } = false;
 
         public abstract Task<bool> InitializeAsync();
         public abstract Task CleanUpAsync();
