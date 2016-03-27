@@ -56,10 +56,10 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Servo setting
         /// </summary>
-        public byte PositionPressed
+        public byte PositionDeressed
         {
-            get { return _positionPressed; }
-            set { _positionPressed = value; NotifyPropertyChanged(); }
+            get { return _positionDepressed; }
+            set { _positionDepressed = value; NotifyPropertyChanged(); }
         }
 
         #region Backing Fields
@@ -69,7 +69,7 @@ namespace AmadeusW.Shutterino.App.Settings
         private byte _positionOff;
         private byte _positionIdle;
         private byte _positionReady;
-        private byte _positionPressed;
+        private byte _positionDepressed;
 
         #endregion
 

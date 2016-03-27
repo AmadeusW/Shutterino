@@ -28,13 +28,27 @@
             Text="Active" />
         <ToggleButton
             Grid.Row="0" Grid.Column="0"
-            Checked="{Binding Path=Active}" />
+            />
         
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
-            Text="Pattern" />
+            Text="Precision" />
         <TextBox
-            Grid.Row="1" Grid.Column="0"
-            Text="{Binding Path=Pattern}" />
+            Grid.Row="1" Grid.Column="1"
+            Text="{Binding Path=Precision}" />
+        
+        <TextBlock 
+            Grid.Row="2" Grid.Column="0"
+            Text="Roll offset" />
+        <TextBox
+            Grid.Row="2" Grid.Column="1"
+            Text="{Binding Path=OffsetRoll}" />
+        
+        <TextBlock 
+            Grid.Row="3" Grid.Column="0"
+            Text="Tilt offet" />
+        <TextBox
+            Grid.Row="3" Grid.Column="1"
+            Text="{Binding Path=OffsetTilt}" />
     </Grid>
 </Page>

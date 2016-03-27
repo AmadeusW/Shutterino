@@ -27,14 +27,49 @@
             Grid.Row="0" Grid.Column="0"
             Text="Active" />
         <ToggleButton
-            Grid.Row="0" Grid.Column="0"
-            Checked="{Binding Path=Active}" />
-        
+            Grid.Row="0" Grid.Column="1"
+            IsChecked="{Binding Path=Active}" />
+
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
-            Text="Pattern" />
+            Text="Host" />
         <TextBox
-            Grid.Row="1" Grid.Column="0"
-            Text="{Binding Path=Pattern}" />
+            Grid.Row="1" Grid.Column="1"
+            Text="{Binding Path=HostName}" />
+        
+        <TextBlock 
+            Grid.Row="2" Grid.Column="0"
+            Text="Port" />
+        <TextBox
+            Grid.Row="2" Grid.Column="1"
+            Text="{Binding Path=PortNumber}" />
+
+        <TextBlock 
+            Grid.Row="3" Grid.Column="0"
+            Text="Servo position: Off" />
+        <TextBox
+            Grid.Row="3" Grid.Column="1"
+            Text="{Binding Path=PositionOff}" />
+
+        <TextBlock 
+            Grid.Row="4" Grid.Column="0"
+            Text="Servo position: Idles" />
+        <TextBox
+            Grid.Row="4" Grid.Column="1"
+            Text="{Binding Path=PositionIdle}" />
+
+        <TextBlock 
+            Grid.Row="5" Grid.Column="0"
+            Text="Servo position: Ready" />
+        <TextBox
+            Grid.Row="5" Grid.Column="1"
+            Text="{Binding Path=PositionReady}" />
+
+        <TextBlock 
+            Grid.Row="6" Grid.Column="0"
+            Text="Servo position: Depressed" />
+        <TextBox
+            Grid.Row="6" Grid.Column="1"
+            Text="{Binding Path=PositionDeressed}" />
     </Grid>
 </Page>

@@ -20,7 +20,7 @@ namespace AmadeusW.Shutterino.App.Settings
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class AccelerometerView : Page
+    public partial class AccelerometerView : Page
     {
         public AccelerometerView()
         {
