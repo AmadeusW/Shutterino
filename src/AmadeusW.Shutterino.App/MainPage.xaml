@@ -79,7 +79,7 @@
 
             <Button Name="SettingsButton" IsEnabled="True" Click="SettingsButton_Click" >
                 <Viewbox MaxHeight="40" MaxWidth="40">
-                    <SymbolIcon Symbol="Download"/>
+                    <SymbolIcon Symbol="Setting"/>
                 </Viewbox>
             </Button>
         </StackPanel>

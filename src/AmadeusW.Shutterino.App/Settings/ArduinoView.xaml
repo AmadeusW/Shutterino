@@ -10,7 +10,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="100" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -46,28 +46,28 @@
 
         <TextBlock 
             Grid.Row="3" Grid.Column="0"
-            Text="Servo position: Off" />
+            Text="Servo: Off" />
         <TextBox
             Grid.Row="3" Grid.Column="1"
             Text="{Binding Path=PositionOff}" />
 
         <TextBlock 
             Grid.Row="4" Grid.Column="0"
-            Text="Servo position: Idles" />
+            Text="Servo: Idle" />
         <TextBox
             Grid.Row="4" Grid.Column="1"
             Text="{Binding Path=PositionIdle}" />
 
         <TextBlock 
             Grid.Row="5" Grid.Column="0"
-            Text="Servo position: Ready" />
+            Text="Servo: Ready" />
         <TextBox
             Grid.Row="5" Grid.Column="1"
             Text="{Binding Path=PositionReady}" />
 
         <TextBlock 
             Grid.Row="6" Grid.Column="0"
-            Text="Servo position: Depressed" />
+            Text="Servo: Depressed" />
         <TextBox
             Grid.Row="6" Grid.Column="1"
             Text="{Binding Path=PositionDeressed}" />

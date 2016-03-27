@@ -65,5 +65,7 @@ namespace AmadeusW.Shutterino.App
         public string Name { get; set; }
         public string Icon { get; set; }
         public Type ViewType { get; set; }
+
+        public override string ToString() => $"{Name} settings page";
     }
 }
