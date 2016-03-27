@@ -60,11 +60,14 @@ namespace AmadeusW.Shutterino.Arduino
 
         public async Task<bool> Disconnect()
         {
-            _arduino.analogWrite(_servoPin, _servoOff);
-            await Task.Delay(100);
-            _connection.end();
-            _arduino.Dispose();
-            _connection.Dispose();
+            if (_arduino != null)
+            {
+                _arduino.analogWrite(_servoPin, _servoOff);
+                await Task.Delay(100);
+            }
+            _connection?.end();
+            _arduino?.Dispose();
+            _connection?.Dispose();
             return true;
         }
 

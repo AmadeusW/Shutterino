@@ -47,7 +47,6 @@ namespace AmadeusW.Shutterino.App
         {
             this.InitializeComponent();
             _logic = new ShutterinoLogic(Dispatcher, PreviewControl);
-            this.DataContext = new ShutterinoViewModel(_logic);
 
             // Do not cache the state of the UI when suspending/navigating
             NavigationCacheMode = NavigationCacheMode.Disabled;
@@ -138,7 +137,7 @@ namespace AmadeusW.Shutterino.App
             {
                 if (ArduinoButton.IsChecked.Value)
                 {
-                    var status = await _logic.initializeArduino(4, 30, 90, 10, "192.168.1.113", 3030);
+                    var status = await _logic.initializeArduino(4, 30, 90, 10, "192.168.137.164", 3030);
                     System.Diagnostics.Debug.WriteLine("Connection: " + status.ToString());
                 }
                 else

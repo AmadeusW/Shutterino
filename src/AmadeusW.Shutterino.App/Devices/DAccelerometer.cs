@@ -55,6 +55,17 @@ namespace AmadeusW.Shutterino.App.Devices
             return true;
         }
 
+        // TODO:
+        /*
+        void displayInformation_OrientationChanged(DisplayInformation sender, object args)
+        {
+            if (null != accelerometerReadingTransform)
+            {
+                accelerometerReadingTransform.ReadingTransform = sender.CurrentOrientation;
+            }
+        }
+    */
+
         private void _accelerometer_ReadingChanged(Accelerometer sender, AccelerometerReadingChangedEventArgs args)
         {
             _currentReading = args.Reading;
