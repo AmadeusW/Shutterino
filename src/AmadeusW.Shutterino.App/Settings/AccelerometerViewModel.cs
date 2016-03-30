@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadeusW.Shutterino.App.Devices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,32 +15,44 @@ namespace AmadeusW.Shutterino.App.Settings
         public double Precision
         {
             get { return _precision; }
-            set { _precision = value; NotifyPropertyChanged(); }
+            set { _precision = value; NotifyPropertyChanged(); device.Precision = Precision; }
         }
 
         /// <summary>
         /// Required difference in ROLL reading between consecutive shots
         /// </summary>
-        public double OffsetRoll
+        public double RollOffset
         {
-            get { return _offsetRoll; }
-            set { _offsetRoll = value; NotifyPropertyChanged(); }
+            get { return _rollOffset; }
+            set { _rollOffset = value; NotifyPropertyChanged(); device.RollOffset = RollOffset;  }
         }
 
         /// <summary>
         /// Required difference in TILT reading between consecutive shots
         /// </summary>
-        public double OffsetTilt
+        public double PitchOffset
         {
-            get { return _offsetTilt; }
-            set { _offsetTilt = value; NotifyPropertyChanged(); }
+            get { return _pitchOffset; }
+            set { _pitchOffset = value; NotifyPropertyChanged(); device.PitchOffset = PitchOffset; }
+        }
+
+        DAccelerometer device;
+
+        public AccelerometerViewModel()
+        {
+            device = Devices.DAccelerometer.Instance;
+            _initialized = device.IsAvailable;
+            _active = device.IsAvailable;
+            _precision = device.Precision;
+            _rollOffset = device.RollOffset;
+            _pitchOffset = device.PitchOffset;
         }
 
         #region Backing Fields
 
         private double _precision;
-        private double _offsetRoll;
-        private double _offsetTilt;
+        private double _rollOffset;
+        private double _pitchOffset;
 
         #endregion
 

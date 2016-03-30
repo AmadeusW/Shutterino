@@ -18,22 +18,16 @@ namespace AmadeusW.Shutterino.App
         DLocation _location = new DLocation();
         DAccelerometer _accelerometer = new DAccelerometer();
         DCamera _camera = new DCamera();
-        DOrientation _orientation = new DOrientation();
         ArduinoConnection _arduino = null;
 
         public CoreDispatcher Dispatcher { get; }
         public CaptureElement CameraPreviewControl { get; set; }
-        public double Precision { get; private set; } = LOW_PRECISION;
 
         public static ShutterinoLogic Instance { get; private set; }
 
         private DispatcherTimer _photoTakingTimer;
         private DateTime lastPhotoTime;
         private bool _takingPhotos;
-
-        public const double HIGH_PRECISION = 0.01;
-        public const double LOW_PRECISION = 0.05;
-        public const double HINT_PRECISION = 0.1;
 
         public ShutterinoLogic(CoreDispatcher dispatcher, CaptureElement cameraPreviewControl)
         {
@@ -48,8 +42,7 @@ namespace AmadeusW.Shutterino.App
                 _phone.CleanUpAsync(),
                 _location.CleanUpAsync(),
                 _accelerometer.CleanUpAsync(),
-                _camera.CleanUpAsync(),
-                _orientation.CleanUpAsync()
+                _camera.CleanUpAsync()
             );
             _photoTakingTimer.Stop();
         }
@@ -60,8 +53,7 @@ namespace AmadeusW.Shutterino.App
                 _phone.InitializeAsync(),
                 _location.InitializeAsync(),
                 _accelerometer.InitializeAsync(),
-                _camera.InitializeAsync(),
-                _orientation.InitializeAsync()
+                _camera.InitializeAsync()
             );
             _photoTakingTimer = new DispatcherTimer()
             {
@@ -125,12 +117,14 @@ namespace AmadeusW.Shutterino.App
 
         internal void UseHighPrecision()
         {
-            Precision = HIGH_PRECISION;
+            if (DAccelerometer.Instance != null)
+                DAccelerometer.Instance.Precision = DAccelerometer.HIGH_PRECISION;
         }
 
         internal void UseLowPrecision()
         {
-            Precision = LOW_PRECISION;
+            if (DAccelerometer.Instance != null)
+                DAccelerometer.Instance.Precision = DAccelerometer.LOW_PRECISION;
         }
 
         internal void Callibrate()
@@ -140,9 +134,7 @@ namespace AmadeusW.Shutterino.App
 
         private bool IsPhotoOpportunity()
         {
-            return _accelerometer.DeltaRoll < Precision
-                && _accelerometer.DeltaPitch < Precision
-                && _accelerometer.DeltaYaw < Precision;
+            return (Devices.DAccelerometer.Instance?.IsPhotoOpportunity()).Value;
         }
     }
 }

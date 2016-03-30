@@ -7,11 +7,18 @@ using Windows.Devices.Sensors;
 
 namespace AmadeusW.Shutterino.App.Devices
 {
-    public abstract class Device
+    public abstract class Device : IDisposable
     {
         public bool IsAvailable { get; protected set; } = false;
+        public bool IsActive { get; protected set; } = false;
+        public string Status { get; protected set; }
 
         public abstract Task<bool> InitializeAsync();
         public abstract Task CleanUpAsync();
+
+        public void Dispose()
+        {
+
+        }
     }
 }

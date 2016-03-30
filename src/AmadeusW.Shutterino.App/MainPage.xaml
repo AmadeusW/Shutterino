@@ -23,7 +23,14 @@
                 <Rectangle x:Name="capturedRollRectangle" Stroke="Blue" StrokeThickness="2" Height="20" Width="250" />
             </Canvas>
             <Rectangle x:Name="capturedPitch" Stroke="Blue" StrokeThickness="2" Width="{Binding ActualWidth, ElementName=visualization}" Height="1" Canvas.Top="{Binding ActualHeight, ElementName=visualization}" />
-            <Rectangle x:Name="capturedYaw" Stroke="Blue" StrokeThickness="2" Height="{Binding ActualHeight, ElementName=visualization}" Width="1" Canvas.Left="{Binding ActualWidth, ElementName=visualization}" />
+            
+            <Canvas x:Name="targetRoll" Width="250" Height="20">
+                <Canvas.RenderTransform>
+                    <RotateTransform Angle="0"/>
+                </Canvas.RenderTransform>
+                <Rectangle x:Name="targetRollRectangle" Stroke="Gray" StrokeThickness="2" Height="20" Width="250" />
+            </Canvas>
+            <Rectangle x:Name="targetPitch" Stroke="Gray" StrokeThickness="2" Width="{Binding ActualWidth, ElementName=visualization}" Height="1" Canvas.Top="{Binding ActualHeight, ElementName=visualization}" />
             
             <Canvas x:Name="currentRoll" Width="250" Height="20">
                 <Canvas.RenderTransform>
@@ -32,7 +39,6 @@
                 <Rectangle x:Name="currentRollRectangle" Stroke="Green" StrokeThickness="2" Height="20" Width="250" />
             </Canvas>
             <Rectangle x:Name="currentPitch" Stroke="Green" StrokeThickness="2" Width="{Binding ActualWidth, ElementName=visualization}" Height="1" Canvas.Top="0" />
-            <Rectangle x:Name="currentYaw" Stroke="Green" StrokeThickness="2" Height="{Binding ActualHeight, ElementName=visualization}" Width="1" Canvas.Left="0" />
 
         </Canvas>
 

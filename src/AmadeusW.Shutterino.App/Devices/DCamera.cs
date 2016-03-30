@@ -35,10 +35,14 @@ namespace AmadeusW.Shutterino.App.Devices
         public DCamera() : base()
         {
             Instance = this;
+            
         }
 
         public async override Task CleanUpAsync()
         {
+            if (!IsAvailable)
+                return;
+
             if (_isInitialized)
             {
                 if (_isPreviewing)
@@ -67,6 +71,9 @@ namespace AmadeusW.Shutterino.App.Devices
         /// <returns></returns>
         public async override Task<bool> InitializeAsync()
         {
+            if (!IsAvailable)
+                return false;
+
             if (_mediaCapture == null)
             {
                 // Get available devices for capturing pictures

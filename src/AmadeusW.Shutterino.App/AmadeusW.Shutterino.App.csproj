@@ -102,7 +102,6 @@
     <Compile Include="Devices\Device.cs" />
     <Compile Include="Devices\DLocation.cs" />
     <Compile Include="Devices\DAccelerometer.cs" />
-    <Compile Include="Devices\DOrientation.cs" />
     <Compile Include="Devices\DPhone.cs" />
     <Compile Include="Helpers\DebugConverter.cs" />
     <Compile Include="MainPage.xaml.cs">

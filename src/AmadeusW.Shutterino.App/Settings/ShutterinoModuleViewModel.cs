@@ -34,8 +34,8 @@ namespace AmadeusW.Shutterino.App.Settings
 
         #region Backing fields
 
-        private bool _initialized;
-        private bool _active;
+        protected bool _initialized;
+        protected bool _active;
 
         #endregion
     }

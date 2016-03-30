@@ -23,6 +23,7 @@ using Windows.Devices.Sensors;
 using Windows.Media.Capture;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI;
+using AmadeusW.Shutterino.App.Devices;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -91,6 +92,7 @@ namespace AmadeusW.Shutterino.App
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            initializeCanvas();
             await _logic.InitializeAsync();
         }
 
@@ -161,6 +163,19 @@ namespace AmadeusW.Shutterino.App
             rootFrame.Navigate(typeof(SettingsPage));
         }
 
+        private void initializeCanvas()
+        {
+            var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
+            var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2, currentRoll.ActualHeight / 2);
+
+            Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
+            Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+            Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
+            Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+            Canvas.SetLeft(targetRoll, canvasMiddle.X - rollCanvasMiddle.X);
+            Canvas.SetTop(targetRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+        }
+
         private void placeShapes()
         {
             var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
@@ -169,34 +184,31 @@ namespace AmadeusW.Shutterino.App
             var scaleY = canvasMiddle.Y;
             var scaleX = canvasMiddle.X;
 
-            // Left-Right shows yaw (Y)
-            Canvas.SetLeft(currentYaw, canvasMiddle.X + Devices.DAccelerometer.Instance.Yaw * scaleX);
-            Canvas.SetLeft(capturedYaw, canvasMiddle.X + Devices.DAccelerometer.Instance.CapturedYaw * scaleX);
-            // Top-Bottom shows pitch (Z)
-            Canvas.SetTop(currentPitch, canvasMiddle.Y + Devices.DAccelerometer.Instance.Pitch * scaleY);
-            Canvas.SetTop(capturedPitch, canvasMiddle.Y + Devices.DAccelerometer.Instance.CapturedPitch * scaleY);
-            // Rotation shows roll (X)
-            Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
-            Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
-            Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
-            Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
-            currentRoll.RenderTransform = new RotateTransform() { Angle = Devices.DAccelerometer.Instance.Roll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
-            capturedRoll.RenderTransform = new RotateTransform() { Angle = Devices.DAccelerometer.Instance.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
+            var accelerometer = Devices.DAccelerometer.Instance;
+            var shouldShowPreviousReading = accelerometer.RollOffset != 0 && accelerometer.PitchOffset != 0;
+            capturedPitch.Visibility = capturedRoll.Visibility = shouldShowPreviousReading ? Visibility.Visible : Visibility.Collapsed;
 
-            currentYaw.Stroke =
-                Devices.DAccelerometer.Instance.DeltaYaw < ShutterinoLogic.HIGH_PRECISION ? highPrecisionBrush
-                : Devices.DAccelerometer.Instance.DeltaYaw < ShutterinoLogic.LOW_PRECISION ? lowPrecisionBrush
-                : Devices.DAccelerometer.Instance.DeltaYaw < ShutterinoLogic.HINT_PRECISION ? hintPrecisionBrush
-                : noPrecisionBrush;
+            // Top-Bottom shows pitch (Z)
+            Canvas.SetTop(currentPitch, canvasMiddle.Y + accelerometer.Pitch * scaleY);
+            Canvas.SetTop(targetPitch, canvasMiddle.Y + accelerometer.TargetPitch * scaleY);
+            if (shouldShowPreviousReading)
+                Canvas.SetTop(capturedPitch, canvasMiddle.Y + accelerometer.CapturedPitch * scaleY);
+
+            // Rotation shows roll (X)
+            currentRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.Roll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
+            targetRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
+            if (shouldShowPreviousReading)
+                capturedRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
+
             currentPitch.Stroke =
-                Devices.DAccelerometer.Instance.DeltaPitch < ShutterinoLogic.HIGH_PRECISION ? highPrecisionBrush
-                : Devices.DAccelerometer.Instance.DeltaPitch < ShutterinoLogic.LOW_PRECISION ? lowPrecisionBrush
-                : Devices.DAccelerometer.Instance.DeltaPitch < ShutterinoLogic.HINT_PRECISION ? hintPrecisionBrush
+                accelerometer.DeltaPitch < DAccelerometer.HIGH_PRECISION ? highPrecisionBrush
+                : accelerometer.DeltaPitch < DAccelerometer.LOW_PRECISION ? lowPrecisionBrush
+                : accelerometer.DeltaPitch < DAccelerometer.HINT_PRECISION ? hintPrecisionBrush
                 : noPrecisionBrush;
             currentRollRectangle.Stroke =
-                Devices.DAccelerometer.Instance.DeltaRoll < ShutterinoLogic.HIGH_PRECISION ? highPrecisionBrush
-                : Devices.DAccelerometer.Instance.DeltaRoll < ShutterinoLogic.LOW_PRECISION ? lowPrecisionBrush
-                : Devices.DAccelerometer.Instance.DeltaRoll < ShutterinoLogic.HINT_PRECISION ? hintPrecisionBrush
+                accelerometer.DeltaRoll < DAccelerometer.HIGH_PRECISION ? highPrecisionBrush
+                : accelerometer.DeltaRoll < DAccelerometer.LOW_PRECISION ? lowPrecisionBrush
+                : accelerometer.DeltaRoll < DAccelerometer.HINT_PRECISION ? hintPrecisionBrush
                 : noPrecisionBrush;
         }
     }
