@@ -196,7 +196,7 @@ namespace AmadeusW.Shutterino.App.Devices
                 await _mediaCapture.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), stream);
                 Debug.WriteLine("Photo taken!");
 
-                var photoOrientation = ConvertOrientationToPhotoOrientation(DOrientation.Instance.DeviceOrientation);
+                var photoOrientation = PhotoOrientation.Rotate90;// ConvertOrientationToPhotoOrientation(DOrientation.Instance.DeviceOrientation);
                 _savedPhotosCount++;
                 await ReencodeAndSavePhotoAsync(stream, $"Shutterino {_savedPhotosCount}.jpg", photoOrientation);
             }
@@ -225,7 +225,7 @@ namespace AmadeusW.Shutterino.App.Devices
                 }
             }
         }
-
+        /*
         private SimpleOrientation GetCameraOrientation()
         {
             if (_externalCamera)
@@ -249,7 +249,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
             return DOrientation.Instance.DeviceOrientation;
         }
-
+        */
 
         private static PhotoOrientation ConvertOrientationToPhotoOrientation(SimpleOrientation orientation)
         {
