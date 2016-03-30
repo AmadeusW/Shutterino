@@ -49,7 +49,7 @@ namespace AmadeusW.Shutterino.App.Devices
             if (!IsAvailable)
                 return;
 
-            if (_orientationSensor != null)
+            if (_displayInformation != null)
             {
                 _displayInformation.OrientationChanged -= displayInformation_OrientationChanged;
                 _accelerometer.ReadingTransform = _displayInformation.CurrentOrientation;
@@ -65,7 +65,7 @@ namespace AmadeusW.Shutterino.App.Devices
             if (!IsAvailable)
                 return false;
 
-            if (_orientationSensor != null)
+            if (_displayInformation != null)
             {
                 _displayInformation.OrientationChanged += displayInformation_OrientationChanged;
             }
