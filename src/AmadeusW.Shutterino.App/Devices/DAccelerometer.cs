@@ -34,6 +34,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         private readonly Accelerometer _accelerometer = Accelerometer.GetDefault();
         private AccelerometerReading _currentReading = default(AccelerometerReading);
+        private readonly DisplayInformation _displayInformation = DisplayInformation.GetForCurrentView();
 
         public static DAccelerometer Instance { get; private set; }
 
@@ -47,6 +48,11 @@ namespace AmadeusW.Shutterino.App.Devices
         {
             if (!IsAvailable)
                 return;
+
+            if (_orientationSensor != null)
+            {
+                _displayInformation.OrientationChanged -= displayInformation_OrientationChanged;
+                _accelerometer.ReadingTransform = _displayInformation.CurrentOrientation;
             }
 
             _accelerometer.ReportInterval = 0;
@@ -58,6 +64,10 @@ namespace AmadeusW.Shutterino.App.Devices
         {
             if (!IsAvailable)
                 return false;
+
+            if (_orientationSensor != null)
+            {
+                _displayInformation.OrientationChanged += displayInformation_OrientationChanged;
             }
 
             _accelerometer.ReportInterval = 20;
@@ -66,16 +76,13 @@ namespace AmadeusW.Shutterino.App.Devices
             return true;
         }
 
-        // TODO:
-        /*
         void displayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
-            if (null != accelerometerReadingTransform)
+            if (_accelerometer != null)
             {
-                accelerometerReadingTransform.ReadingTransform = sender.CurrentOrientation;
+                _accelerometer.ReadingTransform = sender.CurrentOrientation;
             }
         }
-    */
 
         private void _accelerometer_ReadingChanged(Accelerometer sender, AccelerometerReadingChangedEventArgs args)
         {
