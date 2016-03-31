@@ -38,10 +38,9 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public async override Task DeactivateAsync()
         {
-            if (!IsAvailable || !IsActive)
+            if (!IsAvailable || !_isActuallyActive)
                 return;
 
-            IsActive = false;
             if (_isPreviewing)
             {
                 // The call to stop the preview is included here for completeness, but can be
@@ -49,6 +48,7 @@ namespace AmadeusW.Shutterino.App.Devices
                 // as the preview will be automatically stopped at that point
                 await StopPreviewAsync();
             }
+            _isActuallyActive = false;
         }
 
         public async override Task CleanupAsync()
@@ -132,11 +132,15 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public override async Task ActivateAsync()
         {
-            if (!IsAvailable || IsActive)
+            if (!IsAvailable || _isActuallyActive)
                 return;
 
-            IsActive = true;
-            await StartPreviewAsync();
+            // Activate only if user wants to
+            if (IsActive)
+            {
+                _isActuallyActive = true;
+                await StartPreviewAsync();
+            }
         }
 
         private async Task StartPreviewAsync()

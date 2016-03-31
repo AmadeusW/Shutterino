@@ -38,7 +38,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public async override Task DeactivateAsync()
         {
-            if (!IsAvailable || !IsActive)
+            if (!IsAvailable || !_isActuallyActive)
                 return;
 
             if (_geoLocator != null)
@@ -46,20 +46,24 @@ namespace AmadeusW.Shutterino.App.Devices
                 _geoLocator.PositionChanged -= _geoLocator_PositionChanged;
                 _geoLocator = null;
             }
-            IsActive = false;
+            _isActuallyActive = false;
         }
 
         public async override Task ActivateAsync()
         {
-            if (!IsAvailable || IsActive)
+            if (!IsAvailable || _isActuallyActive)
                 return;
 
-            _geoLocator = new Geolocator();
-            //_geoLocator.ReportInterval = 2000;
-            _geoLocator.MovementThreshold = Offset;
-            _geoLocator.DesiredAccuracy = PositionAccuracy.High;
-            _geoLocator.PositionChanged += _geoLocator_PositionChanged;
-            IsActive = true;
+            // Activate only if user wants to
+            if (IsActive)
+            {
+                _geoLocator = new Geolocator();
+                //_geoLocator.ReportInterval = 2000;
+                _geoLocator.MovementThreshold = Offset;
+                _geoLocator.DesiredAccuracy = PositionAccuracy.High;
+                _geoLocator.PositionChanged += _geoLocator_PositionChanged;
+                _isActuallyActive = true;
+            }
         }
 
         private async void _geoLocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -85,6 +89,7 @@ namespace AmadeusW.Shutterino.App.Devices
         public override async Task CleanupAsync()
         {
             IsAvailable = false;
+            await DeactivateAsync();
         }
     }
 }

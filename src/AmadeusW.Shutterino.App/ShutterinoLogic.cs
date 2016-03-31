@@ -87,12 +87,23 @@ namespace AmadeusW.Shutterino.App
 
         public async Task ActivateAsync()
         {
-            // nothing to activate
+            await Task.WhenAll(
+                _phone.ActivateAsync(),
+                _location.ActivateAsync(),
+                _accelerometer.ActivateAsync(),
+                _camera.ActivateAsync()
+            );
         }
 
         public async Task DeactivateAsync()
         {
             EndTakingPhotos();
+            await Task.WhenAll(
+                _phone.DeactivateAsync(),
+                _location.DeactivateAsync(),
+                _accelerometer.DeactivateAsync(),
+                _camera.DeactivateAsync()
+            );
         }
 
         public async Task<bool> initializeArduino(byte servoPin, byte servoIdle, byte servoOff, byte servoPressed, string host, ushort port)

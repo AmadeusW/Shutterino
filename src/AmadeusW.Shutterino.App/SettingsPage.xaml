@@ -27,7 +27,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <ToggleButton Command="{Binding Path=DeviceViewModel.ToggleCommand}" IsChecked="{Binding Path=DeviceViewModel.Active}">
+                        <ToggleButton IsChecked="{Binding Path=DeviceViewModel.Active}">
                             <Viewbox MaxHeight="16" MaxWidth="16">
                                 <SymbolIcon Symbol="{Binding Path=Icon}"/>
                             </Viewbox>

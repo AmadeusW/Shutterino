@@ -14,6 +14,14 @@ namespace AmadeusW.Shutterino.App.Devices
         private bool _isActive = false;
         private string _status = String.Empty;
 
+        /// <summary>
+        /// Whether the activation code has run
+        /// </summary>
+        protected bool _isActuallyActive = false;
+
+        /// <summary>
+        /// Whether this feature is available
+        /// </summary>
         public bool IsAvailable
         {
             get
@@ -30,6 +38,9 @@ namespace AmadeusW.Shutterino.App.Devices
             }
         }
                 
+        /// <summary>
+        /// Whether the user wants this feature to be active
+        /// </summary>
         public bool IsActive
         {
             get

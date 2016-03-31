@@ -17,7 +17,15 @@ namespace AmadeusW.Shutterino.App.Settings
         public double Precision
         {
             get { return _precision; }
-            set { _precision = value; NotifyPropertyChanged(); _accelerometer.Precision = _precision / 100; }
+            set
+            {
+                if (_precision != value)
+                {
+                    _precision = value;
+                    NotifyPropertyChanged();
+                    _accelerometer.Precision = _precision / 100;
+                }
+            }
         }
 
         /// <summary>
@@ -26,7 +34,15 @@ namespace AmadeusW.Shutterino.App.Settings
         public double RollOffset
         {
             get { return _rollOffset; }
-            set { _rollOffset = value; NotifyPropertyChanged(); _accelerometer.RollOffset = _rollOffset / 100;  }
+            set
+            {
+                if (_rollOffset != value)
+                {
+                    _rollOffset = value;
+                    NotifyPropertyChanged();
+                    _accelerometer.RollOffset = _rollOffset / 100;
+                }
+            }
         }
 
         /// <summary>
@@ -35,7 +51,15 @@ namespace AmadeusW.Shutterino.App.Settings
         public double PitchOffset
         {
             get { return _pitchOffset; }
-            set { _pitchOffset = value; NotifyPropertyChanged(); _accelerometer.PitchOffset = _pitchOffset / 100; }
+            set
+            {
+                if (_pitchOffset != value)
+                {
+                    _pitchOffset = value;
+                    NotifyPropertyChanged();
+                    _accelerometer.PitchOffset = _pitchOffset / 100;
+                }
+            }
         }
 
         public AccelerometerViewModel() : base(DAccelerometer.Instance)

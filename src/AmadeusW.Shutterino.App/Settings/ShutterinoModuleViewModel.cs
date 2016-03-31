@@ -18,10 +18,9 @@ namespace AmadeusW.Shutterino.App.Settings
                 //throw new ArgumentNullException(nameof(device));
 
             _device = device;
-            _available = _device.IsAvailable;
-            _active = _device.IsActive;
-            ToggleCommand = new ToggleCommand(_device);
-            PropertyChanged += ShutterinoModuleViewModel_PropertyChanged;
+            Available = _device.IsAvailable;
+            Active = _device.IsActive;
+            _device.PropertyChanged += ShutterinoModuleViewModel_PropertyChanged;
         }
 
         private void ShutterinoModuleViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -43,8 +42,11 @@ namespace AmadeusW.Shutterino.App.Settings
             get { return _available; }
             set
             {
-                _available = value;
-                NotifyPropertyChanged();
+                if (_available != value)
+                {
+                    _available = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
         
@@ -56,13 +58,11 @@ namespace AmadeusW.Shutterino.App.Settings
             get { return _active; }
             set
             {
-                _active = value;
-                NotifyPropertyChanged();
-                // TODO: correct async
-                if (value)
-                    _device.ActivateAsync();
-                else
-                    _device.DeactivateAsync();
+                if (_active != value)
+                {
+                    _active = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
 
