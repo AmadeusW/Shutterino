@@ -93,14 +93,18 @@ namespace AmadeusW.Shutterino.App
             _timer.Start();
 
             await logicTask;
-            _logic.ActivateAsync();
+            await _logic.ActivateAsync();
         }
 
         protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             _timer.Stop();
             _timer.Tick -= _timer_Tick;
-            _logic.DeactivateAsync();
+
+            _logic.EndTakingPhotos();
+            PhotoButton.IsChecked = false;
+
+            await _logic.DeactivateAsync();
         }
 
         #endregion Constructor, lifecycle and navigation

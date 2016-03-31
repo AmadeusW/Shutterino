@@ -87,12 +87,12 @@ namespace AmadeusW.Shutterino.App
 
         public async Task ActivateAsync()
         {
-            _photoTakingTimer.Start();
+            // nothing to activate
         }
 
         public async Task DeactivateAsync()
         {
-            _photoTakingTimer.Stop();
+            EndTakingPhotos();
         }
 
         public async Task<bool> initializeArduino(byte servoPin, byte servoIdle, byte servoOff, byte servoPressed, string host, ushort port)
@@ -127,7 +127,7 @@ namespace AmadeusW.Shutterino.App
                 servoTask = _arduino.MoveServo();
             }
 
-            //await _camera.TakePhotoAsync();
+            await _camera.TakePhotoAsync();
 
             if (servoTask != null)
             {
