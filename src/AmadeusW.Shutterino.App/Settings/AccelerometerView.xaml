@@ -39,7 +39,7 @@
         <Slider 
             Grid.Column="1" Grid.Row="1" 
             Value="{Binding Path=Precision}" 
-            Maximum="30" Minimum="1" SmallChange="3" LargeChange="2" TickFrequency="2" IsDirectionReversed="True"/>
+            Maximum="30" Minimum="1" SmallChange="3" LargeChange="3" TickFrequency="3" IsDirectionReversed="True"/>
         <TextBox
             Grid.Row="1" Grid.Column="2"
             Text="{Binding Path=Precision}" />
