@@ -16,8 +16,8 @@ namespace AmadeusW.Shutterino.App.Devices
         public double PitchOffset { get; set; } = 0.0;
 
         // Readings
-        public double Roll => IsAvailable ? _currentReading.AccelerationX : 0d;
-        public double Pitch => IsAvailable ? _currentReading.AccelerationZ : 0d;
+        public double Roll => IsActive ? _currentReading.AccelerationX : 0d;
+        public double Pitch => IsActive ? _currentReading.AccelerationZ : 0d;
 
         public double TargetRoll => CapturedRoll + RollOffset;
         public double TargetPitch => CapturedPitch + PitchOffset;

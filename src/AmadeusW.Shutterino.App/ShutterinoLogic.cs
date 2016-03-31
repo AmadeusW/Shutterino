@@ -29,7 +29,20 @@ namespace AmadeusW.Shutterino.App
         private DateTime lastPhotoTime;
         private bool _takingPhotos;
 
-        public ShutterinoLogic(CoreDispatcher dispatcher, CaptureElement cameraPreviewControl)
+        internal static ShutterinoLogic Get(CoreDispatcher dispatcher, CaptureElement previewControl)
+        {
+            if (Instance != null)
+            {
+                Instance.CameraPreviewControl = previewControl;
+                return Instance;
+            }
+            else
+            {
+                return new ShutterinoLogic(dispatcher, previewControl);
+            }
+        }
+
+        private ShutterinoLogic(CoreDispatcher dispatcher, CaptureElement cameraPreviewControl)
         {
             Instance = this;
             Dispatcher = dispatcher;

@@ -53,8 +53,11 @@ namespace AmadeusW.Shutterino.App
 
         private void BackRequestedHandler(object sender, BackRequestedEventArgs e)
         {
-            if (this.Frame.CanGoBack) this.Frame.GoBack();
-            e.Handled = true;
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+                e.Handled = true;
+            }
         }
 
         private void SettingsControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -65,11 +68,6 @@ namespace AmadeusW.Shutterino.App
             {
                 SettingsFrame.Navigate(s.ViewType);
             }
-        }
-
-        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 

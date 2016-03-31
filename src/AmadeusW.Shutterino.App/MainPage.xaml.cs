@@ -47,7 +47,7 @@ namespace AmadeusW.Shutterino.App
         public MainPage()
         {
             this.InitializeComponent();
-            _logic = new ShutterinoLogic(Dispatcher, PreviewControl);
+            _logic = ShutterinoLogic.Get(Dispatcher, PreviewControl);
 
             // Do not cache the state of the UI when suspending/navigating
             NavigationCacheMode = NavigationCacheMode.Disabled;
@@ -55,13 +55,6 @@ namespace AmadeusW.Shutterino.App
             // Useful to know when to initialize/clean up the camera
             Application.Current.Suspending += Application_Suspending;
             Application.Current.Resuming += Application_Resuming;
-
-            _timer = new DispatcherTimer()
-            {
-                Interval = TimeSpan.FromMilliseconds(20)
-            };
-            _timer.Tick += _timer_Tick;
-            _timer.Start();
         }
 
         private void _timer_Tick(object sender, object e)
@@ -92,12 +85,23 @@ namespace AmadeusW.Shutterino.App
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            var logicTask = _logic.InitializeAsync();
+
             initializeCanvas();
-            await _logic.InitializeAsync();
+            _timer = new DispatcherTimer()
+            {
+                Interval = TimeSpan.FromMilliseconds(20)
+            };
+            _timer.Tick += _timer_Tick;
+            _timer.Start();
+
+            await logicTask;
         }
 
         protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            _timer.Stop();
+            _timer.Tick -= _timer_Tick;
             await _logic.CleanUpAsync();
         }
 
