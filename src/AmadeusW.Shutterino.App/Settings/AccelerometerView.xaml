@@ -39,7 +39,7 @@
         <Slider 
             Grid.Column="1" Grid.Row="1" 
             Value="{Binding Path=Precision}" 
-            Maximum="0.3" Minimum="0.01" StepFrequency="0.01" SmallChange="0.01"/>
+            Maximum="30" Minimum="1" SmallChange="3" LargeChange="2" TickFrequency="2" IsDirectionReversed="True"/>
         <TextBox
             Grid.Row="1" Grid.Column="2"
             Text="{Binding Path=Precision}" />
@@ -50,7 +50,7 @@
         <Slider 
             Grid.Column="1" Grid.Row="2" 
             Value="{Binding Path=OffsetRoll}" 
-            Maximum="0.3" Minimum="-0.3" StepFrequency="0.05" SmallChange="0.05"/>
+            Maximum="30" Minimum="-30" SmallChange="5" LargeChange="5" TickFrequency="5"/>
         <TextBox
             Grid.Row="2" Grid.Column="2"
             Text="{Binding Path=OffsetRoll}" />
@@ -61,7 +61,7 @@
         <Slider 
             Grid.Column="1" Grid.Row="3" 
             Value="{Binding Path=OffsetTilt}" 
-            Maximum="0.3" Minimum="-0.3" StepFrequency="0.05" SmallChange="0.05"/>
+            Maximum="30" Minimum="-30" SmallChange="5" LargeChange="5" TickFrequency="5"/>
         <TextBox
             Grid.Row="3" Grid.Column="2"
             Text="{Binding Path=OffsetTilt}" />

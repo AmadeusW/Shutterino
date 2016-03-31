@@ -65,13 +65,10 @@ namespace AmadeusW.Shutterino.App
 
         private async void Application_Suspending(object sender, SuspendingEventArgs e)
         {
-            // Handle global application events only if this page is active
-            if (Frame.CurrentSourcePageType == typeof(MainPage))
-            {
-                var deferral = e.SuspendingOperation.GetDeferral();
-                await _logic.CleanUpAsync();
-                deferral.Complete();
-            }
+            // Handle global events no matter which page is active
+            var deferral = e.SuspendingOperation.GetDeferral();
+            await _logic.CleanUpAsync();
+            deferral.Complete();
         }
 
         private async void Application_Resuming(object sender, object o)

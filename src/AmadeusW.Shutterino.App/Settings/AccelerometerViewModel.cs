@@ -17,7 +17,7 @@ namespace AmadeusW.Shutterino.App.Settings
         public double Precision
         {
             get { return _precision; }
-            set { _precision = value; NotifyPropertyChanged(); _accelerometer.Precision = Precision; }
+            set { _precision = value; NotifyPropertyChanged(); _accelerometer.Precision = Precision / 100; }
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace AmadeusW.Shutterino.App.Settings
         public double RollOffset
         {
             get { return _rollOffset; }
-            set { _rollOffset = value; NotifyPropertyChanged(); _accelerometer.RollOffset = RollOffset;  }
+            set { _rollOffset = value; NotifyPropertyChanged(); _accelerometer.RollOffset = RollOffset / 100;  }
         }
 
         /// <summary>
@@ -35,16 +35,16 @@ namespace AmadeusW.Shutterino.App.Settings
         public double PitchOffset
         {
             get { return _pitchOffset; }
-            set { _pitchOffset = value; NotifyPropertyChanged(); _accelerometer.PitchOffset = PitchOffset; }
+            set { _pitchOffset = value; NotifyPropertyChanged(); _accelerometer.PitchOffset = PitchOffset / 100; }
         }
 
         public AccelerometerViewModel() : base(DAccelerometer.Instance)
         {
             _available = _accelerometer.IsAvailable;
             _active = _accelerometer.IsActive;
-            _precision = _accelerometer.Precision;
-            _rollOffset = _accelerometer.RollOffset;
-            _pitchOffset = _accelerometer.PitchOffset;
+            _precision = _accelerometer.Precision * 100;
+            _rollOffset = _accelerometer.RollOffset * 100;
+            _pitchOffset = _accelerometer.PitchOffset * 100;
         }
 
         #region Backing Fields
