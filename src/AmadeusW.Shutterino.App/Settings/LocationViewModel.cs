@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadeusW.Shutterino.App.Devices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class LocationViewModel : ShutterinoModuleViewModel
     {
+        DLocation _location => _device as DLocation;
+
         public LocationViewModel() : base(Devices.DLocation.Instance)
         {
 
@@ -28,7 +31,7 @@ namespace AmadeusW.Shutterino.App.Settings
         public double Offset
         {
             get { return _offset; }
-            set { _offset = value; NotifyPropertyChanged(); }
+            set { _offset = value; NotifyPropertyChanged(); _location.Offset = _offset; }
         }
         
         #region Backing Fields

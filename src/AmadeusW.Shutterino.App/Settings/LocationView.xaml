@@ -11,7 +11,9 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -32,9 +34,13 @@
 
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
-            Text="Precision" />
+            Text="Offset" />
+        <Slider 
+            Grid.Column="1" Grid.Row="1" 
+            Value="{Binding Path=Offset}" 
+            Maximum="100" Minimum="1" SmallChange="5" LargeChange="5" TickFrequency="5" />
         <TextBox
-            Grid.Row="1" Grid.Column="1"
-            Text="{Binding Path=Precision}" />
+            Grid.Row="1" Grid.Column="2"
+            Text="{Binding Path=Offset}" />
     </Grid>
 </Page>

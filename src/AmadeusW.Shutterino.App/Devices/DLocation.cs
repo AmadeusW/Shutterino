@@ -13,6 +13,24 @@ namespace AmadeusW.Shutterino.App.Devices
         private Geolocator _geoLocator;
 
         public static DLocation Instance { get; private set; }
+
+        private double _offset = 50; // Load from settings
+        public double Offset
+        {
+            get
+            {
+                return _offset;
+            }
+            set
+            {
+                _offset = value;
+                if (_geoLocator != null)
+                {
+                    _geoLocator.MovementThreshold = _offset;
+                }
+            }
+        }
+
         public DLocation() : base()
         {
             Instance = this;
@@ -37,15 +55,25 @@ namespace AmadeusW.Shutterino.App.Devices
                 return;
 
             _geoLocator = new Geolocator();
-            _geoLocator.ReportInterval = 2000;
+            //_geoLocator.ReportInterval = 2000;
+            _geoLocator.MovementThreshold = Offset;
             _geoLocator.DesiredAccuracy = PositionAccuracy.High;
             _geoLocator.PositionChanged += _geoLocator_PositionChanged;
             IsActive = true;
         }
 
-        private void _geoLocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        private async void _geoLocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
             CurrentLocation = args.Position.Coordinate.Point;
+            // This event is fired whenever user crosses the thereshold, so let's snap the photo
+            try
+            {
+                await ShutterinoLogic.Instance.TakePhoto();
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("error taking photo from GeoLocatior");
+            }
         }
 
         public override async Task InitializeAsync()
