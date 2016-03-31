@@ -11,7 +11,9 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -34,22 +36,34 @@
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
             Text="Precision" />
+        <Slider 
+            Grid.Column="1" Grid.Row="1" 
+            Value="{Binding Path=Precision}" 
+            Maximum="0.3" Minimum="0.01" StepFrequency="0.01" SmallChange="0.01"/>
         <TextBox
-            Grid.Row="1" Grid.Column="1"
+            Grid.Row="1" Grid.Column="2"
             Text="{Binding Path=Precision}" />
         
         <TextBlock 
             Grid.Row="2" Grid.Column="0"
             Text="Roll offset" />
+        <Slider 
+            Grid.Column="1" Grid.Row="2" 
+            Value="{Binding Path=OffsetRoll}" 
+            Maximum="0.3" Minimum="-0.3" StepFrequency="0.05" SmallChange="0.05"/>
         <TextBox
-            Grid.Row="2" Grid.Column="1"
+            Grid.Row="2" Grid.Column="2"
             Text="{Binding Path=OffsetRoll}" />
         
         <TextBlock 
             Grid.Row="3" Grid.Column="0"
             Text="Tilt offet" />
+        <Slider 
+            Grid.Column="1" Grid.Row="3" 
+            Value="{Binding Path=OffsetTilt}" 
+            Maximum="0.3" Minimum="-0.3" StepFrequency="0.05" SmallChange="0.05"/>
         <TextBox
-            Grid.Row="3" Grid.Column="1"
+            Grid.Row="3" Grid.Column="2"
             Text="{Binding Path=OffsetTilt}" />
     </Grid>
 </Page>
