@@ -28,6 +28,7 @@ namespace AmadeusW.Shutterino.App
         private DispatcherTimer _photoTakingTimer;
         private DateTime lastPhotoTime;
         private bool _takingPhotos;
+        private bool _initialized;
 
         internal static ShutterinoLogic Get(CoreDispatcher dispatcher, CaptureElement previewControl)
         {
@@ -51,17 +52,24 @@ namespace AmadeusW.Shutterino.App
         
         public async Task CleanUpAsync()
         {
+            if (!_initialized)
+                return;
+
+            await DeactivateAsync();
             await Task.WhenAll(
                 _phone.CleanupAsync(),
                 _location.CleanupAsync(),
                 _accelerometer.CleanupAsync(),
                 _camera.CleanupAsync()
             );
-            _photoTakingTimer.Stop();
+            _initialized = false;
         }
 
         public async Task InitializeAsync()
         {
+            if (_initialized)
+                return;
+            
             await Task.WhenAll(
                 _phone.InitializeAsync(),
                 _location.InitializeAsync(),
@@ -73,6 +81,18 @@ namespace AmadeusW.Shutterino.App
                 Interval = TimeSpan.FromMilliseconds(50)
             };
             _photoTakingTimer.Tick += photoTakingTimerTick;
+
+            _initialized = true;
+        }
+
+        public async Task ActivateAsync()
+        {
+            _photoTakingTimer.Start();
+        }
+
+        public async Task DeactivateAsync()
+        {
+            _photoTakingTimer.Stop();
         }
 
         public async Task<bool> initializeArduino(byte servoPin, byte servoIdle, byte servoOff, byte servoPressed, string host, ushort port)

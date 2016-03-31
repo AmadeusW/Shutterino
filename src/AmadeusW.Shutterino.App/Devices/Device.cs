@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadeusW.Shutterino.App.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +8,59 @@ using Windows.Devices.Sensors;
 
 namespace AmadeusW.Shutterino.App.Devices
 {
-    public abstract class Device : IDisposable
+    public abstract class Device : PropertyChangedBase, IDisposable
     {
-        public bool IsAvailable { get; protected set; } = false;
-        public bool IsActive { get; protected set; } = false;
-        public string Status { get; protected set; }
+        private bool _isAvailable = false;
+        private bool _isActive = false;
+        private string _status = String.Empty;
+
+        public bool IsAvailable
+        {
+            get
+            {
+                return _isAvailable;
+            }
+            protected set
+            {
+                if (value != _isAvailable)
+                {
+                    _isAvailable = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+                
+        public bool IsActive
+        {
+            get
+            {
+                return _isActive;
+            }
+            protected set
+            {
+                if (value != _isActive)
+                {
+                    _isActive = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                return _status;
+            }
+            protected set
+            {
+                if (value != _status)
+                {
+                    _status = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public abstract Task InitializeAsync();
         public abstract Task ActivateAsync();

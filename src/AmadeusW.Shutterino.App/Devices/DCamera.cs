@@ -75,7 +75,6 @@ namespace AmadeusW.Shutterino.App.Devices
             if (IsAvailable || _mediaCapture != null)
                 return;
 
-
             // Get available devices for capturing pictures
             var allVideoDevices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
 
@@ -106,7 +105,6 @@ namespace AmadeusW.Shutterino.App.Devices
             try
             {
                 await _mediaCapture.InitializeAsync(settings);
-                IsAvailable = true;
             }
             catch (UnauthorizedAccessException)
             {

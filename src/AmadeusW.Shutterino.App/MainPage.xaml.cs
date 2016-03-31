@@ -79,13 +79,13 @@ namespace AmadeusW.Shutterino.App
             // Handle global application events only if this page is active
             if (Frame.CurrentSourcePageType == typeof(MainPage))
             {
-                await _logic.InitializeAsync();
+                await _logic.InitializeAsync();  // guaranteed to happen only once
             }
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var logicTask = _logic.InitializeAsync();
+            var logicTask = _logic.InitializeAsync(); // guaranteed to happen only once
 
             initializeCanvas();
             _timer = new DispatcherTimer()
@@ -96,13 +96,14 @@ namespace AmadeusW.Shutterino.App
             _timer.Start();
 
             await logicTask;
+            _logic.ActivateAsync();
         }
 
         protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             _timer.Stop();
             _timer.Tick -= _timer_Tick;
-            await _logic.CleanUpAsync();
+            _logic.DeactivateAsync();
         }
 
         #endregion Constructor, lifecycle and navigation
