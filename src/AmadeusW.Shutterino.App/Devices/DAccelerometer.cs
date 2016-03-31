@@ -36,8 +36,11 @@ namespace AmadeusW.Shutterino.App.Devices
         private readonly Accelerometer _accelerometer = Accelerometer.GetDefault();
         private AccelerometerReading _currentReading = default(AccelerometerReading);
         private readonly DisplayInformation _displayInformation = DisplayInformation.GetForCurrentView();
+        private long _lastPhotoTime;
 
         public static DAccelerometer Instance { get; private set; }
+
+        public override string ToString() => "Accelerometer";
 
         public DAccelerometer() : base()
         {
@@ -90,12 +93,23 @@ namespace AmadeusW.Shutterino.App.Devices
 
         private void _accelerometer_ReadingChanged(Accelerometer sender, AccelerometerReadingChangedEventArgs args)
         {
-            _currentReading = args.Reading;
-
-            if (DeltaRoll < Precision
-                && DeltaPitch < Precision)
+            try
             {
-                // notify of photo opportunity
+                _currentReading = args.Reading;
+
+                if (ShutterinoLogic.Instance.TakesPhotos
+                    && _currentReading.Timestamp.UtcTicks > _lastPhotoTime + RateLimiter
+                    && DeltaRoll < Precision
+                    && DeltaPitch < Precision)
+                {
+                    _lastPhotoTime = _currentReading.Timestamp.UtcTicks;
+                    Task.Run(async () => await ShutterinoLogic.Instance.SuggestPhotoOpportunity(this));
+                }
+            }
+            catch (Exception ex)
+            {
+                // LOG
+                Status = ex.ToString();
             }
         }
 

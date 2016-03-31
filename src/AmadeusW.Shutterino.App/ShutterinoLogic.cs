@@ -24,10 +24,10 @@ namespace AmadeusW.Shutterino.App
         public CaptureElement CameraPreviewControl { get; set; }
 
         public static ShutterinoLogic Instance { get; private set; }
+        public bool TakesPhotos { get; internal set; }
 
         private DispatcherTimer _photoTakingTimer;
         private DateTime lastPhotoTime;
-        private bool _takingPhotos;
         private bool _initialized;
 
         internal static ShutterinoLogic Get(CoreDispatcher dispatcher, CaptureElement previewControl)
@@ -76,11 +76,6 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.InitializeAsync(),
                 _camera.InitializeAsync()
             );
-            _photoTakingTimer = new DispatcherTimer()
-            {
-                Interval = TimeSpan.FromMilliseconds(50)
-            };
-            _photoTakingTimer.Tick += photoTakingTimerTick;
 
             _initialized = true;
         }
@@ -97,7 +92,6 @@ namespace AmadeusW.Shutterino.App
 
         public async Task DeactivateAsync()
         {
-            EndTakingPhotos();
             await Task.WhenAll(
                 _phone.DeactivateAsync(),
                 _location.DeactivateAsync(),
@@ -121,16 +115,7 @@ namespace AmadeusW.Shutterino.App
             return false;
         }
 
-        private async void photoTakingTimerTick(object sender, object e)
-        {
-            if (_takingPhotos && DateTime.UtcNow > lastPhotoTime + TimeSpan.FromSeconds(2) && IsPhotoOpportunity())
-            {
-                lastPhotoTime = DateTime.UtcNow;
-                await TakePhoto();
-            }
-        }
-
-        public async Task TakePhoto()
+        private async Task TakePhoto()
         {
             Task<bool> servoTask = null;
             if (_arduino != null)
@@ -147,16 +132,18 @@ namespace AmadeusW.Shutterino.App
             }
         }
 
-        internal void BeginTakingPhotos()
+        internal async Task SuggestPhotoOpportunity(Device sender)
         {
-            _takingPhotos = true;
-            _photoTakingTimer.Start();
-        }
-
-        internal void EndTakingPhotos()
-        {
-            _photoTakingTimer.Stop();
-            _takingPhotos = false;
+            // log sender.ToString();
+            try
+            {
+                await TakePhoto();
+            }
+            catch (Exception ex)
+            {
+                // TODO: LOG
+                sender.Status = ex.ToString();
+            }
         }
 
         internal void UseHighPrecision()

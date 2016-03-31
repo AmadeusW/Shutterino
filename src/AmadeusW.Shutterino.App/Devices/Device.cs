@@ -63,7 +63,7 @@ namespace AmadeusW.Shutterino.App.Devices
             {
                 return _status;
             }
-            protected set
+            set
             {
                 if (value != _status)
                 {

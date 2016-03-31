@@ -67,15 +67,15 @@
 
             <ToggleButton Name="PhotoButton" IsEnabled="True" Checked="PhotoButton_Checked" >
                 <Viewbox MaxHeight="40" MaxWidth="40">
-                    <SymbolIcon Symbol="Camera" />
+                    <SymbolIcon Symbol="Play" />
                 </Viewbox>
             </ToggleButton>
 
-            <ToggleButton Name="PrecisionButton" IsEnabled="True" Checked="PrecisionButton_Checked">
+            <Button Name="PhotoNowButton" IsEnabled="True" Tapped="PhotoNowButton_Tapped">
                 <Viewbox MaxHeight="40" MaxWidth="40">
-                    <SymbolIcon Symbol="Important"/>
+                    <SymbolIcon Symbol="Camera"/>
                 </Viewbox>
-            </ToggleButton>
+            </Button>
 
             <Button Name="CalibrationButton" IsEnabled="True" Tapped="CalibrationButton_Tapped">
                 <Viewbox MaxHeight="40" MaxWidth="40">

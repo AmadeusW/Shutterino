@@ -34,7 +34,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         private void HardwareButtons_CameraPressed(object sender, CameraEventArgs e)
         {
-            ShutterinoLogic.Instance.TakePhoto();
+            ShutterinoLogic.Instance.SuggestPhotoOpportunity(this);
         }
 
         public override async Task InitializeAsync()

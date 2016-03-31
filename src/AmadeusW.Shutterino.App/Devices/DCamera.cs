@@ -31,6 +31,9 @@ namespace AmadeusW.Shutterino.App.Devices
         private int _savedPhotosCount = 0;
 
         public static DCamera Instance { get; private set; }
+
+        public override string ToString() => "Camera";
+
         public DCamera() : base()
         {
             Instance = this;
@@ -191,6 +194,9 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public async Task TakePhotoAsync()
         {
+            if (!_isActuallyActive)
+                return;
+
             var stream = new InMemoryRandomAccessStream();
 
             try

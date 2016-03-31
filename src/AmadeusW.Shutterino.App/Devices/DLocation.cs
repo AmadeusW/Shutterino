@@ -31,6 +31,8 @@ namespace AmadeusW.Shutterino.App.Devices
             }
         }
 
+        public override string ToString() => "Location";
+
         public DLocation() : base()
         {
             Instance = this;
@@ -72,7 +74,7 @@ namespace AmadeusW.Shutterino.App.Devices
             // This event is fired whenever user crosses the thereshold, so let's snap the photo
             try
             {
-                await ShutterinoLogic.Instance.TakePhoto();
+                await ShutterinoLogic.Instance.SuggestPhotoOpportunity(this);
             }
             catch
             {

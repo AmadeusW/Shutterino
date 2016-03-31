@@ -101,7 +101,7 @@ namespace AmadeusW.Shutterino.App
             _timer.Stop();
             _timer.Tick -= _timer_Tick;
 
-            _logic.EndTakingPhotos();
+            _logic.TakesPhotos = false;
             PhotoButton.IsChecked = false;
 
             await _logic.DeactivateAsync();
@@ -110,29 +110,21 @@ namespace AmadeusW.Shutterino.App
         #endregion Constructor, lifecycle and navigation
 
         // TODO: use a viewmodel for all this:
-        private async void PhotoButton_Checked(object sender, RoutedEventArgs e)
+        private void PhotoButton_Checked(object sender, RoutedEventArgs e)
         {
             if (PhotoButton.IsChecked.Value)
             {
-                await _logic.TakePhoto();
-                _logic.BeginTakingPhotos();
+                _logic.TakesPhotos = true;
             }
             else
             {
-                _logic.EndTakingPhotos();
+                _logic.TakesPhotos = false;
             }
         }
 
-        private void PrecisionButton_Checked(object sender, RoutedEventArgs e)
+        private async void PhotoNowButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (PrecisionButton.IsChecked.Value)
-            {
-                _logic.UseHighPrecision();
-            }
-            else
-            {
-                _logic.UseLowPrecision();
-            }
+            await _logic.SuggestPhotoOpportunity(null);
         }
 
         private void CalibrationButton_Tapped(object sender, TappedRoutedEventArgs e)
