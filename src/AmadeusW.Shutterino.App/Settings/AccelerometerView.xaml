@@ -15,8 +15,8 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="50" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -42,33 +42,36 @@
             Text="Precision" />
         <Slider 
             Grid.Column="1" Grid.Row="1" 
-            Value="{Binding Path=Precision}" 
+            Value="{Binding Path=Precision, Mode=TwoWay}" 
             Maximum="30" Minimum="1" SmallChange="3" LargeChange="3" TickFrequency="3" IsDirectionReversed="True"/>
         <TextBox
             Grid.Row="1" Grid.Column="2"
-            Text="{Binding Path=Precision}" />
+            InputScope="Number"
+            Text="{Binding Path=Precision, Mode=TwoWay}" />
         
         <TextBlock 
             Grid.Row="2" Grid.Column="0"
             Text="Roll offset" />
         <Slider 
             Grid.Column="1" Grid.Row="2" 
-            Value="{Binding Path=OffsetRoll}" 
+            Value="{Binding Path=OffsetRoll, Mode=TwoWay}" 
             Maximum="30" Minimum="-30" SmallChange="5" LargeChange="5" TickFrequency="5"/>
         <TextBox
             Grid.Row="2" Grid.Column="2"
-            Text="{Binding Path=OffsetRoll}" />
+            InputScope="Number"
+            Text="{Binding Path=OffsetRoll, Mode=TwoWay}" />
         
         <TextBlock 
             Grid.Row="3" Grid.Column="0"
             Text="Tilt offet" />
         <Slider 
             Grid.Column="1" Grid.Row="3" 
-            Value="{Binding Path=OffsetTilt}" 
+            Value="{Binding Path=OffsetTilt, Mode=TwoWay}" 
             Maximum="30" Minimum="-30" SmallChange="5" LargeChange="5" TickFrequency="5"/>
         <TextBox
             Grid.Row="3" Grid.Column="2"
-            Text="{Binding Path=OffsetTilt}" />
+            InputScope="Number"
+            Text="{Binding Path=OffsetTilt, Mode=TwoWay}" />
 
         <TextBlock 
             Grid.Row="4" Grid.Column="0"
@@ -79,6 +82,7 @@
             Maximum="5000" Minimum="0" SmallChange="500" LargeChange="500" TickFrequency="500"/>
         <TextBox
             Grid.Row="4" Grid.Column="2"
+            InputScope="Number"
             Text="{Binding Path=RateLimiter, Mode=TwoWay}" />
     </Grid>
 </Page>
