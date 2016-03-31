@@ -8,6 +8,11 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class LocationViewModel : ShutterinoModuleViewModel
     {
+        public LocationViewModel() : base(Devices.DLocation.Instance)
+        {
+
+        }
+
         /// <summary>
         /// Maximum allowed error on the location reading
         /// </summary>

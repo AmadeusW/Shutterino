@@ -20,7 +20,45 @@ namespace AmadeusW.Shutterino.App.Devices
         // Prevents the screen from sleeping
         private readonly DisplayRequest _displayRequest = new DisplayRequest();
 
-        public override async Task CleanUpAsync()
+        public override async Task DeactivateAsync()
+        {
+            // There is nothing to deactivate
+            return;
+        }
+
+        public override async Task ActivateAsync()
+        {
+            // There is nothing to activate
+            return;
+        }
+
+        private void HardwareButtons_CameraPressed(object sender, CameraEventArgs e)
+        {
+            ShutterinoLogic.Instance.TakePhoto();
+        }
+
+        public override async Task InitializeAsync()
+        {
+            if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+            {
+                HardwareButtons.CameraPressed += HardwareButtons_CameraPressed;
+            }
+            // Attempt to lock page to landscape orientation to prevent the CaptureElement from rotating, as this gives a better experience
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
+
+            // Hide the status bar
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            {
+                await Windows.UI.ViewManagement.StatusBar.GetForCurrentView().HideAsync();
+            }
+
+            // Keep the screen always on
+            _displayRequest.RequestActive();
+
+            IsAvailable = true;
+        }
+
+        public override async Task CleanupAsync()
         {
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             {
@@ -37,33 +75,6 @@ namespace AmadeusW.Shutterino.App.Devices
 
             // Revert orientation preferences
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.None;
-        }
-
-        public override async Task<bool> InitializeAsync()
-        {
-            if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
-            {
-                HardwareButtons.CameraPressed += HardwareButtons_CameraPressed;
-            }
-            // Attempt to lock page to landscape orientation to prevent the CaptureElement from rotating, as this gives a better experience
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
-
-            // Hide the status bar
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-                await Windows.UI.ViewManagement.StatusBar.GetForCurrentView().HideAsync();
-            }
-            
-            // Keep the screen always on
-            _displayRequest.RequestActive();
-
-            IsAvailable = true;
-            return true;
-        }
-
-        private void HardwareButtons_CameraPressed(object sender, CameraEventArgs e)
-        {
-            ShutterinoLogic.Instance.TakePhoto();
         }
     }
 }

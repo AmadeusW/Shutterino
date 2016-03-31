@@ -8,7 +8,10 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class CameraViewModel : ShutterinoModuleViewModel
     {
+        public CameraViewModel() : base(Devices.DCamera.Instance)
+        {
 
+        }
 
         #region Backing Fields
 

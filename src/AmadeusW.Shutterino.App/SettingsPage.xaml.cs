@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using AmadeusW.Shutterino.App.Settings;
+using Windows.UI.Core;
+using AmadeusW.Shutterino.App.Devices;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -25,13 +27,13 @@ namespace AmadeusW.Shutterino.App
     {
         List<ShutterinoSettingDefinition> _settings = new List<ShutterinoSettingDefinition>
         {
-            new ShutterinoSettingDefinition() { Name="Accelerometer", Icon="Trim", ViewType=typeof(AccelerometerView)},
-            new ShutterinoSettingDefinition() { Name="Arduino", Icon="Target", ViewType=typeof(ArduinoView)},
-            new ShutterinoSettingDefinition() { Name="Camera", Icon="Camera", ViewType=typeof(CameraView)},
-            new ShutterinoSettingDefinition() { Name="Edge detector", Icon="Contact2", ViewType=typeof(EdgeDetectorView)},
-            new ShutterinoSettingDefinition() { Name="Location", Icon="Map", ViewType=typeof(LocationView)},
-            new ShutterinoSettingDefinition() { Name="Log", Icon="List", ViewType=typeof(LogView)},
-            new ShutterinoSettingDefinition() { Name="Timer", Icon="Clock", ViewType=typeof(TimerView)},
+            new ShutterinoSettingDefinition() { Name="Accelerometer", Icon="Trim", ViewType=typeof(AccelerometerView), DeviceViewModel=new AccelerometerViewModel()},
+            new ShutterinoSettingDefinition() { Name="Arduino", Icon="Target", ViewType=typeof(ArduinoView), DeviceViewModel=new ArduinoViewModel()},
+            new ShutterinoSettingDefinition() { Name="Camera", Icon="Camera", ViewType=typeof(CameraView), DeviceViewModel=new CameraViewModel()},
+            new ShutterinoSettingDefinition() { Name="Edge detector", Icon="Contact2", ViewType=typeof(EdgeDetectorView), DeviceViewModel=new EdgeDetectorViewModel()},
+            new ShutterinoSettingDefinition() { Name="Location", Icon="Map", ViewType=typeof(LocationView), DeviceViewModel=new LocationViewModel()},
+            new ShutterinoSettingDefinition() { Name="Log", Icon="List", ViewType=typeof(LogView), DeviceViewModel=new LogViewModel()},
+            new ShutterinoSettingDefinition() { Name="Timer", Icon="Clock", ViewType=typeof(TimerView), DeviceViewModel=new TimerViewModel()},
         };
 
         public SettingsPage()
@@ -41,9 +43,18 @@ namespace AmadeusW.Shutterino.App
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
-
             SettingsControl.ItemsSource = _settings;
+
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            SystemNavigationManager.GetForCurrentView().BackRequested += BackRequestedHandler;
+
+            base.OnNavigatedTo(e);
+        }
+
+        private void BackRequestedHandler(object sender, BackRequestedEventArgs e)
+        {
+            if (this.Frame.CanGoBack) this.Frame.GoBack();
+            e.Handled = true;
         }
 
         private void SettingsControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -55,6 +66,11 @@ namespace AmadeusW.Shutterino.App
                 SettingsFrame.Navigate(s.ViewType);
             }
         }
+
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     /// <summary>
@@ -64,7 +80,9 @@ namespace AmadeusW.Shutterino.App
     {
         public string Name { get; set; }
         public string Icon { get; set; }
+        public bool Active { get; set; }
         public Type ViewType { get; set; }
+        public ShutterinoModuleViewModel DeviceViewModel { get; set; }
 
         public override string ToString() => $"{Name} settings page";
     }

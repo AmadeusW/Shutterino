@@ -9,13 +9,15 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class AccelerometerViewModel : ShutterinoModuleViewModel
     {
+        DAccelerometer _accelerometer => _device as DAccelerometer;
+
         /// <summary>
         /// Maximum allowed error on the accelerometer axes
         /// </summary>
         public double Precision
         {
             get { return _precision; }
-            set { _precision = value; NotifyPropertyChanged(); device.Precision = Precision; }
+            set { _precision = value; NotifyPropertyChanged(); _accelerometer.Precision = Precision; }
         }
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace AmadeusW.Shutterino.App.Settings
         public double RollOffset
         {
             get { return _rollOffset; }
-            set { _rollOffset = value; NotifyPropertyChanged(); device.RollOffset = RollOffset;  }
+            set { _rollOffset = value; NotifyPropertyChanged(); _accelerometer.RollOffset = RollOffset;  }
         }
 
         /// <summary>
@@ -33,19 +35,16 @@ namespace AmadeusW.Shutterino.App.Settings
         public double PitchOffset
         {
             get { return _pitchOffset; }
-            set { _pitchOffset = value; NotifyPropertyChanged(); device.PitchOffset = PitchOffset; }
+            set { _pitchOffset = value; NotifyPropertyChanged(); _accelerometer.PitchOffset = PitchOffset; }
         }
 
-        DAccelerometer device;
-
-        public AccelerometerViewModel()
+        public AccelerometerViewModel() : base(DAccelerometer.Instance)
         {
-            device = Devices.DAccelerometer.Instance;
-            _initialized = device.IsAvailable;
-            _active = device.IsAvailable;
-            _precision = device.Precision;
-            _rollOffset = device.RollOffset;
-            _pitchOffset = device.PitchOffset;
+            _available = _accelerometer.IsAvailable;
+            _active = _accelerometer.IsActive;
+            _precision = _accelerometer.Precision;
+            _rollOffset = _accelerometer.RollOffset;
+            _pitchOffset = _accelerometer.PitchOffset;
         }
 
         #region Backing Fields

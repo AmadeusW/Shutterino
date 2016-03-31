@@ -39,10 +39,10 @@ namespace AmadeusW.Shutterino.App
         public async Task CleanUpAsync()
         {
             await Task.WhenAll(
-                _phone.CleanUpAsync(),
-                _location.CleanUpAsync(),
-                _accelerometer.CleanUpAsync(),
-                _camera.CleanUpAsync()
+                _phone.CleanupAsync(),
+                _location.CleanupAsync(),
+                _accelerometer.CleanupAsync(),
+                _camera.CleanupAsync()
             );
             _photoTakingTimer.Stop();
         }

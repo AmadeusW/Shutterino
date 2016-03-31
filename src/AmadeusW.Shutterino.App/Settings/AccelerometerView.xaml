@@ -27,8 +27,9 @@
             Grid.Row="0" Grid.Column="0"
             Text="Active" />
         <ToggleButton
+            Command="{Binding Path=ToggleCommand}"
             Grid.Row="0" Grid.Column="1"
-            />
+            IsChecked="{Binding Path=Active}" />
         
         <TextBlock 
             Grid.Row="1" Grid.Column="0"

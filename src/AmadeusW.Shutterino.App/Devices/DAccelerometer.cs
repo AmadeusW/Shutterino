@@ -44,9 +44,9 @@ namespace AmadeusW.Shutterino.App.Devices
             IsAvailable = _accelerometer != null;
         }
 
-        public async override Task CleanUpAsync()
+        public async override Task DeactivateAsync()
         {
-            if (!IsAvailable)
+            if (!IsAvailable || !IsActive)
                 return;
 
             if (_displayInformation != null)
@@ -60,10 +60,10 @@ namespace AmadeusW.Shutterino.App.Devices
             IsActive = false;
         }
 
-        public async override Task<bool> InitializeAsync()
+        public async override Task ActivateAsync()
         {
-            if (!IsAvailable)
-                return false;
+            if (!IsAvailable || IsActive)
+                return;
 
             if (_displayInformation != null)
             {
@@ -73,7 +73,6 @@ namespace AmadeusW.Shutterino.App.Devices
             _accelerometer.ReportInterval = 20;
             _accelerometer.ReadingChanged += _accelerometer_ReadingChanged;
             IsActive = true;
-            return true;
         }
 
         void displayInformation_OrientationChanged(DisplayInformation sender, object args)
@@ -99,6 +98,18 @@ namespace AmadeusW.Shutterino.App.Devices
         {
             return DeltaRoll < Precision
                 && DeltaPitch < Precision;
+        }
+
+        public override async Task InitializeAsync()
+        {
+            // There is nothing to do
+            return;
+        }
+
+        public override async Task CleanupAsync()
+        {
+            // There is nothing to do
+            return;
         }
     }
 }

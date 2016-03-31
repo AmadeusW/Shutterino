@@ -18,29 +18,45 @@ namespace AmadeusW.Shutterino.App.Devices
             Instance = this;
         }
 
-        public async override Task CleanUpAsync()
+        public async override Task DeactivateAsync()
         {
+            if (!IsAvailable || !IsActive)
+                return;
+
             if (_geoLocator != null)
             {
                 _geoLocator.PositionChanged -= _geoLocator_PositionChanged;
                 _geoLocator = null;
             }
+            IsActive = false;
         }
 
-        public async override Task<bool> InitializeAsync()
+        public async override Task ActivateAsync()
         {
-            await Geolocator.RequestAccessAsync();
+            if (!IsAvailable || IsActive)
+                return;
+
             _geoLocator = new Geolocator();
             _geoLocator.ReportInterval = 2000;
             _geoLocator.DesiredAccuracy = PositionAccuracy.High;
             _geoLocator.PositionChanged += _geoLocator_PositionChanged;
-            IsAvailable = true;
-            return true;
+            IsActive = true;
         }
 
         private void _geoLocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
             CurrentLocation = args.Position.Coordinate.Point;
+        }
+
+        public override async Task InitializeAsync()
+        {
+            await Geolocator.RequestAccessAsync();
+            IsAvailable = true;
+        }
+
+        public override async Task CleanupAsync()
+        {
+            IsAvailable = false;
         }
     }
 }

@@ -8,6 +8,11 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class ArduinoViewModel : ShutterinoModuleViewModel
     {
+        public ArduinoViewModel() : base(null)
+        {
+
+        }
+
         /// <summary>
         /// Connection setting
         /// </summary>

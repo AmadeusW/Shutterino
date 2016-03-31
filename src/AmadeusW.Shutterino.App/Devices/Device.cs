@@ -13,8 +13,10 @@ namespace AmadeusW.Shutterino.App.Devices
         public bool IsActive { get; protected set; } = false;
         public string Status { get; protected set; }
 
-        public abstract Task<bool> InitializeAsync();
-        public abstract Task CleanUpAsync();
+        public abstract Task InitializeAsync();
+        public abstract Task ActivateAsync();
+        public abstract Task DeactivateAsync();
+        public abstract Task CleanupAsync();
 
         public void Dispose()
         {

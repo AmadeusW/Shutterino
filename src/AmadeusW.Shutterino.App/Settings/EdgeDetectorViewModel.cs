@@ -8,6 +8,11 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class EdgeDetectorViewModel : ShutterinoModuleViewModel
     {
+        public EdgeDetectorViewModel() : base(null)
+        {
+
+        }
+
         /// <summary>
         /// Maximum allowed error on the edge detector
         /// </summary>

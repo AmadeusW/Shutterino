@@ -8,7 +8,10 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class LogViewModel : ShutterinoModuleViewModel
     {
+        public LogViewModel() : base(null)
+        {
 
+        }
 
         #region Backing Fields
 

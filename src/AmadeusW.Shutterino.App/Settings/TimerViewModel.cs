@@ -8,6 +8,11 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class TimerViewModel : ShutterinoModuleViewModel
     {
+        public TimerViewModel() : base(null)
+        {
+
+        }
+
         /// <summary>
         /// In which pattern the shutter should be pressed
         /// </summary>

@@ -22,7 +22,6 @@ namespace AmadeusW.Shutterino.App.Devices
     {
         // MediaCapture and its state variables
         private MediaCapture _mediaCapture;
-        private bool _isInitialized;
         private bool _isPreviewing;
         private bool _isRecording;
 
@@ -35,27 +34,29 @@ namespace AmadeusW.Shutterino.App.Devices
         public DCamera() : base()
         {
             Instance = this;
-            
         }
 
-        public async override Task CleanUpAsync()
+        public async override Task DeactivateAsync()
+        {
+            if (!IsAvailable || !IsActive)
+                return;
+
+            IsActive = false;
+            if (_isPreviewing)
+            {
+                // The call to stop the preview is included here for completeness, but can be
+                // safely removed if a call to MediaCapture.Dispose() is being made later,
+                // as the preview will be automatically stopped at that point
+                await StopPreviewAsync();
+            }
+        }
+
+        public async override Task CleanupAsync()
         {
             if (!IsAvailable)
                 return;
 
-            if (_isInitialized)
-            {
-                if (_isPreviewing)
-                {
-                    // The call to stop the preview is included here for completeness, but can be
-                    // safely removed if a call to MediaCapture.Dispose() is being made later,
-                    // as the preview will be automatically stopped at that point
-                    await StopPreviewAsync();
-                }
-
-                _isInitialized = false;
-            }
-
+            IsAvailable = false;
             if (_mediaCapture != null)
             {
                 _mediaCapture.RecordLimitationExceeded -= MediaCapture_RecordLimitationExceeded;
@@ -69,75 +70,75 @@ namespace AmadeusW.Shutterino.App.Devices
         /// Initializes the MediaCapture, registers events, gets camera device information for mirroring and rotating, starts preview and unlocks the UI
         /// </summary>
         /// <returns></returns>
-        public async override Task<bool> InitializeAsync()
+        public async override Task InitializeAsync()
         {
-            if (!IsAvailable)
-                return false;
+            if (IsAvailable || _mediaCapture != null)
+                return;
 
-            if (_mediaCapture == null)
+
+            // Get available devices for capturing pictures
+            var allVideoDevices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
+
+            // Get the back-mounted camera
+            DeviceInformation cameraDevice =
+                allVideoDevices.FirstOrDefault(x => x.EnclosureLocation != null &&
+                x.EnclosureLocation.Panel == Windows.Devices.Enumeration.Panel.Back);
+
+            // If there is no camera on the specified panel, get any camera
+            cameraDevice = cameraDevice ?? allVideoDevices.FirstOrDefault();
+
+            if (cameraDevice == null)
             {
-                // Get available devices for capturing pictures
-                var allVideoDevices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
+                Debug.WriteLine("No camera available");
+                return;
+            }
 
-                // Get the back-mounted camera
-                DeviceInformation cameraDevice =
-                    allVideoDevices.FirstOrDefault(x => x.EnclosureLocation != null &&
-                    x.EnclosureLocation.Panel == Windows.Devices.Enumeration.Panel.Back);
+            // Create MediaCapture and its settings
+            _mediaCapture = new MediaCapture();
 
-                // If there is no camera on the specified panel, get any camera
-                cameraDevice = cameraDevice ?? allVideoDevices.FirstOrDefault();
+            // Register for a notification when video recording has reached the maximum time and when something goes wrong
+            _mediaCapture.RecordLimitationExceeded += MediaCapture_RecordLimitationExceeded;
+            _mediaCapture.Failed += MediaCapture_Failed;
 
-                if (cameraDevice == null)
-                {
-                    Debug.WriteLine("No camera available");
-                    return false;
-                }
+            var settings = new MediaCaptureInitializationSettings { VideoDeviceId = cameraDevice.Id };
 
-                // Create MediaCapture and its settings
-                _mediaCapture = new MediaCapture();
+            // Initialize MediaCapture
+            try
+            {
+                await _mediaCapture.InitializeAsync(settings);
+                IsAvailable = true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Debug.WriteLine("The app was denied access to the camera");
+                return;
+            }
 
-                // Register for a notification when video recording has reached the maximum time and when something goes wrong
-                _mediaCapture.RecordLimitationExceeded += MediaCapture_RecordLimitationExceeded;
-                _mediaCapture.Failed += MediaCapture_Failed;
+            // Figure out where the camera is located
+            if (cameraDevice.EnclosureLocation == null || cameraDevice.EnclosureLocation.Panel == Windows.Devices.Enumeration.Panel.Unknown)
+            {
+                // No information on the location of the camera, assume it's an external camera, not integrated on the device
+                _externalCamera = true;
+            }
+            else
+            {
+                // Camera is fixed on the device
+                _externalCamera = false;
 
-                var settings = new MediaCaptureInitializationSettings { VideoDeviceId = cameraDevice.Id };
-
-                // Initialize MediaCapture
-                try
-                {
-                    await _mediaCapture.InitializeAsync(settings);
-                    _isInitialized = true;
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    Debug.WriteLine("The app was denied access to the camera");
-                    return false;
-                }
-
-                // If initialization succeeded, start the preview
-                if (_isInitialized)
-                {
-                    // Figure out where the camera is located
-                    if (cameraDevice.EnclosureLocation == null || cameraDevice.EnclosureLocation.Panel == Windows.Devices.Enumeration.Panel.Unknown)
-                    {
-                        // No information on the location of the camera, assume it's an external camera, not integrated on the device
-                        _externalCamera = true;
-                    }
-                    else
-                    {
-                        // Camera is fixed on the device
-                        _externalCamera = false;
-
-                        // Only mirror the preview if the camera is on the front panel
-                        _mirroringPreview = (cameraDevice.EnclosureLocation.Panel == Windows.Devices.Enumeration.Panel.Front);
-                    }
-
-                    await StartPreviewAsync();
-                }
+                // Only mirror the preview if the camera is on the front panel
+                _mirroringPreview = (cameraDevice.EnclosureLocation.Panel == Windows.Devices.Enumeration.Panel.Front);
             }
 
             IsAvailable = true;
-            return true;
+        }
+
+        public override async Task ActivateAsync()
+        {
+            if (!IsAvailable || IsActive)
+                return;
+
+            IsActive = true;
+            await StartPreviewAsync();
         }
 
         private async Task StartPreviewAsync()
