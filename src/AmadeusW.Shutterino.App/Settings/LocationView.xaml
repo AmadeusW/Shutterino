@@ -36,7 +36,7 @@
 
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
-            Text="Offset" />
+            Text="Distance [m]" />
         <Slider 
             Grid.Column="1" Grid.Row="1" 
             Value="{Binding Path=Offset, Mode=TwoWay}" 

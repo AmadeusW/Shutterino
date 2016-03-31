@@ -63,7 +63,7 @@
         
         <TextBlock 
             Grid.Row="3" Grid.Column="0"
-            Text="Tilt offet" />
+            Text="Tilt offset" />
         <Slider 
             Grid.Column="1" Grid.Row="3" 
             Value="{Binding Path=OffsetTilt, Mode=TwoWay}" 
@@ -75,7 +75,7 @@
 
         <TextBlock 
             Grid.Row="4" Grid.Column="0"
-            Text="Rate limiter" />
+            Text="Delay [ms]" />
         <Slider 
             Grid.Column="1" Grid.Row="4" 
             Value="{Binding Path=RateLimiter, Mode=TwoWay}" 
