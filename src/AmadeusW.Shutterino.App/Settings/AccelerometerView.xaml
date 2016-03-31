@@ -5,8 +5,12 @@
     xmlns:local="using:AmadeusW.Shutterino.App.Settings"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-
+    xmlns:helpers="using:AmadeusW.Shutterino.App.Helpers"
+    mc:Ignorable="d"
+    DataContext="{StaticResource AccelerometerViewModel}">
+    <Page.Resources>
+        <helpers:DebugConverter x:Key="DC" />
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
@@ -29,8 +33,9 @@
             Grid.Row="0" Grid.Column="0"
             Text="Active" />
         <ToggleButton
+            Command="{Binding Path=ToggleCommand}"
             Grid.Row="0" Grid.Column="1"
-            IsChecked="{Binding Path=Active}" />
+            IsChecked="{Binding Path=Active, Converter={StaticResource DC}}" />
         
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
@@ -64,5 +69,16 @@
         <TextBox
             Grid.Row="3" Grid.Column="2"
             Text="{Binding Path=OffsetTilt}" />
+
+        <TextBlock 
+            Grid.Row="4" Grid.Column="0"
+            Text="Rate limiter" />
+        <Slider 
+            Grid.Column="1" Grid.Row="4" 
+            Value="{Binding Path=RateLimiter, Mode=TwoWay}" 
+            Maximum="5000" Minimum="0" SmallChange="500" LargeChange="500" TickFrequency="500"/>
+        <TextBox
+            Grid.Row="4" Grid.Column="2"
+            Text="{Binding Path=RateLimiter, Mode=TwoWay}" />
     </Grid>
 </Page>

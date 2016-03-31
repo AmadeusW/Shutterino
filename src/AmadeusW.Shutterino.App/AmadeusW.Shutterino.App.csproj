@@ -141,6 +141,7 @@
       <DependentUpon>TimerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\TimerViewModel.cs" />
+    <Compile Include="Settings\ToggleCommand.cs" />
     <Compile Include="ShutterinoLogic.cs" />
   </ItemGroup>
   <ItemGroup>

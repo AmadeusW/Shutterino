@@ -3,6 +3,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AmadeusW.Shutterino.App"
+    xmlns:settings="using:AmadeusW.Shutterino.App.Settings"
     RequestedTheme="Dark">
-
+    <Application.Resources>
+        <ResourceDictionary>
+            <settings:AccelerometerViewModel x:Key="AccelerometerViewModel"/>
+            <settings:ArduinoViewModel x:Key="ArduinoViewModel"/>
+            <settings:CameraViewModel x:Key="CameraViewModel"/>
+            <settings:EdgeDetectorViewModel x:Key="EdgeDetectorViewModel"/>
+            <settings:LocationViewModel x:Key="LocationViewModel"/>
+            <settings:LogViewModel x:Key="LogViewModel"/>
+            <settings:TimerViewModel x:Key="TimerViewModel"/>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

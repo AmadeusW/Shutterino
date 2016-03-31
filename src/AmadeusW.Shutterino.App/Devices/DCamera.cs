@@ -228,6 +228,8 @@ namespace AmadeusW.Shutterino.App.Devices
                 }
             }
         }
+
+
         /*
         private SimpleOrientation GetCameraOrientation()
         {

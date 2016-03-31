@@ -14,6 +14,7 @@ namespace AmadeusW.Shutterino.App.Devices
         public double Precision { get; set; } = LOW_PRECISION;
         public double RollOffset { get; set; } = 0.0;
         public double PitchOffset { get; set; } = 0.0;
+        public int RateLimiter { get; internal set; } = (int)(TimeSpan.TicksPerSecond * 2);
 
         // Readings
         public double Roll => IsActive ? _currentReading.AccelerationX : 0d;
@@ -90,6 +91,12 @@ namespace AmadeusW.Shutterino.App.Devices
         private void _accelerometer_ReadingChanged(Accelerometer sender, AccelerometerReadingChangedEventArgs args)
         {
             _currentReading = args.Reading;
+
+            if (DeltaRoll < Precision
+                && DeltaPitch < Precision)
+            {
+                // notify of photo opportunity
+            }
         }
 
         public void Callibrate()

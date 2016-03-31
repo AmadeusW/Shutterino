@@ -27,13 +27,13 @@ namespace AmadeusW.Shutterino.App
     {
         List<ShutterinoSettingDefinition> _settings = new List<ShutterinoSettingDefinition>
         {
-            new ShutterinoSettingDefinition() { Name="Accelerometer", Icon="Trim", ViewType=typeof(AccelerometerView), DeviceViewModel=new AccelerometerViewModel()},
-            new ShutterinoSettingDefinition() { Name="Arduino", Icon="Target", ViewType=typeof(ArduinoView), DeviceViewModel=new ArduinoViewModel()},
-            new ShutterinoSettingDefinition() { Name="Camera", Icon="Camera", ViewType=typeof(CameraView), DeviceViewModel=new CameraViewModel()},
-            new ShutterinoSettingDefinition() { Name="Edge detector", Icon="Contact2", ViewType=typeof(EdgeDetectorView), DeviceViewModel=new EdgeDetectorViewModel()},
-            new ShutterinoSettingDefinition() { Name="Location", Icon="Map", ViewType=typeof(LocationView), DeviceViewModel=new LocationViewModel()},
-            new ShutterinoSettingDefinition() { Name="Log", Icon="List", ViewType=typeof(LogView), DeviceViewModel=new LogViewModel()},
-            new ShutterinoSettingDefinition() { Name="Timer", Icon="Clock", ViewType=typeof(TimerView), DeviceViewModel=new TimerViewModel()},
+            new ShutterinoSettingDefinition() { Name="Accelerometer", Icon="Trim", ViewType=typeof(AccelerometerView), DeviceViewModel=Application.Current.Resources["AccelerometerViewModel"] as ShutterinoModuleViewModel},
+            new ShutterinoSettingDefinition() { Name="Arduino", Icon="Target", ViewType=typeof(ArduinoView), DeviceViewModel=Application.Current.Resources["ArduinoViewModel"] as ShutterinoModuleViewModel},
+            new ShutterinoSettingDefinition() { Name="Camera", Icon="Camera", ViewType=typeof(CameraView), DeviceViewModel=Application.Current.Resources["CameraViewModel"] as ShutterinoModuleViewModel},
+            new ShutterinoSettingDefinition() { Name="Edge detector", Icon="Contact2", ViewType=typeof(EdgeDetectorView), DeviceViewModel=Application.Current.Resources["EdgeDetectorViewModel"] as ShutterinoModuleViewModel},
+            new ShutterinoSettingDefinition() { Name="Location", Icon="Map", ViewType=typeof(LocationView), DeviceViewModel=Application.Current.Resources["LocationViewModel"] as ShutterinoModuleViewModel},
+            new ShutterinoSettingDefinition() { Name="Log", Icon="List", ViewType=typeof(LogView), DeviceViewModel=Application.Current.Resources["LogViewModel"] as ShutterinoModuleViewModel},
+            new ShutterinoSettingDefinition() { Name="Timer", Icon="Clock", ViewType=typeof(TimerView), DeviceViewModel=Application.Current.Resources["TimerViewModel"] as ShutterinoModuleViewModel},
         };
 
         public SettingsPage()
@@ -64,7 +64,7 @@ namespace AmadeusW.Shutterino.App
         {
             ListBox settingsListBox = sender as ListBox;
             var s = settingsListBox.SelectedItem as ShutterinoSettingDefinition;
-            if (s != null)
+            if (s != null && s.DeviceViewModel.Available)
             {
                 SettingsFrame.Navigate(s.ViewType);
             }
@@ -78,7 +78,6 @@ namespace AmadeusW.Shutterino.App
     {
         public string Name { get; set; }
         public string Icon { get; set; }
-        public bool Active { get; set; }
         public Type ViewType { get; set; }
         public ShutterinoModuleViewModel DeviceViewModel { get; set; }
 

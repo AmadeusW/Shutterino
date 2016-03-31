@@ -20,6 +20,7 @@ namespace AmadeusW.Shutterino.App.Settings
             _device = device;
             Available = _device.IsAvailable;
             Active = _device.IsActive;
+            ToggleCommand = new ToggleCommand(this);
             _device.PropertyChanged += ShutterinoModuleViewModel_PropertyChanged;
         }
 
@@ -61,6 +62,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 if (_active != value)
                 {
                     _active = value;
+                    _device.IsActive = _active;
                     NotifyPropertyChanged();
                 }
             }

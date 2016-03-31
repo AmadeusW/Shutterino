@@ -9,13 +9,13 @@ namespace AmadeusW.Shutterino.App.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            Break();
+            //Break();
             return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            Break();
+            //Break();
             return value;
         }
     }

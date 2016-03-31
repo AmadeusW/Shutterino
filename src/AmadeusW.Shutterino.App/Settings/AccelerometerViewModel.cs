@@ -14,7 +14,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Maximum allowed error on the accelerometer axes
         /// </summary>
-        public double Precision
+        public int Precision
         {
             get { return _precision; }
             set
@@ -31,7 +31,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Required difference in ROLL reading between consecutive shots
         /// </summary>
-        public double RollOffset
+        public int RollOffset
         {
             get { return _rollOffset; }
             set
@@ -48,7 +48,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Required difference in TILT reading between consecutive shots
         /// </summary>
-        public double PitchOffset
+        public int PitchOffset
         {
             get { return _pitchOffset; }
             set
@@ -62,20 +62,39 @@ namespace AmadeusW.Shutterino.App.Settings
             }
         }
 
+        /// <summary>
+        /// Prevents taking pictures too often
+        /// </summary>
+        public int RateLimiter
+        {
+            get { return _rateLimiter; }
+            set
+            {
+                if (_rateLimiter != value)
+                {
+                    _rateLimiter = value;
+                    NotifyPropertyChanged();
+                    _accelerometer.RateLimiter = (int)(_rateLimiter * TimeSpan.TicksPerMillisecond);
+                }
+            }
+        }
+
         public AccelerometerViewModel() : base(DAccelerometer.Instance)
         {
             _available = _accelerometer.IsAvailable;
             _active = _accelerometer.IsActive;
-            _precision = _accelerometer.Precision * 100;
-            _rollOffset = _accelerometer.RollOffset * 100;
-            _pitchOffset = _accelerometer.PitchOffset * 100;
+            _precision = (int)(_accelerometer.Precision * 100);
+            _rollOffset = (int)(_accelerometer.RollOffset * 100);
+            _pitchOffset = (int)(_accelerometer.PitchOffset * 100);
+            _rateLimiter = (int)(_accelerometer.RateLimiter / TimeSpan.TicksPerMillisecond);
         }
 
         #region Backing Fields
 
-        private double _precision;
-        private double _rollOffset;
-        private double _pitchOffset;
+        private int _precision;
+        private int _rollOffset;
+        private int _pitchOffset;
+        private int _rateLimiter;
 
         #endregion
 

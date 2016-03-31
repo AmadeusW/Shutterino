@@ -47,7 +47,7 @@ namespace AmadeusW.Shutterino.App.Devices
             {
                 return _isActive;
             }
-            protected set
+            set
             {
                 if (value != _isActive)
                 {
