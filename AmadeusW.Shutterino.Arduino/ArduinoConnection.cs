@@ -22,6 +22,11 @@ namespace AmadeusW.Shutterino.Arduino
 
         public ArduinoConnection(byte servoPin, byte servoOff, byte servoIdle, byte servoReady, byte servoPressed, int pressTime)
         {
+            UpdateSettings(servoPin, servoOff, servoIdle, servoReady, servoPressed, pressTime);
+        }
+
+        public void UpdateSettings(byte servoPin, byte servoOff, byte servoIdle, byte servoReady, byte servoPressed, int pressTime)
+        {
             _servoPin = servoPin;
             _servoOff = servoOff;
             _servoIdle = servoIdle;
@@ -48,6 +53,8 @@ namespace AmadeusW.Shutterino.Arduino
         private void _arduino_DeviceReady()
         {
             _connected = true;
+            _arduino.pinMode(_servoPin, PinMode.SERVO);
+            _arduino.analogWrite(_servoPin, _servoIdle);
         }
 
         private void _connection_ConnectionFailed(string message)
@@ -57,9 +64,7 @@ namespace AmadeusW.Shutterino.Arduino
 
         private void _connection_ConnectionEstablished()
         {
-            _connected = true;
-            _arduino.pinMode(_servoPin, PinMode.SERVO);
-            _arduino.analogWrite(_servoPin, _servoIdle);
+
         }
 
         public async Task<bool> Disconnect()

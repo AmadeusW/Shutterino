@@ -14,6 +14,15 @@ namespace AmadeusW.Shutterino.App.Features
 {
     public class PhoneFeature : AFeature
     {
+
+        public static PhoneFeature Instance { get; private set; }
+        public override string ToString() => "Phone hardware";
+
+        public PhoneFeature() : base()
+        {
+            Instance = this;
+        }
+
         // For listening to media property changes
         private readonly SystemMediaTransportControls _systemMediaControls = SystemMediaTransportControls.GetForCurrentView();
 

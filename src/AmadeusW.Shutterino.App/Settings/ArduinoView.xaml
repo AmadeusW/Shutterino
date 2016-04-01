@@ -25,6 +25,7 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
         <TextBlock 
@@ -104,5 +105,17 @@
             Grid.Row="7" Grid.Column="2"
             InputScope="Number"
             Text="{Binding Path=PositionDepressed, Mode=TwoWay}" />
+        
+        <TextBlock 
+            Grid.Row="8" Grid.Column="0"
+            Text="Motion time" />
+        <Slider 
+            Grid.Column="1" Grid.Row="8" 
+            Value="{Binding Path=PressTime, Mode=TwoWay}" 
+            Maximum="1000" Minimum="20" SmallChange="20" LargeChange="20" TickFrequency="100"/>
+        <TextBox
+            Grid.Row="8" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=PressTime, Mode=TwoWay}" />
     </Grid>
 </Page>

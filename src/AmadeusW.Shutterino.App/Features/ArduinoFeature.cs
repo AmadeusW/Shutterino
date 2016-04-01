@@ -45,6 +45,7 @@ namespace AmadeusW.Shutterino.App.Features
 
             if (IsActive)
             {
+                _arduino.UpdateSettings(PinNumber, PositionOff, PositionIdle, PositionReady, PositionDepressed, PressTime);
                 await _arduino.Connect(HostName, PortNumber);
 
                 _isActuallyActive = true;
