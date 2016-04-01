@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadeusW.Shutterino.App.Devices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,16 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class ArduinoViewModel : ShutterinoModuleViewModel
     {
-        public ArduinoViewModel() : base(null)
-        {
+        DArduino _arduino => _device as DArduino;
 
+        public ArduinoViewModel() : base(DArduino.Instance)
+        {
+            HostName = _arduino.HostName;
+            PortNumber = _arduino.PortNumber;
+            PositionOff = _arduino.PositionOff;
+            PositionIdle = _arduino.PositionIdle;
+            PositionReady = _arduino.PositionReady;
+            PositionDepressed = _arduino.PositionDepressed;
         }
 
         /// <summary>
@@ -19,7 +27,15 @@ namespace AmadeusW.Shutterino.App.Settings
         public string HostName
         {
             get { return _hostName; }
-            set { _hostName = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (_hostName != value)
+                {
+                    _hostName = value;
+                    NotifyPropertyChanged();
+                    _arduino.HostName = _hostName;
+                }
+            }
         }
 
         /// <summary>
@@ -28,7 +44,15 @@ namespace AmadeusW.Shutterino.App.Settings
         public string PortNumber
         {
             get { return _portNumber; }
-            set { _portNumber = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (_hostName != value)
+                {
+                    _hostName = value;
+                    NotifyPropertyChanged();
+                    _arduino.HostName = _hostName;
+                }
+            }
         }
 
         /// <summary>
@@ -37,7 +61,15 @@ namespace AmadeusW.Shutterino.App.Settings
         public byte PositionOff
         {
             get { return _positionOff; }
-            set { _positionOff = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (_positionOff != value)
+                {
+                    _positionOff = value;
+                    NotifyPropertyChanged();
+                    _arduino.PositionOff = _positionOff;
+                }
+            }
         }
 
         /// <summary>
@@ -46,7 +78,15 @@ namespace AmadeusW.Shutterino.App.Settings
         public byte PositionIdle
         {
             get { return _positionIdle; }
-            set { _positionIdle = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (_positionIdle != value)
+                {
+                    _positionIdle = value;
+                    NotifyPropertyChanged();
+                    _arduino.PositionIdle = _positionIdle;
+                }
+            }
         }
 
         /// <summary>
@@ -55,16 +95,32 @@ namespace AmadeusW.Shutterino.App.Settings
         public byte PositionReady
         {
             get { return _positionReady; }
-            set { _positionReady = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (_positionReady != value)
+                {
+                    _hostName = value;
+                    NotifyPropertyChanged();
+                    _arduino.PositionReady = _positionReady;
+                }
+            }
         }
 
         /// <summary>
         /// Servo setting
         /// </summary>
-        public byte PositionDeressed
+        public byte PositionDepressed
         {
             get { return _positionDepressed; }
-            set { _positionDepressed = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (_positionDepressed != value)
+                {
+                    _positionDepressed = value;
+                    NotifyPropertyChanged();
+                    _arduino.PositionDepressed = _positionDepressed;
+                }
+            }
         }
 
         #region Backing Fields

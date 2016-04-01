@@ -98,6 +98,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Devices\DArduino.cs" />
     <Compile Include="Devices\DCamera.cs" />
     <Compile Include="Devices\Device.cs" />
     <Compile Include="Devices\DLocation.cs" />
