@@ -60,7 +60,7 @@ namespace AmadeusW.Shutterino.App
                 _location.CleanupAsync(),
                 _accelerometer.CleanupAsync(),
                 _camera.CleanupAsync(),
-                _timer.CleanupAsync(),
+                _timer.CleanupAsync()
             );
             _initialized = false;
         }
@@ -75,7 +75,7 @@ namespace AmadeusW.Shutterino.App
                 _location.InitializeAsync(),
                 _accelerometer.InitializeAsync(),
                 _camera.InitializeAsync(),
-                _timer.InitializeAsync(),
+                _timer.InitializeAsync()
             );
 
             _initialized = true;
@@ -88,7 +88,7 @@ namespace AmadeusW.Shutterino.App
                 _location.ActivateAsync(),
                 _accelerometer.ActivateAsync(),
                 _camera.ActivateAsync(),
-                _timer.ActivateAsync(),
+                _timer.ActivateAsync()
             );
         }
 
@@ -99,7 +99,7 @@ namespace AmadeusW.Shutterino.App
                 _location.DeactivateAsync(),
                 _accelerometer.DeactivateAsync(),
                 _camera.DeactivateAsync(),
-                _timer.DeactivateAsync(),
+                _timer.DeactivateAsync()
             );
         }
 
