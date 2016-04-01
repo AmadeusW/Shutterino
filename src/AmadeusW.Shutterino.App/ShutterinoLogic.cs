@@ -18,6 +18,7 @@ namespace AmadeusW.Shutterino.App
         DLocation _location = new DLocation();
         DAccelerometer _accelerometer = new DAccelerometer();
         DCamera _camera = new DCamera();
+        DTimer _timer = new DTimer();
         ArduinoConnection _arduino = null;
 
         public CoreDispatcher Dispatcher { get; }
@@ -26,8 +27,6 @@ namespace AmadeusW.Shutterino.App
         public static ShutterinoLogic Instance { get; private set; }
         public bool TakesPhotos { get; internal set; }
 
-        private DispatcherTimer _photoTakingTimer;
-        private DateTime lastPhotoTime;
         private bool _initialized;
 
         internal static ShutterinoLogic Get(CoreDispatcher dispatcher, CaptureElement previewControl)
