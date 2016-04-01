@@ -24,6 +24,7 @@ using Windows.Media.Capture;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI;
 using AmadeusW.Shutterino.App.Features;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -48,7 +49,7 @@ namespace AmadeusW.Shutterino.App
         public MainPage()
         {
             this.InitializeComponent();
-            _logic = ShutterinoLogic.Get(Dispatcher, PreviewControl);
+            _logic = ShutterinoLogic.Get(Dispatcher, PreviewControl, PhotoTakenCallback);
 
             // Do not cache the state of the UI when suspending/navigating
             NavigationCacheMode = NavigationCacheMode.Disabled;
@@ -109,6 +110,16 @@ namespace AmadeusW.Shutterino.App
         }
 
         #endregion Constructor, lifecycle and navigation
+
+        private async Task PhotoTakenCallback()
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                PhotoNowButton.Background = highPrecisionBrush;
+                await Task.Delay(200);
+                PhotoNowButton.Background = Resources["TranslucentBlackBrush"] as SolidColorBrush;
+            });
+        }
 
         // TODO: use a viewmodel for all this:
         private void PhotoButton_Checked(object sender, RoutedEventArgs e)
