@@ -51,6 +51,7 @@ namespace AmadeusW.Shutterino.App.Features
             RollOffset = (double)(_localSettings.Values["accelerometer-RollOffset"] ?? 0d);
             PitchOffset = (double)(_localSettings.Values["accelerometer-PitchOffset"] ?? 0d);
             RateLimiter = (int)(_localSettings.Values["accelerometer-RateLimiter"] ?? Convert.ToInt32(TimeSpan.TicksPerSecond * 2));
+            IsActive = (bool)(_localSettings.Values["accelerometer-IsActive"] ?? false);
         }
 
         public async override Task DeactivateAsync()
@@ -144,6 +145,7 @@ namespace AmadeusW.Shutterino.App.Features
             _localSettings.Values["accelerometer-RollOffset"] = RollOffset;
             _localSettings.Values["accelerometer-PitchOffset"] = PitchOffset;
             _localSettings.Values["accelerometer-RateLimiter"] = RateLimiter;
+            _localSettings.Values["accelerometer-IsActive"] = IsActive;
         }
     }
 }

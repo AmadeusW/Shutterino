@@ -36,6 +36,8 @@ namespace AmadeusW.Shutterino.App.Features
             Delay2Active = (bool)(_localSettings.Values["timer-Delay2Active"] ?? true);
             Delay3Active = (bool)(_localSettings.Values["timer-Delay3Active"] ?? false);
             Delay4Active = (bool)(_localSettings.Values["timer-Delay4Active"] ?? false);
+
+            IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
         }
 
         public override async Task ActivateAsync()
@@ -65,6 +67,8 @@ namespace AmadeusW.Shutterino.App.Features
             _localSettings.Values["timer-Delay2Active"] = Delay2Active;
             _localSettings.Values["timer-Delay3Active"] = Delay3Active;
             _localSettings.Values["timer-Delay4Active"] = Delay4Active;
+
+            _localSettings.Values["timer-IsActive"] = IsActive;
         }
 
         public override async Task DeactivateAsync()

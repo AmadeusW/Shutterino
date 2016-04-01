@@ -40,6 +40,7 @@ namespace AmadeusW.Shutterino.App.Features
             Instance = this;
 
             PhotoCount = (int)(_localSettings.Values["camera-PhotoCount"] ?? 0);
+            IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
         }
 
         public async override Task DeactivateAsync()
@@ -70,6 +71,8 @@ namespace AmadeusW.Shutterino.App.Features
                 _mediaCapture.Dispose();
                 _mediaCapture = null;
             }
+
+            _localSettings.Values["camera-IsActive"] = IsActive;
         }
 
         /// <summary>

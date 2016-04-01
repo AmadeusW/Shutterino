@@ -36,6 +36,7 @@ namespace AmadeusW.Shutterino.App.Features
             PositionReady = (byte)(_localSettings.Values["arduino-PositionReady"] ?? (byte)40);
             PositionDepressed = (byte)(_localSettings.Values["arduino-PositionDepressed"] ?? (byte)50);
             PressTime = (int)(_localSettings.Values["arduino-PressTime"] ?? 100);
+            IsActive = (bool)(_localSettings.Values["arduino-IsActive"] ?? false);
         }
 
         public override async Task ActivateAsync()
@@ -62,6 +63,7 @@ namespace AmadeusW.Shutterino.App.Features
             _localSettings.Values["arduino-PositionReady"] = PositionReady;
             _localSettings.Values["arduino-PositionDepressed"] = PositionDepressed;
             _localSettings.Values["arduino-PressTime"] = PressTime;
+            _localSettings.Values["arduino-IsActive"] = IsActive;
         }
 
         public override async Task DeactivateAsync()

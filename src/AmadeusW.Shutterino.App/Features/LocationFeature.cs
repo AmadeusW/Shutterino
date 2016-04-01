@@ -38,6 +38,7 @@ namespace AmadeusW.Shutterino.App.Features
             Instance = this;
 
             Offset = (double)(_localSettings.Values["location-Offset"] ?? 50d);
+            IsActive = (bool)(_localSettings.Values["location-IsActive"] ?? false);
         }
 
         public async override Task DeactivateAsync()
@@ -96,6 +97,7 @@ namespace AmadeusW.Shutterino.App.Features
             await DeactivateAsync();
 
             _localSettings.Values["location-Offset"] = Offset;
+            _localSettings.Values["location-IsActive"] = IsActive;
         }
     }
 }

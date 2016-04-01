@@ -33,6 +33,7 @@ namespace AmadeusW.Shutterino.App.Features
 
             LastSync = (DateTime)(_localSettings.Values["log-LogStart"] ?? DateTime.Now);
             PhotoCount = (int)(_localSettings.Values["log-PhotoCount"] ?? 0);
+            IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
         }
 
         public void LogPhotoTaken(string reason)
@@ -132,6 +133,7 @@ namespace AmadeusW.Shutterino.App.Features
             
             _localSettings.Values["log-LogStart"] = LastSync;
             _localSettings.Values["log-PhotoCount"] = PhotoCount;
+            _localSettings.Values["log-IsActive"] = IsActive;
         }
 
         private async Task SaveFile()
