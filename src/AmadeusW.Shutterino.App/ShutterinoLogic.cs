@@ -136,7 +136,8 @@ namespace AmadeusW.Shutterino.App
 
         internal async Task SuggestPhotoOpportunity(AFeature sender)
         {
-            if (!TakesPhotos)
+            // Programatically triggered photos require TakesPhotos to be set.
+            if (sender != null && !TakesPhotos)
                 return;
 
             try
