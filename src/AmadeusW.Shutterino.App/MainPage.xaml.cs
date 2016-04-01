@@ -157,8 +157,8 @@ namespace AmadeusW.Shutterino.App
 
         private void placeShapes()
         {
-            var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
-            var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2, currentRoll.ActualHeight / 2);
+            var canvasMiddle = new Point(visualization.ActualWidth / 2d, visualization.ActualHeight / 2d);
+            var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2d, currentRoll.ActualHeight / 2d);
 
             if (!_initializedShapePosition)
             {
@@ -195,13 +195,13 @@ namespace AmadeusW.Shutterino.App
 
             currentPitch.Stroke =
                 accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision ? highPrecisionBrush
-                : accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision * 1.5 ? lowPrecisionBrush
-                : accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision * 2 ? hintPrecisionBrush
+                : accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision * 2 ? lowPrecisionBrush
+                : accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision * 4 ? hintPrecisionBrush
                 : noPrecisionBrush;
             currentRollRectangle.Stroke =
                 accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision ? highPrecisionBrush
-                : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 1.5 ? lowPrecisionBrush
-                : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 2 ? hintPrecisionBrush
+                : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 2 ? lowPrecisionBrush
+                : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 4 ? hintPrecisionBrush
                 : noPrecisionBrush;
         }
     }
