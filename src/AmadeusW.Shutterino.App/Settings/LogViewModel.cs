@@ -12,7 +12,7 @@ namespace AmadeusW.Shutterino.App.Settings
     {
         LogFeature _logger => Device as LogFeature;
 
-        public DateTime LastSync => _logger.LastSync;
+        public string LastSync => _logger.LastSync;
         public int PhotoCount => _logger.PhotoCount;
         public ICommand UploadCommand { get; }
 
