@@ -65,7 +65,7 @@
                 </Style>
             </StackPanel.Resources>
 
-            <ToggleButton Name="PhotoButton" IsEnabled="True" Checked="PhotoButton_Checked" >
+            <ToggleButton Name="PhotoButton" IsEnabled="True" Tapped="PhotoButton_Tapped" >
                 <Viewbox MaxHeight="40" MaxWidth="40">
                     <SymbolIcon Symbol="Play" />
                 </Viewbox>

@@ -122,7 +122,7 @@ namespace AmadeusW.Shutterino.App
         }
 
         // TODO: use a viewmodel for all this:
-        private void PhotoButton_Checked(object sender, RoutedEventArgs e)
+        private void PhotoButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (PhotoButton.IsChecked.Value)
             {
@@ -215,5 +215,6 @@ namespace AmadeusW.Shutterino.App
                 : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 4 ? hintPrecisionBrush
                 : noPrecisionBrush;
         }
+
     }
 }
