@@ -50,7 +50,7 @@ namespace AmadeusW.Shutterino.App.Features
             IsActive = (bool)(_localSettings.Values["accelerometer-IsActive"] ?? false);
         }
 
-        public async override Task DeactivateAsync()
+        protected async override Task DeactivateAsyncCore()
         {
             if (!IsAvailable || !_isActuallyActive)
                 return;
@@ -66,22 +66,30 @@ namespace AmadeusW.Shutterino.App.Features
             _isActuallyActive = false;
         }
 
-        public async override Task ActivateAsync()
+        protected async override Task ActivateAsyncCore()
         {
             if (!IsAvailable || _isActuallyActive)
                 return;
 
-            // Activate only if user wants to
-            if (IsActive)
+            try
             {
-                if (_displayInformation != null)
+                // Activate only if user wants to
+                if (IsActive)
                 {
-                    //_displayInformation.OrientationChanged += displayInformation_OrientationChanged;
-                }
+                    if (_displayInformation != null)
+                    {
+                        //_displayInformation.OrientationChanged += displayInformation_OrientationChanged;
+                    }
 
-                _accelerometer.ReportInterval = 10;
-                _accelerometer.ReadingChanged += _accelerometer_ReadingChanged;
-                _isActuallyActive = true;
+                    _accelerometer.ReportInterval = 10;
+                    _accelerometer.ReadingChanged += _accelerometer_ReadingChanged;
+                    _isActuallyActive = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Status = ex.ToString();
+                IsActive = false;
             }
         }
 
@@ -123,15 +131,15 @@ namespace AmadeusW.Shutterino.App.Features
             CapturedPitch = Pitch;
         }
 
-        public override async Task InitializeAsync()
+        protected override async Task InitializeAsyncCore()
         {
             // There is nothing to do
             return;
         }
 
-        public override async Task CleanupAsync()
+        protected override async Task CleanupAsyncCore()
         {
-            await DeactivateAsync();
+            await DeactivateAsyncCore();
 
             _localSettings.Values["accelerometer-Precision"] = Precision;
             _localSettings.Values["accelerometer-RollOffset"] = RollOffset;

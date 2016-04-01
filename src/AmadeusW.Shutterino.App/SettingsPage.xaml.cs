@@ -67,6 +67,8 @@ namespace AmadeusW.Shutterino.App
             if (s != null && s.DeviceViewModel.Available)
             {
                 SettingsFrame.Navigate(s.ViewType);
+                // TODO: this should be properly done with binding
+                StatusBlock.Text = s.DeviceViewModel.Status;
             }
         }
     }

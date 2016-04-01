@@ -43,7 +43,7 @@ namespace AmadeusW.Shutterino.App.Features
             IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
         }
 
-        public async override Task DeactivateAsync()
+        protected async override Task DeactivateAsyncCore()
         {
             if (!IsAvailable || !_isActuallyActive)
                 return;
@@ -58,7 +58,7 @@ namespace AmadeusW.Shutterino.App.Features
             _isActuallyActive = false;
         }
 
-        public async override Task CleanupAsync()
+        protected async override Task CleanupAsyncCore()
         {
             if (!IsAvailable)
                 return;
@@ -79,7 +79,7 @@ namespace AmadeusW.Shutterino.App.Features
         /// Initializes the MediaCapture, registers events, gets camera device information for mirroring and rotating, starts preview and unlocks the UI
         /// </summary>
         /// <returns></returns>
-        public async override Task InitializeAsync()
+        protected async override Task InitializeAsyncCore()
         {
             if (IsAvailable || _mediaCapture != null)
                 return;
@@ -139,7 +139,7 @@ namespace AmadeusW.Shutterino.App.Features
             IsAvailable = true;
         }
 
-        public override async Task ActivateAsync()
+        protected override async Task ActivateAsyncCore()
         {
             if (!IsAvailable || _isActuallyActive)
                 return;

@@ -116,7 +116,7 @@ namespace AmadeusW.Shutterino.App.Features
             );
         }
 
-        public override async Task ActivateAsync()
+        protected override async Task ActivateAsyncCore()
         {
             if (!IsAvailable || _isActuallyActive)
                 return;
@@ -128,7 +128,7 @@ namespace AmadeusW.Shutterino.App.Features
             }
         }
 
-        public override async Task CleanupAsync()
+        protected override async Task CleanupAsyncCore()
         {
             
             _localSettings.Values["log-LogStart"] = LastSync;
@@ -152,7 +152,7 @@ namespace AmadeusW.Shutterino.App.Features
             }
         }
 
-        public override async Task DeactivateAsync()
+        protected override async Task DeactivateAsyncCore()
         {
             if (!IsAvailable || !_isActuallyActive)
                 return;
@@ -162,7 +162,7 @@ namespace AmadeusW.Shutterino.App.Features
             _isActuallyActive = false;
         }
 
-        public override async Task InitializeAsync()
+        protected override async Task InitializeAsyncCore()
         {
             // nothing to initialize
         }

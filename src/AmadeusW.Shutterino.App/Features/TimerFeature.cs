@@ -40,7 +40,7 @@ namespace AmadeusW.Shutterino.App.Features
             IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
         }
 
-        public override async Task ActivateAsync()
+        protected override async Task ActivateAsyncCore()
         {
             if (!IsAvailable || _isActuallyActive)
                 return;
@@ -56,7 +56,7 @@ namespace AmadeusW.Shutterino.App.Features
             }
         }
 
-        public override async Task CleanupAsync()
+        protected override async Task CleanupAsyncCore()
         {
             _photoTakingTimer.Tick -= _photoTakingTimer_Tick;
 
@@ -71,7 +71,7 @@ namespace AmadeusW.Shutterino.App.Features
             _localSettings.Values["timer-IsActive"] = IsActive;
         }
 
-        public override async Task DeactivateAsync()
+        protected override async Task DeactivateAsyncCore()
         {
             if (!IsAvailable || !_isActuallyActive)
                 return;
@@ -81,7 +81,7 @@ namespace AmadeusW.Shutterino.App.Features
             _isActuallyActive = false;
         }
 
-        public override async Task InitializeAsync()
+        protected override async Task InitializeAsyncCore()
         {
             _photoTakingTimer = new DispatcherTimer();
             _photoTakingTimer.Tick += _photoTakingTimer_Tick;

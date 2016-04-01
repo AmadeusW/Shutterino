@@ -29,13 +29,13 @@ namespace AmadeusW.Shutterino.App.Features
         // Prevents the screen from sleeping
         private readonly DisplayRequest _displayRequest = new DisplayRequest();
 
-        public override async Task DeactivateAsync()
+        protected override async Task DeactivateAsyncCore()
         {
             // There is nothing to deactivate
             return;
         }
 
-        public override async Task ActivateAsync()
+        protected override async Task ActivateAsyncCore()
         {
             // There is nothing to activate
             return;
@@ -46,7 +46,7 @@ namespace AmadeusW.Shutterino.App.Features
             ShutterinoLogic.Instance.SuggestPhotoOpportunity(this);
         }
 
-        public override async Task InitializeAsync()
+        protected override async Task InitializeAsyncCore()
         {
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             {
@@ -67,7 +67,7 @@ namespace AmadeusW.Shutterino.App.Features
             IsAvailable = true;
         }
 
-        public override async Task CleanupAsync()
+        protected override async Task CleanupAsyncCore()
         {
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             {

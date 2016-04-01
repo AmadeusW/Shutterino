@@ -39,7 +39,7 @@ namespace AmadeusW.Shutterino.App.Features
             IsActive = (bool)(_localSettings.Values["arduino-IsActive"] ?? false);
         }
 
-        public override async Task ActivateAsync()
+        protected override async Task ActivateAsyncCore()
         {
             if (!IsAvailable || _isActuallyActive)
                 return;
@@ -53,7 +53,7 @@ namespace AmadeusW.Shutterino.App.Features
             }
         }
 
-        public override async Task CleanupAsync()
+        protected override async Task CleanupAsyncCore()
         {
             _localSettings.Values["arduino-HostName"] = HostName;
             _localSettings.Values["arduino-PinNumber"] = PinNumber;
@@ -66,25 +66,16 @@ namespace AmadeusW.Shutterino.App.Features
             _localSettings.Values["arduino-IsActive"] = IsActive;
         }
 
-        public override async Task DeactivateAsync()
+        protected override async Task DeactivateAsyncCore()
         {
             if (!IsAvailable || !_isActuallyActive)
                 return;
 
-            try
-            {
-                await _arduino.Disconnect();
-            }
-            catch (Exception ex)
-            {
-                // log
-                Status = ex.ToString();
-            }
-
             _isActuallyActive = false;
+            await _arduino.Disconnect();
         }
 
-        public override async Task InitializeAsync()
+        protected override async Task InitializeAsyncCore()
         {
             _arduino = new ArduinoConnection(PinNumber, PositionOff, PositionIdle, PositionReady, PositionDepressed, PressTime);
             return;

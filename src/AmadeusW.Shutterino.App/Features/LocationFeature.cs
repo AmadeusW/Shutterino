@@ -41,7 +41,7 @@ namespace AmadeusW.Shutterino.App.Features
             IsActive = (bool)(_localSettings.Values["location-IsActive"] ?? false);
         }
 
-        public async override Task DeactivateAsync()
+        protected async override Task DeactivateAsyncCore()
         {
             if (!IsAvailable || !_isActuallyActive)
                 return;
@@ -54,20 +54,28 @@ namespace AmadeusW.Shutterino.App.Features
             _isActuallyActive = false;
         }
 
-        public async override Task ActivateAsync()
+        protected async override Task ActivateAsyncCore()
         {
             if (!IsAvailable || _isActuallyActive)
                 return;
 
-            // Activate only if user wants to
-            if (IsActive)
+            try
             {
-                _geoLocator = new Geolocator();
-                //_geoLocator.ReportInterval = 2000;
-                _geoLocator.MovementThreshold = Offset;
-                _geoLocator.DesiredAccuracy = PositionAccuracy.High;
-                _geoLocator.PositionChanged += _geoLocator_PositionChanged;
-                _isActuallyActive = true;
+                // Activate only if user wants to
+                if (IsActive)
+                {
+                    _geoLocator = new Geolocator();
+                    //_geoLocator.ReportInterval = 2000;
+                    _geoLocator.MovementThreshold = Offset;
+                    _geoLocator.DesiredAccuracy = PositionAccuracy.High;
+                    _geoLocator.PositionChanged += _geoLocator_PositionChanged;
+                    _isActuallyActive = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Status = ex.ToString();
+                IsActive = false;
             }
         }
 
@@ -85,16 +93,16 @@ namespace AmadeusW.Shutterino.App.Features
             }
         }
 
-        public override async Task InitializeAsync()
+        protected override async Task InitializeAsyncCore()
         {
             await Geolocator.RequestAccessAsync();
             IsAvailable = true;
         }
 
-        public override async Task CleanupAsync()
+        protected override async Task CleanupAsyncCore()
         {
             IsAvailable = false;
-            await DeactivateAsync();
+            await DeactivateAsyncCore();
 
             _localSettings.Values["location-Offset"] = Offset;
             _localSettings.Values["location-IsActive"] = IsActive;
