@@ -125,12 +125,6 @@ namespace AmadeusW.Shutterino.App.Features
             CapturedPitch = Pitch;
         }
 
-        public bool IsPhotoOpportunity()
-        {
-            return DeltaRoll < Precision
-                && DeltaPitch < Precision;
-        }
-
         public override async Task InitializeAsync()
         {
             // There is nothing to do

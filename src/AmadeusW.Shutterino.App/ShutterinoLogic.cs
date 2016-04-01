@@ -148,10 +148,5 @@ namespace AmadeusW.Shutterino.App
         {
             _accelerometer.Callibrate();
         }
-
-        private bool IsPhotoOpportunity()
-        {
-            return (AccelerometerFeature.Instance?.IsPhotoOpportunity()).Value;
-        }
     }
 }
