@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadeusW.Shutterino.Azure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace AmadeusW.Shutterino.App.Features
 
         StorageFolder _localFolder = ApplicationData.Current.LocalFolder;
         private List<string> loggedData;
+        string _connectionString;
 
         public LogFeature() : base()
         {
@@ -26,7 +28,10 @@ namespace AmadeusW.Shutterino.App.Features
 
             loggedData = new List<string>();
 
-            LastSync = (DateTime)(_localSettings.Values["log-LogStart"] ?? DateTime.UtcNow);
+            var resources = new Windows.ApplicationModel.Resources.ResourceLoader("Resources");
+            _connectionString = resources.GetString("AzureConnectionString");
+
+            LastSync = (DateTime)(_localSettings.Values["log-LogStart"] ?? DateTime.Now);
             PhotoCount = (int)(_localSettings.Values["log-PhotoCount"] ?? 0);
         }
 
@@ -40,7 +45,7 @@ namespace AmadeusW.Shutterino.App.Features
                 if (String.IsNullOrEmpty(reason))
                     reason = "Manual";
 
-                var date = DateTime.UtcNow;
+                var date = DateTime.Now;
                 var cameraFileName = CameraFeature.Instance.PhotoCount;
 
                 var accelerometer = AccelerometerFeature.Instance.IsActive ? "true" : "false";
@@ -80,6 +85,17 @@ namespace AmadeusW.Shutterino.App.Features
             try
             {
                 await SaveFile();
+                var currentTimeString = DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss");
+                var cloudFileName = $"log.{currentTimeString}.csv";
+                if (String.IsNullOrEmpty(_connectionString))
+                    throw new InvalidOperationException("Please provide Azure Storage Account connection string in 'AzureConnectionString' resource");
+
+                var path = await FileUploader.UploadFile(
+                    _connectionString.ToString(),
+                    cloudFileName,
+                    await _localFolder.GetFileAsync("shutterino.csv")
+                    );
+                Status = $"Uploaded log to {path}";
                 // Remove file
                 LastSync = DateTime.UtcNow;
                 PhotoCount = 0;

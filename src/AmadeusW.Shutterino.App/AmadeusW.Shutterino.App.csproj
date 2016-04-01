@@ -93,6 +93,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="project.json" />
+    <PRIResource Include="Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -215,6 +216,10 @@
     <ProjectReference Include="..\..\AmadeusW.Shutterino.Arduino\AmadeusW.Shutterino.Arduino.csproj">
       <Project>{4a7e1521-b30f-46b5-bfe7-d73836788f31}</Project>
       <Name>AmadeusW.Shutterino.Arduino</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AmadeusW.Shutterino.Azure\AmadeusW.Shutterino.Azure.csproj">
+      <Project>{28b36cb2-d749-4ba8-b4a1-2a41fc58b77c}</Project>
+      <Name>AmadeusW.Shutterino.Azure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
