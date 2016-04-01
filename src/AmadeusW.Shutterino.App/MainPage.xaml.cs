@@ -41,6 +41,7 @@ namespace AmadeusW.Shutterino.App
         SolidColorBrush lowPrecisionBrush = new SolidColorBrush(Colors.Yellow);
         SolidColorBrush hintPrecisionBrush = new SolidColorBrush(Colors.Orange);
         SolidColorBrush noPrecisionBrush = new SolidColorBrush(Colors.Red);
+        private bool _initializedShapePosition;
 
         #region Constructor, lifecycle and navigation
 
@@ -145,16 +146,6 @@ namespace AmadeusW.Shutterino.App
                 currentRoll.Visibility = Visibility.Visible;
                 capturedRoll.Visibility = Visibility.Visible;
                 targetRoll.Visibility = Visibility.Visible;
-
-                var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
-                var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2, currentRoll.ActualHeight / 2);
-
-                Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
-                Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
-                Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
-                Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
-                Canvas.SetLeft(targetRoll, canvasMiddle.X - rollCanvasMiddle.X);
-                Canvas.SetTop(targetRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
             }
             else
             {
@@ -168,6 +159,20 @@ namespace AmadeusW.Shutterino.App
         {
             var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
             var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2, currentRoll.ActualHeight / 2);
+
+            if (!_initializedShapePosition)
+            {
+                if (visualization.ActualWidth != 0)
+                {
+                    Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                    Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                    Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                    Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                    Canvas.SetLeft(targetRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                    Canvas.SetTop(targetRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                    _initializedShapePosition = true;
+                }
+            }
 
             var scaleY = canvasMiddle.Y;
             var scaleX = canvasMiddle.X;
