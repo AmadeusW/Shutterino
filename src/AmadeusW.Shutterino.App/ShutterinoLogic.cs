@@ -114,6 +114,8 @@ namespace AmadeusW.Shutterino.App
 
         private async Task TakePhoto()
         {
+            _log.LogPhotoTaken(sender?.ToString());
+
             Task<bool> servoTask = null;
             if (_arduino != null)
             {
@@ -131,7 +133,6 @@ namespace AmadeusW.Shutterino.App
 
         internal async Task SuggestPhotoOpportunity(AFeature sender)
         {
-            _log.LogPhotoTaken(sender?.ToString());
             try
             {
                 await TakePhoto();
