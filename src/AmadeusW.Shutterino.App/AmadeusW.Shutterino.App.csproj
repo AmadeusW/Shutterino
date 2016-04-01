@@ -93,18 +93,20 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="project.json" />
+    <PRIResource Include="Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Devices\DArduino.cs" />
-    <Compile Include="Devices\DCamera.cs" />
-    <Compile Include="Devices\Device.cs" />
-    <Compile Include="Devices\DLocation.cs" />
-    <Compile Include="Devices\DAccelerometer.cs" />
-    <Compile Include="Devices\DPhone.cs" />
-    <Compile Include="Devices\DTimer.cs" />
+    <Compile Include="Features\ArduinoFeature.cs" />
+    <Compile Include="Features\CameraFeature.cs" />
+    <Compile Include="Features\AFeature.cs" />
+    <Compile Include="Features\LocationFeature.cs" />
+    <Compile Include="Features\AccelerometerFeature.cs" />
+    <Compile Include="Features\PhoneFeature.cs" />
+    <Compile Include="Features\LogFeature.cs" />
+    <Compile Include="Features\TimerFeature.cs" />
     <Compile Include="Helpers\DebugConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -144,6 +146,7 @@
     </Compile>
     <Compile Include="Settings\TimerViewModel.cs" />
     <Compile Include="Settings\ToggleCommand.cs" />
+    <Compile Include="Settings\UploadCommand.cs" />
     <Compile Include="ShutterinoLogic.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +216,10 @@
     <ProjectReference Include="..\..\AmadeusW.Shutterino.Arduino\AmadeusW.Shutterino.Arduino.csproj">
       <Project>{4a7e1521-b30f-46b5-bfe7-d73836788f31}</Project>
       <Name>AmadeusW.Shutterino.Arduino</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AmadeusW.Shutterino.Azure\AmadeusW.Shutterino.Azure.csproj">
+      <Project>{28b36cb2-d749-4ba8-b4a1-2a41fc58b77c}</Project>
+      <Name>AmadeusW.Shutterino.Azure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DTimer : Device
+    public class TimerFeature : AFeature
     {
-        public static DTimer Instance { get; private set; }
+        public static TimerFeature Instance { get; private set; }
         public override string ToString() => "Timer";
 
         public TimeSpan Delay1 { get; set; }
@@ -24,7 +24,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         private DispatcherTimer _photoTakingTimer;
 
-        public DTimer() : base()
+        public TimerFeature() : base()
         {
             Instance = this;
             IsAvailable = true;
@@ -36,6 +36,8 @@ namespace AmadeusW.Shutterino.App.Devices
             Delay2Active = (bool)(_localSettings.Values["timer-Delay2Active"] ?? true);
             Delay3Active = (bool)(_localSettings.Values["timer-Delay3Active"] ?? false);
             Delay4Active = (bool)(_localSettings.Values["timer-Delay4Active"] ?? false);
+
+            IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
         }
 
         public override async Task ActivateAsync()
@@ -65,6 +67,8 @@ namespace AmadeusW.Shutterino.App.Devices
             _localSettings.Values["timer-Delay2Active"] = Delay2Active;
             _localSettings.Values["timer-Delay3Active"] = Delay3Active;
             _localSettings.Values["timer-Delay4Active"] = Delay4Active;
+
+            _localSettings.Values["timer-IsActive"] = IsActive;
         }
 
         public override async Task DeactivateAsync()

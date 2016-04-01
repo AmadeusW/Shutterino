@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadeusW.Shutterino.App.Features;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,27 +10,27 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class ShutterinoModuleViewModel : PropertyChangedBase
     {
-        protected Devices.Device _device;
+        private AFeature device;
 
-        public ShutterinoModuleViewModel(Devices.Device device)
+        public ShutterinoModuleViewModel(AFeature device)
         {
             if (device == null)
                 return; // Temporarily, until I create all devices
                 //throw new ArgumentNullException(nameof(device));
 
-            _device = device;
-            Available = _device.IsAvailable;
-            Active = _device.IsActive;
+            Device = device;
+            Available = Device.IsAvailable;
+            Active = Device.IsActive;
             ToggleCommand = new ToggleCommand(this);
-            _device.PropertyChanged += ShutterinoModuleViewModel_PropertyChanged;
+            Device.PropertyChanged += ShutterinoModuleViewModel_PropertyChanged;
         }
 
         private void ShutterinoModuleViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_device.IsAvailable))
-                Available = _device.IsAvailable;
-            if (e.PropertyName == nameof(_device.IsActive))
-                Active = _device.IsActive;
+            if (e.PropertyName == nameof(Device.IsAvailable))
+                Available = Device.IsAvailable;
+            if (e.PropertyName == nameof(Device.IsActive))
+                Active = Device.IsActive;
         }
 
         public ICommand ToggleCommand { get; }
@@ -62,9 +63,22 @@ namespace AmadeusW.Shutterino.App.Settings
                 if (_active != value)
                 {
                     _active = value;
-                    _device.IsActive = _active;
+                    Device.IsActive = _active;
                     NotifyPropertyChanged();
                 }
+            }
+        }
+
+        protected AFeature Device
+        {
+            get
+            {
+                return device;
+            }
+
+            set
+            {
+                device = value;
             }
         }
 

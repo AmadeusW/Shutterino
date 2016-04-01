@@ -1,4 +1,4 @@
-﻿using AmadeusW.Shutterino.App.Devices;
+﻿using AmadeusW.Shutterino.App.Features;
 using AmadeusW.Shutterino.Arduino;
 using System;
 using System.Collections.Generic;
@@ -14,12 +14,13 @@ namespace AmadeusW.Shutterino.App
 {
     public class ShutterinoLogic
     {
-        DPhone _phone = new DPhone();
-        DLocation _location = new DLocation();
-        DAccelerometer _accelerometer = new DAccelerometer();
-        DCamera _camera = new DCamera();
-        DTimer _timer = new DTimer();
-        DArduino _arduino = new DArduino();
+        PhoneFeature _phone = new PhoneFeature();
+        LocationFeature _location = new LocationFeature();
+        AccelerometerFeature _accelerometer = new AccelerometerFeature();
+        CameraFeature _camera = new CameraFeature();
+        TimerFeature _timer = new TimerFeature();
+        ArduinoFeature _arduino = new ArduinoFeature();
+        LogFeature _log = new LogFeature();
 
         public CoreDispatcher Dispatcher { get; }
         public CaptureElement CameraPreviewControl { get; set; }
@@ -61,7 +62,8 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.CleanupAsync(),
                 _camera.CleanupAsync(),
                 _timer.CleanupAsync(),
-                _arduino.CleanupAsync()
+                _arduino.CleanupAsync(),
+                _log.CleanupAsync()
             );
             _initialized = false;
         }
@@ -77,7 +79,8 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.InitializeAsync(),
                 _camera.InitializeAsync(),
                 _timer.InitializeAsync(),
-                _arduino.InitializeAsync()
+                _arduino.InitializeAsync(),
+                _log.InitializeAsync()
             );
 
             _initialized = true;
@@ -91,7 +94,8 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.ActivateAsync(),
                 _camera.ActivateAsync(),
                 _timer.ActivateAsync(),
-                _arduino.ActivateAsync()
+                _arduino.ActivateAsync(),
+                _log.ActivateAsync()
             );
         }
 
@@ -103,12 +107,15 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.DeactivateAsync(),
                 _camera.DeactivateAsync(),
                 _timer.DeactivateAsync(),
-                _arduino.DeactivateAsync()
+                _arduino.DeactivateAsync(),
+                _log.DeactivateAsync()
             );
         }
 
-        private async Task TakePhoto()
+        private async Task TakePhoto(string reason)
         {
+            _log.LogPhotoTaken(reason);
+
             Task<bool> servoTask = null;
             if (_arduino != null)
             {
@@ -124,12 +131,11 @@ namespace AmadeusW.Shutterino.App
             }
         }
 
-        internal async Task SuggestPhotoOpportunity(Device sender)
+        internal async Task SuggestPhotoOpportunity(AFeature sender)
         {
-            // log sender.ToString();
             try
             {
-                await TakePhoto();
+                await TakePhoto(sender?.ToString());
             }
             catch (Exception ex)
             {
@@ -145,7 +151,7 @@ namespace AmadeusW.Shutterino.App
 
         private bool IsPhotoOpportunity()
         {
-            return (Devices.DAccelerometer.Instance?.IsPhotoOpportunity()).Value;
+            return (AccelerometerFeature.Instance?.IsPhotoOpportunity()).Value;
         }
     }
 }

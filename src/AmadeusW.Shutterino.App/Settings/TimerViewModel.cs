@@ -1,4 +1,4 @@
-﻿using AmadeusW.Shutterino.App.Devices;
+﻿using AmadeusW.Shutterino.App.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class TimerViewModel : ShutterinoModuleViewModel
     {
-        DTimer _timer => _device as DTimer;
+        TimerFeature _timer => Device as TimerFeature;
 
-        public TimerViewModel() : base(DTimer.Instance)
+        public TimerViewModel() : base(TimerFeature.Instance)
         {
             Delay1 = (int)_timer.Delay1.TotalSeconds;
             Delay2 = (int)_timer.Delay2.TotalSeconds;

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Windows.Devices.Sensors;
 using Windows.Graphics.Display;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DAccelerometer : Device
+    public class AccelerometerFeature : AFeature
     {
         // Configuration
         public double Precision { get; set; }
@@ -38,11 +38,11 @@ namespace AmadeusW.Shutterino.App.Devices
         private readonly DisplayInformation _displayInformation = DisplayInformation.GetForCurrentView();
         private long _lastPhotoTime;
 
-        public static DAccelerometer Instance { get; private set; }
+        public static AccelerometerFeature Instance { get; private set; }
 
         public override string ToString() => "Accelerometer";
 
-        public DAccelerometer() : base()
+        public AccelerometerFeature() : base()
         {
             Instance = this;
             IsAvailable = _accelerometer != null;
@@ -51,6 +51,7 @@ namespace AmadeusW.Shutterino.App.Devices
             RollOffset = (double)(_localSettings.Values["accelerometer-RollOffset"] ?? 0d);
             PitchOffset = (double)(_localSettings.Values["accelerometer-PitchOffset"] ?? 0d);
             RateLimiter = (int)(_localSettings.Values["accelerometer-RateLimiter"] ?? Convert.ToInt32(TimeSpan.TicksPerSecond * 2));
+            IsActive = (bool)(_localSettings.Values["accelerometer-IsActive"] ?? false);
         }
 
         public async override Task DeactivateAsync()
@@ -144,6 +145,7 @@ namespace AmadeusW.Shutterino.App.Devices
             _localSettings.Values["accelerometer-RollOffset"] = RollOffset;
             _localSettings.Values["accelerometer-PitchOffset"] = PitchOffset;
             _localSettings.Values["accelerometer-RateLimiter"] = RateLimiter;
+            _localSettings.Values["accelerometer-IsActive"] = IsActive;
         }
     }
 }

@@ -23,7 +23,7 @@ using Windows.Devices.Sensors;
 using Windows.Media.Capture;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI;
-using AmadeusW.Shutterino.App.Devices;
+using AmadeusW.Shutterino.App.Features;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -59,7 +59,7 @@ namespace AmadeusW.Shutterino.App
 
         private void _timer_Tick(object sender, object e)
         {
-            if (Devices.DAccelerometer.Instance.IsAvailable &&  Devices.DAccelerometer.Instance.IsActive)
+            if (AccelerometerFeature.Instance.IsAvailable && AccelerometerFeature.Instance.IsActive)
                 placeShapes();
         }
 
@@ -163,7 +163,7 @@ namespace AmadeusW.Shutterino.App
 
         private void initializeCanvas()
         {
-            if (Devices.DAccelerometer.Instance.IsActive)
+            if (AccelerometerFeature.Instance.IsActive)
             {
                 currentRoll.Visibility = Visibility.Visible;
                 capturedRoll.Visibility = Visibility.Visible;
@@ -195,7 +195,7 @@ namespace AmadeusW.Shutterino.App
             var scaleY = canvasMiddle.Y;
             var scaleX = canvasMiddle.X;
 
-            var accelerometer = Devices.DAccelerometer.Instance;
+            var accelerometer = AccelerometerFeature.Instance;
             var shouldShowPreviousReading = accelerometer.RollOffset != 0 && accelerometer.PitchOffset != 0;
             capturedPitch.Visibility = capturedRoll.Visibility = shouldShowPreviousReading ? Visibility.Visible : Visibility.Collapsed;
 
@@ -212,14 +212,14 @@ namespace AmadeusW.Shutterino.App
                 capturedRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
 
             currentPitch.Stroke =
-                accelerometer.DeltaPitch < DAccelerometer.HIGH_PRECISION ? highPrecisionBrush
-                : accelerometer.DeltaPitch < DAccelerometer.LOW_PRECISION ? lowPrecisionBrush
-                : accelerometer.DeltaPitch < DAccelerometer.HINT_PRECISION ? hintPrecisionBrush
+                accelerometer.DeltaPitch < AccelerometerFeature.HIGH_PRECISION ? highPrecisionBrush
+                : accelerometer.DeltaPitch < AccelerometerFeature.LOW_PRECISION ? lowPrecisionBrush
+                : accelerometer.DeltaPitch < AccelerometerFeature.HINT_PRECISION ? hintPrecisionBrush
                 : noPrecisionBrush;
             currentRollRectangle.Stroke =
-                accelerometer.DeltaRoll < DAccelerometer.HIGH_PRECISION ? highPrecisionBrush
-                : accelerometer.DeltaRoll < DAccelerometer.LOW_PRECISION ? lowPrecisionBrush
-                : accelerometer.DeltaRoll < DAccelerometer.HINT_PRECISION ? hintPrecisionBrush
+                accelerometer.DeltaRoll < AccelerometerFeature.HIGH_PRECISION ? highPrecisionBrush
+                : accelerometer.DeltaRoll < AccelerometerFeature.LOW_PRECISION ? lowPrecisionBrush
+                : accelerometer.DeltaRoll < AccelerometerFeature.HINT_PRECISION ? hintPrecisionBrush
                 : noPrecisionBrush;
         }
     }

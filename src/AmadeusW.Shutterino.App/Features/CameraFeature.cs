@@ -16,9 +16,9 @@ using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DCamera : Device
+    public class CameraFeature : AFeature
     {
         // MediaCapture and its state variables
         private MediaCapture _mediaCapture;
@@ -27,16 +27,20 @@ namespace AmadeusW.Shutterino.App.Devices
 
         private bool _externalCamera;
         private bool _mirroringPreview;
+        private static bool _busy;
 
-        private int _savedPhotosCount = 0;
+        public int PhotoCount { get; set; }
 
-        public static DCamera Instance { get; private set; }
+        public static CameraFeature Instance { get; private set; }
 
         public override string ToString() => "Camera";
 
-        public DCamera() : base()
+        public CameraFeature() : base()
         {
             Instance = this;
+
+            PhotoCount = (int)(_localSettings.Values["camera-PhotoCount"] ?? 0);
+            IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
         }
 
         public async override Task DeactivateAsync()
@@ -67,6 +71,8 @@ namespace AmadeusW.Shutterino.App.Devices
                 _mediaCapture.Dispose();
                 _mediaCapture = null;
             }
+
+            _localSettings.Values["camera-IsActive"] = IsActive;
         }
 
         /// <summary>
@@ -199,15 +205,26 @@ namespace AmadeusW.Shutterino.App.Devices
 
             var stream = new InMemoryRandomAccessStream();
 
+            // Don't take two photos at a time - this generates an exception
+            // Instead, just increase the photo number
+            if (_busy)
+            {
+                PhotoCount++;
+                return;
+            }
+
             try
             {
+                _busy = true;
                 Debug.WriteLine("Taking photo...");
                 await _mediaCapture.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), stream);
                 Debug.WriteLine("Photo taken!");
 
                 var photoOrientation = PhotoOrientation.Rotate90;// ConvertOrientationToPhotoOrientation(DOrientation.Instance.DeviceOrientation);
-                _savedPhotosCount++;
-                await ReencodeAndSavePhotoAsync(stream, $"Shutterino {_savedPhotosCount}.jpg", photoOrientation);
+                await ReencodeAndSavePhotoAsync(stream, $"Shutterino {PhotoCount}.jpg", photoOrientation);
+                PhotoCount++;
+                _localSettings.Values["camera-photoCount"] = PhotoCount;
+                _busy = false;
             }
             catch (Exception ex)
             {

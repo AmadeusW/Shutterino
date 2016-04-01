@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Windows.Devices.Sensors;
 using Windows.Storage;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public abstract class Device : PropertyChangedBase, IDisposable
+    public abstract class AFeature : PropertyChangedBase, IDisposable
     {
         private bool _isAvailable = false;
         private bool _isActive = false;

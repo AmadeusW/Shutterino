@@ -1,4 +1,4 @@
-﻿using AmadeusW.Shutterino.App.Devices;
+﻿using AmadeusW.Shutterino.App.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class ArduinoViewModel : ShutterinoModuleViewModel
     {
-        DArduino _arduino => _device as DArduino;
+        ArduinoFeature _arduino => Device as ArduinoFeature;
 
-        public ArduinoViewModel() : base(DArduino.Instance)
+        public ArduinoViewModel() : base(ArduinoFeature.Instance)
         {
             HostName = _arduino.HostName;
             PortNumber = _arduino.PortNumber;

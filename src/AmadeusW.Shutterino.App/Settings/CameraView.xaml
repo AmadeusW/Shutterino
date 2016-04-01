@@ -32,9 +32,10 @@
 
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
-            Text="Precision" />
+            Text="Photo count" />
         <TextBox
             Grid.Row="1" Grid.Column="1"
-            Text="{Binding Path=Precision}" />
+            InputScope="Number"
+            Text="{Binding Path=PhotoCount}" />
     </Grid>
 </Page>

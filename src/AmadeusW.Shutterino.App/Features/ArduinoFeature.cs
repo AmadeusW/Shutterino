@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DArduino : Device
+    public class ArduinoFeature : AFeature
     {
         private ArduinoConnection _arduino;
 
-        public static DArduino Instance { get; private set; }
+        public static ArduinoFeature Instance { get; private set; }
         public string HostName { get; internal set; }
         public byte PinNumber { get; internal set; }
         public ushort PortNumber { get; internal set; }
@@ -23,7 +23,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public override string ToString() => "Arduino";
 
-        public DArduino() : base()
+        public ArduinoFeature() : base()
         {
             Instance = this;
             IsAvailable = true;
@@ -36,6 +36,7 @@ namespace AmadeusW.Shutterino.App.Devices
             PositionReady = (byte)(_localSettings.Values["arduino-PositionReady"] ?? (byte)40);
             PositionDepressed = (byte)(_localSettings.Values["arduino-PositionDepressed"] ?? (byte)50);
             PressTime = (int)(_localSettings.Values["arduino-PressTime"] ?? 100);
+            IsActive = (bool)(_localSettings.Values["arduino-IsActive"] ?? false);
         }
 
         public override async Task ActivateAsync()
@@ -45,6 +46,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
             if (IsActive)
             {
+                _arduino.UpdateSettings(PinNumber, PositionOff, PositionIdle, PositionReady, PositionDepressed, PressTime);
                 await _arduino.Connect(HostName, PortNumber);
 
                 _isActuallyActive = true;
@@ -61,6 +63,7 @@ namespace AmadeusW.Shutterino.App.Devices
             _localSettings.Values["arduino-PositionReady"] = PositionReady;
             _localSettings.Values["arduino-PositionDepressed"] = PositionDepressed;
             _localSettings.Values["arduino-PressTime"] = PressTime;
+            _localSettings.Values["arduino-IsActive"] = IsActive;
         }
 
         public override async Task DeactivateAsync()

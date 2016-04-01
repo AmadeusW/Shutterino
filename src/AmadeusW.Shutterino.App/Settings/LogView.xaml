@@ -27,14 +27,31 @@
             Grid.Row="0" Grid.Column="0"
             Text="Active" />
         <ToggleButton
+            Command="{Binding Path=ToggleCommand}"
             Grid.Row="0" Grid.Column="1"
-            IsChecked="{Binding Path=Active}" />
+            IsChecked="{Binding Path=Active, Mode=TwoWay}" />
 
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
+            Text="Last sync" />
+        <TextBlock
+            Grid.Row="1" Grid.Column="1"
+            Text="{Binding Path=LastSync}" />
+
+        <TextBlock 
+            Grid.Row="2" Grid.Column="0"
+            Text="Data count" />
+        <TextBlock
+            Grid.Row="2" Grid.Column="1"
+            Text="{Binding Path=PhotoCount}" />
+
+
+        <TextBlock 
+            Grid.Row="3" Grid.Column="0"
             Text="Upload now" />
         <Button
-            Grid.Row="1" Grid.Column="1"
+            Grid.Row="3" Grid.Column="1"
+            Command="{Binding Path=UploadCommand}"
             Content="Go" />
     </Grid>
 </Page>
