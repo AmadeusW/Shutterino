@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Sensors;
+using Windows.Storage;
 
 namespace AmadeusW.Shutterino.App.Devices
 {
@@ -77,6 +78,8 @@ namespace AmadeusW.Shutterino.App.Devices
         public abstract Task ActivateAsync();
         public abstract Task DeactivateAsync();
         public abstract Task CleanupAsync();
+
+        protected ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 
         public void Dispose()
         {

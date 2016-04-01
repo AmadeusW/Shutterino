@@ -12,14 +12,14 @@ namespace AmadeusW.Shutterino.App.Devices
         private ArduinoConnection _arduino;
 
         public static DArduino Instance { get; private set; }
-        public string HostName { get; internal set; } = "192.168.1.113";
-        public byte PinNumber { get; internal set; } = 4;
-        public ushort PortNumber { get; internal set; } = 3030;
-        public byte PositionOff { get; internal set; } = 20;
-        public byte PositionIdle { get; internal set; } = 30;
-        public byte PositionReady { get; internal set; } = 40;
-        public byte PositionDepressed { get; internal set; } = 50;
-        public int PressTime { get; internal set; } = 100;
+        public string HostName { get; internal set; }
+        public byte PinNumber { get; internal set; }
+        public ushort PortNumber { get; internal set; }
+        public byte PositionOff { get; internal set; }
+        public byte PositionIdle { get; internal set; }
+        public byte PositionReady { get; internal set; }
+        public byte PositionDepressed { get; internal set; }
+        public int PressTime { get; internal set; }
 
         public override string ToString() => "Arduino";
 
@@ -27,6 +27,15 @@ namespace AmadeusW.Shutterino.App.Devices
         {
             Instance = this;
             IsAvailable = true;
+
+            HostName = (string)(_localSettings.Values["arduino-HostName"] ?? "192.168.1.113");
+            PinNumber = (byte)(_localSettings.Values["arduino-PinNumber"] ?? 4);
+            PortNumber = (ushort)(_localSettings.Values["arduino-PortNumber"] ?? 3030);
+            PositionOff = (byte)(_localSettings.Values["arduino-PositionOff"] ?? 20);
+            PositionIdle = (byte)(_localSettings.Values["arduino-PositionIdle"] ?? 30);
+            PositionReady = (byte)(_localSettings.Values["arduino-PositionReady"] ?? 40);
+            PositionDepressed = (byte)(_localSettings.Values["arduino-PositionDepressed"] ?? 50);
+            PressTime = (int)(_localSettings.Values["arduino-PressTime"] ?? 100);
         }
 
         public override async Task ActivateAsync()
@@ -44,7 +53,14 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public override async Task CleanupAsync()
         {
-
+            _localSettings.Values["arduino-HostName"] = HostName;
+            _localSettings.Values["arduino-PinNumber"] = PinNumber;
+            _localSettings.Values["arduino-PortNumber"] = PortNumber;
+            _localSettings.Values["arduino-PositionOff"] = PositionOff;
+            _localSettings.Values["arduino-PositionIdle"] = PositionIdle;
+            _localSettings.Values["arduino-PositionReady"] = PositionReady;
+            _localSettings.Values["arduino-PositionDepressed"] = PositionDepressed;
+            _localSettings.Values["arduino-PressTime"] = PressTime;
         }
 
         public override async Task DeactivateAsync()

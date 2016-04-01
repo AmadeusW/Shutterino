@@ -12,13 +12,13 @@ namespace AmadeusW.Shutterino.App.Devices
         public static DTimer Instance { get; private set; }
         public override string ToString() => "Timer";
 
-        public TimeSpan Delay1 { get; set; } = TimeSpan.FromSeconds(5);
-        public TimeSpan Delay2 { get; set; } = TimeSpan.FromSeconds(1);
-        public TimeSpan Delay3 { get; set; } = TimeSpan.FromSeconds(0);
-        public TimeSpan Delay4 { get; set; } = TimeSpan.FromSeconds(0);
-        public bool Delay2Active { get; set; } = true;
-        public bool Delay3Active { get; set; } = false;
-        public bool Delay4Active { get; set; } = false;
+        public TimeSpan Delay1 { get; set; }
+        public TimeSpan Delay2 { get; set; }
+        public TimeSpan Delay3 { get; set; }
+        public TimeSpan Delay4 { get; set; }
+        public bool Delay2Active { get; set; }
+        public bool Delay3Active { get; set; }
+        public bool Delay4Active { get; set; }
 
         private int _currentDelayId = 1;
 
@@ -28,6 +28,14 @@ namespace AmadeusW.Shutterino.App.Devices
         {
             Instance = this;
             IsAvailable = true;
+
+            Delay1 = (TimeSpan)(_localSettings.Values["timer-Delay1"] ?? TimeSpan.FromSeconds(5));
+            Delay2 = (TimeSpan)(_localSettings.Values["timer-Delay2"] ?? TimeSpan.FromSeconds(5));
+            Delay3 = (TimeSpan)(_localSettings.Values["timer-Delay3"] ?? TimeSpan.FromSeconds(5));
+            Delay4 = (TimeSpan)(_localSettings.Values["timer-Delay4"] ?? TimeSpan.FromSeconds(5));
+            Delay2Active = (bool)(_localSettings.Values["timer-Delay2Active"] ?? true);
+            Delay3Active = (bool)(_localSettings.Values["timer-Delay3Active"] ?? true);
+            Delay4Active = (bool)(_localSettings.Values["timer-Delay4Active"] ?? true);
         }
 
         public override async Task ActivateAsync()
@@ -49,6 +57,14 @@ namespace AmadeusW.Shutterino.App.Devices
         public override async Task CleanupAsync()
         {
             _photoTakingTimer.Tick -= _photoTakingTimer_Tick;
+
+            _localSettings.Values["timer-Delay1"] = Delay1;
+            _localSettings.Values["timer-Delay2"] = Delay2;
+            _localSettings.Values["timer-Delay3"] = Delay3;
+            _localSettings.Values["timer-Delay4"] = Delay4;
+            _localSettings.Values["timer-Delay2Active"] = Delay2Active;
+            _localSettings.Values["timer-Delay3Active"] = Delay3Active;
+            _localSettings.Values["timer-Delay4Active"] = Delay4Active;
         }
 
         public override async Task DeactivateAsync()

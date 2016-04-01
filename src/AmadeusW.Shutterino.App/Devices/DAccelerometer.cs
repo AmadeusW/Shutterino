@@ -11,10 +11,10 @@ namespace AmadeusW.Shutterino.App.Devices
     public class DAccelerometer : Device
     {
         // Configuration
-        public double Precision { get; set; } = LOW_PRECISION;
-        public double RollOffset { get; set; } = 0.0;
-        public double PitchOffset { get; set; } = 0.0;
-        public int RateLimiter { get; internal set; } = (int)(TimeSpan.TicksPerSecond * 2);
+        public double Precision { get; set; }
+        public double RollOffset { get; set; }
+        public double PitchOffset { get; set; }
+        public int RateLimiter { get; internal set; }
 
         // Readings
         public double Roll => IsActive ? _currentReading.AccelerationX : 0d;
@@ -46,6 +46,11 @@ namespace AmadeusW.Shutterino.App.Devices
         {
             Instance = this;
             IsAvailable = _accelerometer != null;
+
+            Precision = (double)(_localSettings.Values["accelerometer-Precision"] ?? LOW_PRECISION);
+            RollOffset = (double)(_localSettings.Values["accelerometer-RollOffset"] ?? 0d);
+            PitchOffset = (double)(_localSettings.Values["accelerometer-PitchOffset"] ?? 0d);
+            RateLimiter = (int)(_localSettings.Values["accelerometer-RateLimiter"] ?? TimeSpan.TicksPerSecond * 2);
         }
 
         public async override Task DeactivateAsync()
@@ -134,6 +139,11 @@ namespace AmadeusW.Shutterino.App.Devices
         public override async Task CleanupAsync()
         {
             await DeactivateAsync();
+
+            _localSettings.Values["accelerometer-Precision"] = Precision;
+            _localSettings.Values["accelerometer-RollOffset"] = RollOffset;
+            _localSettings.Values["accelerometer-PitchOffset"] = PitchOffset;
+            _localSettings.Values["accelerometer-RateLimiter"] = RateLimiter;
         }
     }
 }

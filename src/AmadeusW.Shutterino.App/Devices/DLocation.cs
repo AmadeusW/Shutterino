@@ -14,7 +14,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public static DLocation Instance { get; private set; }
 
-        private double _offset = 50; // Load from settings
+        private double _offset;
         public double Offset
         {
             get
@@ -36,6 +36,8 @@ namespace AmadeusW.Shutterino.App.Devices
         public DLocation() : base()
         {
             Instance = this;
+
+            Offset = (int)(_localSettings.Values["location-Offset"] ?? 50);
         }
 
         public async override Task DeactivateAsync()
@@ -92,6 +94,8 @@ namespace AmadeusW.Shutterino.App.Devices
         {
             IsAvailable = false;
             await DeactivateAsync();
+
+            _localSettings.Values["location-Offset"] = Offset;
         }
     }
 }
