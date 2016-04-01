@@ -29,12 +29,12 @@ namespace AmadeusW.Shutterino.App.Devices
             IsAvailable = true;
 
             HostName = (string)(_localSettings.Values["arduino-HostName"] ?? "192.168.1.113");
-            PinNumber = (byte)(_localSettings.Values["arduino-PinNumber"] ?? 4);
-            PortNumber = (ushort)(_localSettings.Values["arduino-PortNumber"] ?? 3030);
-            PositionOff = (byte)(_localSettings.Values["arduino-PositionOff"] ?? 20);
-            PositionIdle = (byte)(_localSettings.Values["arduino-PositionIdle"] ?? 30);
-            PositionReady = (byte)(_localSettings.Values["arduino-PositionReady"] ?? 40);
-            PositionDepressed = (byte)(_localSettings.Values["arduino-PositionDepressed"] ?? 50);
+            PinNumber = (byte)(_localSettings.Values["arduino-PinNumber"] ?? (byte)4);
+            PortNumber = (ushort)(_localSettings.Values["arduino-PortNumber"] ?? (ushort)3030);
+            PositionOff = (byte)(_localSettings.Values["arduino-PositionOff"] ?? (byte)20);
+            PositionIdle = (byte)(_localSettings.Values["arduino-PositionIdle"] ?? (byte)30);
+            PositionReady = (byte)(_localSettings.Values["arduino-PositionReady"] ?? (byte)40);
+            PositionDepressed = (byte)(_localSettings.Values["arduino-PositionDepressed"] ?? (byte)50);
             PressTime = (int)(_localSettings.Values["arduino-PressTime"] ?? 100);
         }
 
@@ -68,7 +68,15 @@ namespace AmadeusW.Shutterino.App.Devices
             if (!IsAvailable || !_isActuallyActive)
                 return;
 
-            await _arduino.Disconnect();
+            try
+            {
+                await _arduino.Disconnect();
+            }
+            catch (Exception ex)
+            {
+                // log
+                Status = ex.ToString();
+            }
 
             _isActuallyActive = false;
         }

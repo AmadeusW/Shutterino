@@ -37,7 +37,7 @@ namespace AmadeusW.Shutterino.App.Devices
         {
             Instance = this;
 
-            Offset = (int)(_localSettings.Values["location-Offset"] ?? 50);
+            Offset = (double)(_localSettings.Values["location-Offset"] ?? 50d);
         }
 
         public async override Task DeactivateAsync()

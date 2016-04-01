@@ -29,13 +29,13 @@ namespace AmadeusW.Shutterino.App.Devices
             Instance = this;
             IsAvailable = true;
 
-            Delay1 = (TimeSpan)(_localSettings.Values["timer-Delay1"] ?? TimeSpan.FromSeconds(5));
-            Delay2 = (TimeSpan)(_localSettings.Values["timer-Delay2"] ?? TimeSpan.FromSeconds(5));
-            Delay3 = (TimeSpan)(_localSettings.Values["timer-Delay3"] ?? TimeSpan.FromSeconds(5));
-            Delay4 = (TimeSpan)(_localSettings.Values["timer-Delay4"] ?? TimeSpan.FromSeconds(5));
+            Delay1 = (TimeSpan)(_localSettings.Values["timer-Delay1"] ?? TimeSpan.FromSeconds(9));
+            Delay2 = (TimeSpan)(_localSettings.Values["timer-Delay2"] ?? TimeSpan.FromSeconds(1));
+            Delay3 = (TimeSpan)(_localSettings.Values["timer-Delay3"] ?? TimeSpan.FromSeconds(0));
+            Delay4 = (TimeSpan)(_localSettings.Values["timer-Delay4"] ?? TimeSpan.FromSeconds(0));
             Delay2Active = (bool)(_localSettings.Values["timer-Delay2Active"] ?? true);
-            Delay3Active = (bool)(_localSettings.Values["timer-Delay3Active"] ?? true);
-            Delay4Active = (bool)(_localSettings.Values["timer-Delay4Active"] ?? true);
+            Delay3Active = (bool)(_localSettings.Values["timer-Delay3Active"] ?? false);
+            Delay4Active = (bool)(_localSettings.Values["timer-Delay4Active"] ?? false);
         }
 
         public override async Task ActivateAsync()

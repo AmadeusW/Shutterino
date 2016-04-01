@@ -50,7 +50,7 @@ namespace AmadeusW.Shutterino.App.Devices
             Precision = (double)(_localSettings.Values["accelerometer-Precision"] ?? LOW_PRECISION);
             RollOffset = (double)(_localSettings.Values["accelerometer-RollOffset"] ?? 0d);
             PitchOffset = (double)(_localSettings.Values["accelerometer-PitchOffset"] ?? 0d);
-            RateLimiter = (int)(_localSettings.Values["accelerometer-RateLimiter"] ?? TimeSpan.TicksPerSecond * 2);
+            RateLimiter = (int)(_localSettings.Values["accelerometer-RateLimiter"] ?? Convert.ToInt32(TimeSpan.TicksPerSecond * 2));
         }
 
         public async override Task DeactivateAsync()
