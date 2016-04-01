@@ -10,9 +10,9 @@ using Windows.Phone.UI.Input;
 using Windows.System.Display;
 using Windows.UI.Core;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DPhone : Device
+    public class PhoneFeature : AFeature
     {
         // For listening to media property changes
         private readonly SystemMediaTransportControls _systemMediaControls = SystemMediaTransportControls.GetForCurrentView();

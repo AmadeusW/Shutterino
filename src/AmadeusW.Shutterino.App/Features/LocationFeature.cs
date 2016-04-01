@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DLocation : Device
+    public class LocationFeature : AFeature
     {
         public Geopoint CurrentLocation { get; private set; }
         private Geolocator _geoLocator;
 
-        public static DLocation Instance { get; private set; }
+        public static LocationFeature Instance { get; private set; }
 
         private double _offset;
         public double Offset
@@ -33,7 +33,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public override string ToString() => "Location";
 
-        public DLocation() : base()
+        public LocationFeature() : base()
         {
             Instance = this;
 

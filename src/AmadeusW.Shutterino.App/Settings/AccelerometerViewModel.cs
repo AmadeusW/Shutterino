@@ -1,4 +1,4 @@
-﻿using AmadeusW.Shutterino.App.Devices;
+﻿using AmadeusW.Shutterino.App.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class AccelerometerViewModel : ShutterinoModuleViewModel
     {
-        DAccelerometer _accelerometer => _device as DAccelerometer;
+        AccelerometerFeature _accelerometer => Device as AccelerometerFeature;
 
         /// <summary>
         /// Maximum allowed error on the accelerometer axes
@@ -79,7 +79,7 @@ namespace AmadeusW.Shutterino.App.Settings
             }
         }
 
-        public AccelerometerViewModel() : base(DAccelerometer.Instance)
+        public AccelerometerViewModel() : base(AccelerometerFeature.Instance)
         {
             _available = _accelerometer.IsAvailable;
             _active = _accelerometer.IsActive;

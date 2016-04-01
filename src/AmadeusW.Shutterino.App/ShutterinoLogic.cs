@@ -1,4 +1,4 @@
-﻿using AmadeusW.Shutterino.App.Devices;
+﻿using AmadeusW.Shutterino.App.Features;
 using AmadeusW.Shutterino.Arduino;
 using System;
 using System.Collections.Generic;
@@ -14,12 +14,12 @@ namespace AmadeusW.Shutterino.App
 {
     public class ShutterinoLogic
     {
-        DPhone _phone = new DPhone();
-        DLocation _location = new DLocation();
-        DAccelerometer _accelerometer = new DAccelerometer();
-        DCamera _camera = new DCamera();
-        DTimer _timer = new DTimer();
-        DArduino _arduino = new DArduino();
+        PhoneFeature _phone = new PhoneFeature();
+        LocationFeature _location = new LocationFeature();
+        AccelerometerFeature _accelerometer = new AccelerometerFeature();
+        CameraFeature _camera = new CameraFeature();
+        TimerFeature _timer = new TimerFeature();
+        ArduinoFeature _arduino = new ArduinoFeature();
 
         public CoreDispatcher Dispatcher { get; }
         public CaptureElement CameraPreviewControl { get; set; }
@@ -124,7 +124,7 @@ namespace AmadeusW.Shutterino.App
             }
         }
 
-        internal async Task SuggestPhotoOpportunity(Device sender)
+        internal async Task SuggestPhotoOpportunity(AFeature sender)
         {
             // log sender.ToString();
             try
@@ -145,7 +145,7 @@ namespace AmadeusW.Shutterino.App
 
         private bool IsPhotoOpportunity()
         {
-            return (Devices.DAccelerometer.Instance?.IsPhotoOpportunity()).Value;
+            return (AccelerometerFeature.Instance?.IsPhotoOpportunity()).Value;
         }
     }
 }

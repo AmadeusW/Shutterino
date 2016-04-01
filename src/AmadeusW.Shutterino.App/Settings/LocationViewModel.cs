@@ -1,4 +1,4 @@
-﻿using AmadeusW.Shutterino.App.Devices;
+﻿using AmadeusW.Shutterino.App.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class LocationViewModel : ShutterinoModuleViewModel
     {
-        DLocation _location => _device as DLocation;
+        LocationFeature _location => Device as LocationFeature;
 
-        public LocationViewModel() : base(Devices.DLocation.Instance)
+        public LocationViewModel() : base(LocationFeature.Instance)
         {
             Offset = _location.Offset;
         }

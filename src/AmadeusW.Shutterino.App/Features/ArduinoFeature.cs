@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DArduino : Device
+    public class ArduinoFeature : AFeature
     {
         private ArduinoConnection _arduino;
 
-        public static DArduino Instance { get; private set; }
+        public static ArduinoFeature Instance { get; private set; }
         public string HostName { get; internal set; }
         public byte PinNumber { get; internal set; }
         public ushort PortNumber { get; internal set; }
@@ -23,7 +23,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public override string ToString() => "Arduino";
 
-        public DArduino() : base()
+        public ArduinoFeature() : base()
         {
             Instance = this;
             IsAvailable = true;

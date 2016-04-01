@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadeusW.Shutterino.App.Features;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace AmadeusW.Shutterino.App.Settings
 {
     public class CameraViewModel : ShutterinoModuleViewModel
     {
-        public CameraViewModel() : base(Devices.DCamera.Instance)
+        public CameraViewModel() : base(CameraFeature.Instance)
         {
 
         }

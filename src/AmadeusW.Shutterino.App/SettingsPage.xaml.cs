@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using AmadeusW.Shutterino.App.Settings;
 using Windows.UI.Core;
-using AmadeusW.Shutterino.App.Devices;
+using AmadeusW.Shutterino.App.Features;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 

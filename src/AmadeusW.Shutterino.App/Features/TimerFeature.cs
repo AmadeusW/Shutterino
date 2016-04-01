@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DTimer : Device
+    public class TimerFeature : AFeature
     {
-        public static DTimer Instance { get; private set; }
+        public static TimerFeature Instance { get; private set; }
         public override string ToString() => "Timer";
 
         public TimeSpan Delay1 { get; set; }
@@ -24,7 +24,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         private DispatcherTimer _photoTakingTimer;
 
-        public DTimer() : base()
+        public TimerFeature() : base()
         {
             Instance = this;
             IsAvailable = true;

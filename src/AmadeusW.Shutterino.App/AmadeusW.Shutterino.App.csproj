@@ -98,13 +98,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Devices\DArduino.cs" />
-    <Compile Include="Devices\DCamera.cs" />
-    <Compile Include="Devices\Device.cs" />
-    <Compile Include="Devices\DLocation.cs" />
-    <Compile Include="Devices\DAccelerometer.cs" />
-    <Compile Include="Devices\DPhone.cs" />
-    <Compile Include="Devices\DTimer.cs" />
+    <Compile Include="Features\ArduinoFeature.cs" />
+    <Compile Include="Features\CameraFeature.cs" />
+    <Compile Include="Features\AFeature.cs" />
+    <Compile Include="Features\LocationFeature.cs" />
+    <Compile Include="Features\AccelerometerFeature.cs" />
+    <Compile Include="Features\PhoneFeature.cs" />
+    <Compile Include="Features\TimerFeature.cs" />
     <Compile Include="Helpers\DebugConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

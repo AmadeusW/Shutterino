@@ -16,9 +16,9 @@ using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DCamera : Device
+    public class CameraFeature : AFeature
     {
         // MediaCapture and its state variables
         private MediaCapture _mediaCapture;
@@ -30,11 +30,11 @@ namespace AmadeusW.Shutterino.App.Devices
 
         private int _savedPhotosCount = 0;
 
-        public static DCamera Instance { get; private set; }
+        public static CameraFeature Instance { get; private set; }
 
         public override string ToString() => "Camera";
 
-        public DCamera() : base()
+        public CameraFeature() : base()
         {
             Instance = this;
         }

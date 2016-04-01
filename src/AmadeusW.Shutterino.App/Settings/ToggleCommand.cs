@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AmadeusW.Shutterino.App.Devices;
+using AmadeusW.Shutterino.App.Features;
 
 namespace AmadeusW.Shutterino.App.Settings
 {

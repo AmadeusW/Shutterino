@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Windows.Devices.Sensors;
 using Windows.Graphics.Display;
 
-namespace AmadeusW.Shutterino.App.Devices
+namespace AmadeusW.Shutterino.App.Features
 {
-    public class DAccelerometer : Device
+    public class AccelerometerFeature : AFeature
     {
         // Configuration
         public double Precision { get; set; }
@@ -38,11 +38,11 @@ namespace AmadeusW.Shutterino.App.Devices
         private readonly DisplayInformation _displayInformation = DisplayInformation.GetForCurrentView();
         private long _lastPhotoTime;
 
-        public static DAccelerometer Instance { get; private set; }
+        public static AccelerometerFeature Instance { get; private set; }
 
         public override string ToString() => "Accelerometer";
 
-        public DAccelerometer() : base()
+        public AccelerometerFeature() : base()
         {
             Instance = this;
             IsAvailable = _accelerometer != null;
