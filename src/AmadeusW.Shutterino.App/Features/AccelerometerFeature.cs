@@ -17,8 +17,8 @@ namespace AmadeusW.Shutterino.App.Features
         public int RateLimiter { get; internal set; }
 
         // Readings
-        public double Roll => IsActive ? _currentReading.AccelerationX /** Math.Sign(_currentReading.AccelerationY)*/ : 0d;
-        public double Pitch => IsActive ? _currentReading.AccelerationZ : 0d;
+        public double Roll => _isActuallyActive ? _currentReading.AccelerationX /** Math.Sign(_currentReading.AccelerationY)*/ : 0d;
+        public double Pitch => _isActuallyActive ? _currentReading.AccelerationZ : 0d;
 
         public double TargetRoll => CapturedRoll + RollOffset;
         public double TargetPitch => CapturedPitch + PitchOffset;
