@@ -27,6 +27,8 @@ namespace AmadeusW.Shutterino.App.Features
 
         private bool _externalCamera;
         private bool _mirroringPreview;
+        private static bool _busy;
+
         public int PhotoCount { get; set; }
 
         public static CameraFeature Instance { get; private set; }
@@ -200,16 +202,26 @@ namespace AmadeusW.Shutterino.App.Features
 
             var stream = new InMemoryRandomAccessStream();
 
+            // Don't take two photos at a time - this generates an exception
+            // Instead, just increase the photo number
+            if (_busy)
+            {
+                PhotoCount++;
+                return;
+            }
+
             try
             {
+                _busy = true;
                 Debug.WriteLine("Taking photo...");
                 await _mediaCapture.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), stream);
                 Debug.WriteLine("Photo taken!");
 
                 var photoOrientation = PhotoOrientation.Rotate90;// ConvertOrientationToPhotoOrientation(DOrientation.Instance.DeviceOrientation);
-                PhotoCount++;
                 await ReencodeAndSavePhotoAsync(stream, $"Shutterino {PhotoCount}.jpg", photoOrientation);
+                PhotoCount++;
                 _localSettings.Values["camera-photoCount"] = PhotoCount;
+                _busy = false;
             }
             catch (Exception ex)
             {
