@@ -28,6 +28,7 @@
   <Capabilities>
     <Capability Name="internetClient" />
     <Capability Name="privateNetworkClientServer" />
+    <Capability Name="internetClientServer" />
     <uap:Capability Name="picturesLibrary" />
     <DeviceCapability Name="location" />
     <DeviceCapability Name="webcam" />

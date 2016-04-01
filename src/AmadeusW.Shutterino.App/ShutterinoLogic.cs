@@ -18,24 +18,31 @@ namespace AmadeusW.Shutterino.App
         DLocation _location = new DLocation();
         DAccelerometer _accelerometer = new DAccelerometer();
         DCamera _camera = new DCamera();
-        DOrientation _orientation = new DOrientation();
-        ArduinoConnection _arduino = null;
+        DTimer _timer = new DTimer();
+        DArduino _arduino = new DArduino();
 
         public CoreDispatcher Dispatcher { get; }
         public CaptureElement CameraPreviewControl { get; set; }
-        public double Precision { get; private set; } = LOW_PRECISION;
 
         public static ShutterinoLogic Instance { get; private set; }
+        public bool TakesPhotos { get; internal set; }
 
-        private DispatcherTimer _photoTakingTimer;
-        private DateTime lastPhotoTime;
-        private bool _takingPhotos;
+        private bool _initialized;
 
-        public const double HIGH_PRECISION = 0.01;
-        public const double LOW_PRECISION = 0.05;
-        public const double HINT_PRECISION = 0.1;
+        internal static ShutterinoLogic Get(CoreDispatcher dispatcher, CaptureElement previewControl)
+        {
+            if (Instance != null)
+            {
+                Instance.CameraPreviewControl = previewControl;
+                return Instance;
+            }
+            else
+            {
+                return new ShutterinoLogic(dispatcher, previewControl);
+            }
+        }
 
-        public ShutterinoLogic(CoreDispatcher dispatcher, CaptureElement cameraPreviewControl)
+        private ShutterinoLogic(CoreDispatcher dispatcher, CaptureElement cameraPreviewControl)
         {
             Instance = this;
             Dispatcher = dispatcher;
@@ -44,57 +51,63 @@ namespace AmadeusW.Shutterino.App
         
         public async Task CleanUpAsync()
         {
+            if (!_initialized)
+                return;
+
+            await DeactivateAsync();
             await Task.WhenAll(
-                _phone.CleanUpAsync(),
-                _location.CleanUpAsync(),
-                _accelerometer.CleanUpAsync(),
-                _camera.CleanUpAsync(),
-                _orientation.CleanUpAsync()
+                _phone.CleanupAsync(),
+                _location.CleanupAsync(),
+                _accelerometer.CleanupAsync(),
+                _camera.CleanupAsync(),
+                _timer.CleanupAsync(),
+                _arduino.CleanupAsync()
             );
-            _photoTakingTimer.Stop();
+            _initialized = false;
         }
 
         public async Task InitializeAsync()
         {
+            if (_initialized)
+                return;
+            
             await Task.WhenAll(
                 _phone.InitializeAsync(),
                 _location.InitializeAsync(),
                 _accelerometer.InitializeAsync(),
                 _camera.InitializeAsync(),
-                _orientation.InitializeAsync()
+                _timer.InitializeAsync(),
+                _arduino.InitializeAsync()
             );
-            _photoTakingTimer = new DispatcherTimer()
-            {
-                Interval = TimeSpan.FromMilliseconds(50)
-            };
-            _photoTakingTimer.Tick += photoTakingTimerTick;
+
+            _initialized = true;
         }
 
-        public async Task<bool> initializeArduino(byte servoPin, byte servoIdle, byte servoOff, byte servoPressed, string host, ushort port)
+        public async Task ActivateAsync()
         {
-            _arduino = new ArduinoConnection(servoPin, servoIdle, servoOff, servoPressed);
-            return await _arduino.Connect(host, port);
+            await Task.WhenAll(
+                _phone.ActivateAsync(),
+                _location.ActivateAsync(),
+                _accelerometer.ActivateAsync(),
+                _camera.ActivateAsync(),
+                _timer.ActivateAsync(),
+                _arduino.ActivateAsync()
+            );
         }
 
-        internal async Task<bool> disableArduino()
+        public async Task DeactivateAsync()
         {
-            if (_arduino != null)
-            {
-                return await _arduino.Disconnect();
-            }
-            return false;
+            await Task.WhenAll(
+                _phone.DeactivateAsync(),
+                _location.DeactivateAsync(),
+                _accelerometer.DeactivateAsync(),
+                _camera.DeactivateAsync(),
+                _timer.DeactivateAsync(),
+                _arduino.DeactivateAsync()
+            );
         }
 
-        private async void photoTakingTimerTick(object sender, object e)
-        {
-            if (_takingPhotos && DateTime.UtcNow > lastPhotoTime + TimeSpan.FromSeconds(2) && IsPhotoOpportunity())
-            {
-                lastPhotoTime = DateTime.UtcNow;
-                await TakePhoto();
-            }
-        }
-
-        public async Task TakePhoto()
+        private async Task TakePhoto()
         {
             Task<bool> servoTask = null;
             if (_arduino != null)
@@ -102,7 +115,7 @@ namespace AmadeusW.Shutterino.App
                 servoTask = _arduino.MoveServo();
             }
 
-            //await _camera.TakePhotoAsync();
+            await _camera.TakePhotoAsync();
 
             if (servoTask != null)
             {
@@ -111,26 +124,18 @@ namespace AmadeusW.Shutterino.App
             }
         }
 
-        internal void BeginTakingPhotos()
+        internal async Task SuggestPhotoOpportunity(Device sender)
         {
-            _takingPhotos = true;
-            _photoTakingTimer.Start();
-        }
-
-        internal void EndTakingPhotos()
-        {
-            _photoTakingTimer.Stop();
-            _takingPhotos = false;
-        }
-
-        internal void UseHighPrecision()
-        {
-            Precision = HIGH_PRECISION;
-        }
-
-        internal void UseLowPrecision()
-        {
-            Precision = LOW_PRECISION;
+            // log sender.ToString();
+            try
+            {
+                await TakePhoto();
+            }
+            catch (Exception ex)
+            {
+                // TODO: LOG
+                sender.Status = ex.ToString();
+            }
         }
 
         internal void Callibrate()
@@ -140,9 +145,7 @@ namespace AmadeusW.Shutterino.App
 
         private bool IsPhotoOpportunity()
         {
-            return _accelerometer.DeltaRoll < Precision
-                && _accelerometer.DeltaPitch < Precision
-                && _accelerometer.DeltaYaw < Precision;
+            return (Devices.DAccelerometer.Instance?.IsPhotoOpportunity()).Value;
         }
     }
 }

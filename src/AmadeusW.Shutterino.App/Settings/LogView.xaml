@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="AmadeusW.Shutterino.App.Settings.LogView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AmadeusW.Shutterino.App.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{StaticResource LogViewModel}">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <TextBlock 
+            Grid.Row="0" Grid.Column="0"
+            Text="Active" />
+        <ToggleButton
+            Grid.Row="0" Grid.Column="1"
+            IsChecked="{Binding Path=Active}" />
+
+        <TextBlock 
+            Grid.Row="1" Grid.Column="0"
+            Text="Upload now" />
+        <Button
+            Grid.Row="1" Grid.Column="1"
+            Content="Go" />
+    </Grid>
+</Page>

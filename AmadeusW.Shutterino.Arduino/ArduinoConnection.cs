@@ -17,13 +17,17 @@ namespace AmadeusW.Shutterino.Arduino
         byte _servoIdle;
         byte _servoOff;
         byte _servoPressed;
+        private byte _servoReady;
+        private int _pressTime;
 
-        public ArduinoConnection(byte servoPin, byte servoIdle, byte servoOff, byte servoPressed)
+        public ArduinoConnection(byte servoPin, byte servoOff, byte servoIdle, byte servoReady, byte servoPressed, int pressTime)
         {
             _servoPin = servoPin;
-            _servoIdle = servoIdle;
             _servoOff = servoOff;
+            _servoIdle = servoIdle;
+            _servoReady = servoReady;
             _servoPressed = servoPressed;
+            _pressTime = pressTime;
         }
 
         public async Task<bool> Connect(string host, ushort port)
@@ -60,11 +64,14 @@ namespace AmadeusW.Shutterino.Arduino
 
         public async Task<bool> Disconnect()
         {
-            _arduino.analogWrite(_servoPin, _servoOff);
-            await Task.Delay(100);
-            _connection.end();
-            _arduino.Dispose();
-            _connection.Dispose();
+            if (_arduino != null)
+            {
+                _arduino.analogWrite(_servoPin, _servoOff);
+                await Task.Delay(_pressTime);
+            }
+            _connection?.end();
+            _arduino?.Dispose();
+            _connection?.Dispose();
             return true;
         }
 
@@ -73,9 +80,9 @@ namespace AmadeusW.Shutterino.Arduino
             if (_connected)
             {
                 _arduino.analogWrite(_servoPin, _servoPressed);
-                await Task.Delay(30);
+                await Task.Delay(_pressTime);
                 _arduino.analogWrite(_servoPin, _servoIdle);
-                await Task.Delay(30);
+                await Task.Delay(_pressTime);
                 return true;
             }
             return false;

@@ -1,0 +1,88 @@
+﻿<Page
+    x:Class="AmadeusW.Shutterino.App.Settings.AccelerometerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AmadeusW.Shutterino.App.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:AmadeusW.Shutterino.App.Helpers"
+    mc:Ignorable="d"
+    DataContext="{StaticResource AccelerometerViewModel}">
+    <Page.Resources>
+        <helpers:DebugConverter x:Key="DC" />
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <TextBlock 
+            Grid.Row="0" Grid.Column="0"
+            Text="Active" />
+        <ToggleButton
+            Command="{Binding Path=ToggleCommand}"
+            Grid.Row="0" Grid.Column="1"
+            IsChecked="{Binding Path=Active}" />
+        
+        <TextBlock 
+            Grid.Row="1" Grid.Column="0"
+            Text="Precision" />
+        <Slider 
+            Grid.Column="1" Grid.Row="1" 
+            Value="{Binding Path=Precision, Mode=TwoWay}" 
+            Maximum="30" Minimum="1" SmallChange="3" LargeChange="3" TickFrequency="3" IsDirectionReversed="True"/>
+        <TextBox
+            Grid.Row="1" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=Precision, Mode=TwoWay}" />
+        
+        <TextBlock 
+            Grid.Row="2" Grid.Column="0"
+            Text="Roll offset" />
+        <Slider 
+            Grid.Column="1" Grid.Row="2" 
+            Value="{Binding Path=OffsetRoll, Mode=TwoWay}" 
+            Maximum="30" Minimum="-30" SmallChange="5" LargeChange="5" TickFrequency="5"/>
+        <TextBox
+            Grid.Row="2" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=OffsetRoll, Mode=TwoWay}" />
+        
+        <TextBlock 
+            Grid.Row="3" Grid.Column="0"
+            Text="Tilt offset" />
+        <Slider 
+            Grid.Column="1" Grid.Row="3" 
+            Value="{Binding Path=OffsetTilt, Mode=TwoWay}" 
+            Maximum="30" Minimum="-30" SmallChange="5" LargeChange="5" TickFrequency="5"/>
+        <TextBox
+            Grid.Row="3" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=OffsetTilt, Mode=TwoWay}" />
+
+        <TextBlock 
+            Grid.Row="4" Grid.Column="0"
+            Text="Delay [ms]" />
+        <Slider 
+            Grid.Column="1" Grid.Row="4" 
+            Value="{Binding Path=RateLimiter, Mode=TwoWay}" 
+            Maximum="5000" Minimum="0" SmallChange="500" LargeChange="500" TickFrequency="500"/>
+        <TextBox
+            Grid.Row="4" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=RateLimiter, Mode=TwoWay}" />
+    </Grid>
+</Page>

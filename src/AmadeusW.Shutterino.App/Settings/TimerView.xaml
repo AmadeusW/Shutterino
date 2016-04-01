@@ -1,0 +1,105 @@
+﻿<Page
+    x:Class="AmadeusW.Shutterino.App.Settings.TimerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AmadeusW.Shutterino.App.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{StaticResource TimerViewModel}">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <TextBlock 
+            Grid.Row="0" Grid.Column="0"
+            Text="Active" />
+        <ToggleButton
+            Grid.Row="0" Grid.Column="1"
+            IsChecked="{Binding Path=Active}" />
+
+        <TextBlock 
+            Grid.Row="1" Grid.Column="0"
+            Text="Delay [s]" />
+        <Slider 
+            Grid.Column="1" Grid.Row="1" 
+            Value="{Binding Path=Delay1, Mode=TwoWay}" 
+            Maximum="120" Minimum="1" SmallChange="3" LargeChange="3" TickFrequency="3"/>
+        <TextBox
+            Grid.Row="1" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=Delay1, Mode=TwoWay}" />
+
+        <TextBlock 
+            Grid.Row="2" Grid.Column="0"
+            Text="more..." />
+        <ToggleButton
+            Grid.Row="2" Grid.Column="1"
+            IsChecked="{Binding Path=Delay2Active}" />
+
+        <TextBlock 
+            Grid.Row="3" Grid.Column="0"
+            Text="Delay [s]" />
+        <Slider 
+            Grid.Column="1" Grid.Row="3" 
+            Value="{Binding Path=Delay2, Mode=TwoWay}" 
+            Maximum="120" Minimum="1" SmallChange="3" LargeChange="3" TickFrequency="3"/>
+        <TextBox
+            Grid.Row="3" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=Delay2, Mode=TwoWay}" />
+
+        <TextBlock 
+            Grid.Row="4" Grid.Column="0"
+            Text="more..." />
+        <ToggleButton
+            Grid.Row="4" Grid.Column="1"
+            IsChecked="{Binding Path=Delay3Active}" />
+
+        <TextBlock 
+            Grid.Row="5" Grid.Column="0"
+            Text="Delay [s]" />
+        <Slider 
+            Grid.Column="1" Grid.Row="5" 
+            Value="{Binding Path=Delay3, Mode=TwoWay}" 
+            Maximum="120" Minimum="1" SmallChange="3" LargeChange="3" TickFrequency="3"/>
+        <TextBox
+            Grid.Row="5" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=Delay3, Mode=TwoWay}" />
+
+        <TextBlock 
+            Grid.Row="6" Grid.Column="0"
+            Text="more..." />
+        <ToggleButton
+            Grid.Row="6" Grid.Column="1"
+            IsChecked="{Binding Path=Delay4Active}" />
+
+        <TextBlock 
+            Grid.Row="7" Grid.Column="0"
+            Text="Delay [s]" />
+        <Slider 
+            Grid.Column="1" Grid.Row="7" 
+            Value="{Binding Path=Delay4, Mode=TwoWay}" 
+            Maximum="120" Minimum="1" SmallChange="3" LargeChange="3" TickFrequency="3"/>
+        <TextBox
+            Grid.Row="7" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=Delay4, Mode=TwoWay}" />
+    </Grid>
+</Page>
