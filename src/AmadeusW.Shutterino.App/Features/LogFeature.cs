@@ -14,7 +14,7 @@ namespace AmadeusW.Shutterino.App.Features
         public static LogFeature Instance { get; private set; }
         public override string ToString() => "Logger";
 
-        public DateTime LastSync { get; set; }
+        public string LastSync { get; set; }
         public int PhotoCount { get; set; }
 
         StorageFolder _localFolder = ApplicationData.Current.LocalFolder;
@@ -31,7 +31,7 @@ namespace AmadeusW.Shutterino.App.Features
             var resources = new Windows.ApplicationModel.Resources.ResourceLoader("Resources");
             _connectionString = resources.GetString("AzureConnectionString");
 
-            LastSync = (DateTime)(_localSettings.Values["log-LogStart"] ?? DateTime.Now);
+            LastSync = (string)(_localSettings.Values["log-LogStart"] ?? "never");
             PhotoCount = (int)(_localSettings.Values["log-PhotoCount"] ?? 0);
             IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
         }
@@ -99,7 +99,7 @@ namespace AmadeusW.Shutterino.App.Features
                     );
                 Status = $"Uploaded log to {path}";
                 // Remove file
-                LastSync = DateTime.UtcNow;
+                LastSync = DateTime.Now.ToString();
                 PhotoCount = 0;
             }
             catch (Exception ex)
