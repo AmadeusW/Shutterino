@@ -194,14 +194,14 @@ namespace AmadeusW.Shutterino.App
                 capturedRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
 
             currentPitch.Stroke =
-                accelerometer.DeltaPitch < AccelerometerFeature.HIGH_PRECISION ? highPrecisionBrush
-                : accelerometer.DeltaPitch < AccelerometerFeature.LOW_PRECISION ? lowPrecisionBrush
-                : accelerometer.DeltaPitch < AccelerometerFeature.HINT_PRECISION ? hintPrecisionBrush
+                accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision ? highPrecisionBrush
+                : accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision * 1.5 ? lowPrecisionBrush
+                : accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision * 2 ? hintPrecisionBrush
                 : noPrecisionBrush;
             currentRollRectangle.Stroke =
-                accelerometer.DeltaRoll < AccelerometerFeature.HIGH_PRECISION ? highPrecisionBrush
-                : accelerometer.DeltaRoll < AccelerometerFeature.LOW_PRECISION ? lowPrecisionBrush
-                : accelerometer.DeltaRoll < AccelerometerFeature.HINT_PRECISION ? hintPrecisionBrush
+                accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision ? highPrecisionBrush
+                : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 1.5 ? lowPrecisionBrush
+                : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 2 ? hintPrecisionBrush
                 : noPrecisionBrush;
         }
     }
