@@ -136,6 +136,9 @@ namespace AmadeusW.Shutterino.App
 
         internal async Task SuggestPhotoOpportunity(AFeature sender)
         {
+            if (!TakesPhotos)
+                return;
+
             try
             {
                 // Animate the button for programatically-triggered photos.
