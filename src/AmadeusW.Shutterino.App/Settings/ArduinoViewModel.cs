@@ -43,7 +43,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Connection setting
         /// </summary>
-        public ushort PortNumber
+        public int PortNumber
         {
             get { return _portNumber; }
             set
@@ -52,7 +52,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _portNumber = value;
                     NotifyPropertyChanged();
-                    _arduino.PortNumber = _portNumber;
+                    _arduino.PortNumber = (ushort)_portNumber;
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Servo pin
         /// </summary>
-        public byte PinNumber
+        public int PinNumber
         {
             get { return _pinNumber; }
             set
@@ -69,7 +69,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _pinNumber = value;
                     NotifyPropertyChanged();
-                    _arduino.PinNumber = _pinNumber;
+                    _arduino.PinNumber = (byte)_pinNumber;
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Servo setting
         /// </summary>
-        public byte PositionOff
+        public int PositionOff
         {
             get { return _positionOff; }
             set
@@ -86,7 +86,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _positionOff = value;
                     NotifyPropertyChanged();
-                    _arduino.PositionOff = _positionOff;
+                    _arduino.PositionOff = (byte)_positionOff;
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Servo setting
         /// </summary>
-        public byte PositionIdle
+        public int PositionIdle
         {
             get { return _positionIdle; }
             set
@@ -103,7 +103,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _positionIdle = value;
                     NotifyPropertyChanged();
-                    _arduino.PositionIdle = _positionIdle;
+                    _arduino.PositionIdle = (byte)_positionIdle;
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Servo setting
         /// </summary>
-        public byte PositionReady
+        public int PositionReady
         {
             get { return _positionReady; }
             set
@@ -120,7 +120,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _positionReady = value;
                     NotifyPropertyChanged();
-                    _arduino.PositionReady = _positionReady;
+                    _arduino.PositionReady = (byte)_positionReady;
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Servo setting
         /// </summary>
-        public byte PositionDepressed
+        public int PositionDepressed
         {
             get { return _positionDepressed; }
             set
@@ -137,7 +137,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _positionDepressed = value;
                     NotifyPropertyChanged();
-                    _arduino.PositionDepressed = _positionDepressed;
+                    _arduino.PositionDepressed = (byte)_positionDepressed;
                 }
             }
         }
@@ -158,13 +158,13 @@ namespace AmadeusW.Shutterino.App.Settings
 
         #region Backing Fields
 
-        private ushort _portNumber;
         private string _hostName;
-        private byte _pinNumber;
-        private byte _positionOff;
-        private byte _positionIdle;
-        private byte _positionReady;
-        private byte _positionDepressed;
+        private int _portNumber;
+        private int _pinNumber;
+        private int _positionOff;
+        private int _positionIdle;
+        private int _positionReady;
+        private int _positionDepressed;
         private int _pressTime;
 
         #endregion
