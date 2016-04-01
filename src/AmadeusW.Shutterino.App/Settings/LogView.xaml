@@ -29,7 +29,7 @@
         <ToggleButton
             Command="{Binding Path=ToggleCommand}"
             Grid.Row="0" Grid.Column="1"
-            IsChecked="{Binding Path=Active}" />
+            IsChecked="{Binding Path=Active, Mode=TwoWay}" />
 
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
