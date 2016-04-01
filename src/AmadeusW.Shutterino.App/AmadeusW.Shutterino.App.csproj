@@ -104,6 +104,7 @@
     <Compile Include="Features\LocationFeature.cs" />
     <Compile Include="Features\AccelerometerFeature.cs" />
     <Compile Include="Features\PhoneFeature.cs" />
+    <Compile Include="Features\LogFeature.cs" />
     <Compile Include="Features\TimerFeature.cs" />
     <Compile Include="Helpers\DebugConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -144,6 +145,7 @@
     </Compile>
     <Compile Include="Settings\TimerViewModel.cs" />
     <Compile Include="Settings\ToggleCommand.cs" />
+    <Compile Include="Settings\UploadCommand.cs" />
     <Compile Include="ShutterinoLogic.cs" />
   </ItemGroup>
   <ItemGroup>

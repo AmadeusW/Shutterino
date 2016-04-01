@@ -20,6 +20,7 @@ namespace AmadeusW.Shutterino.App
         CameraFeature _camera = new CameraFeature();
         TimerFeature _timer = new TimerFeature();
         ArduinoFeature _arduino = new ArduinoFeature();
+        LogFeature _log = new LogFeature();
 
         public CoreDispatcher Dispatcher { get; }
         public CaptureElement CameraPreviewControl { get; set; }
@@ -61,7 +62,8 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.CleanupAsync(),
                 _camera.CleanupAsync(),
                 _timer.CleanupAsync(),
-                _arduino.CleanupAsync()
+                _arduino.CleanupAsync(),
+                _log.CleanupAsync()
             );
             _initialized = false;
         }
@@ -77,7 +79,8 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.InitializeAsync(),
                 _camera.InitializeAsync(),
                 _timer.InitializeAsync(),
-                _arduino.InitializeAsync()
+                _arduino.InitializeAsync(),
+                _log.InitializeAsync()
             );
 
             _initialized = true;
@@ -91,7 +94,8 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.ActivateAsync(),
                 _camera.ActivateAsync(),
                 _timer.ActivateAsync(),
-                _arduino.ActivateAsync()
+                _arduino.ActivateAsync(),
+                _log.ActivateAsync()
             );
         }
 
@@ -103,7 +107,8 @@ namespace AmadeusW.Shutterino.App
                 _accelerometer.DeactivateAsync(),
                 _camera.DeactivateAsync(),
                 _timer.DeactivateAsync(),
-                _arduino.DeactivateAsync()
+                _arduino.DeactivateAsync(),
+                _log.DeactivateAsync()
             );
         }
 
@@ -126,7 +131,7 @@ namespace AmadeusW.Shutterino.App
 
         internal async Task SuggestPhotoOpportunity(AFeature sender)
         {
-            // log sender.ToString();
+            _log.LogPhotoTaken(sender.ToString());
             try
             {
                 await TakePhoto();
