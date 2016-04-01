@@ -71,25 +71,17 @@ namespace AmadeusW.Shutterino.App.Features
             if (!IsAvailable || _isActuallyActive)
                 return;
 
-            try
+            // Activate only if user wants to
+            if (IsActive)
             {
-                // Activate only if user wants to
-                if (IsActive)
+                if (_displayInformation != null)
                 {
-                    if (_displayInformation != null)
-                    {
-                        //_displayInformation.OrientationChanged += displayInformation_OrientationChanged;
-                    }
-
-                    _accelerometer.ReportInterval = 10;
-                    _accelerometer.ReadingChanged += _accelerometer_ReadingChanged;
-                    _isActuallyActive = true;
+                    //_displayInformation.OrientationChanged += displayInformation_OrientationChanged;
                 }
-            }
-            catch (Exception ex)
-            {
-                Status = ex.ToString();
-                IsActive = false;
+
+                _accelerometer.ReportInterval = 10;
+                _accelerometer.ReadingChanged += _accelerometer_ReadingChanged;
+                _isActuallyActive = true;
             }
         }
 

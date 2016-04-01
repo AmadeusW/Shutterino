@@ -59,23 +59,15 @@ namespace AmadeusW.Shutterino.App.Features
             if (!IsAvailable || _isActuallyActive)
                 return;
 
-            try
+            // Activate only if user wants to
+            if (IsActive)
             {
-                // Activate only if user wants to
-                if (IsActive)
-                {
-                    _geoLocator = new Geolocator();
-                    //_geoLocator.ReportInterval = 2000;
-                    _geoLocator.MovementThreshold = Offset;
-                    _geoLocator.DesiredAccuracy = PositionAccuracy.High;
-                    _geoLocator.PositionChanged += _geoLocator_PositionChanged;
-                    _isActuallyActive = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Status = ex.ToString();
-                IsActive = false;
+                _geoLocator = new Geolocator();
+                //_geoLocator.ReportInterval = 2000;
+                _geoLocator.MovementThreshold = Offset;
+                _geoLocator.DesiredAccuracy = PositionAccuracy.High;
+                _geoLocator.PositionChanged += _geoLocator_PositionChanged;
+                _isActuallyActive = true;
             }
         }
 
