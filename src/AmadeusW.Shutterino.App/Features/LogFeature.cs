@@ -37,6 +37,9 @@ namespace AmadeusW.Shutterino.App.Features
 
             try
             {
+                if (String.IsNullOrEmpty(reason))
+                    reason = "Manual";
+
                 var date = DateTime.UtcNow;
                 var cameraFileName = CameraFeature.Instance.PhotoCount;
 

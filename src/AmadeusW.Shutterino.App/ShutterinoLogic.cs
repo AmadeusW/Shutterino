@@ -131,7 +131,7 @@ namespace AmadeusW.Shutterino.App
 
         internal async Task SuggestPhotoOpportunity(AFeature sender)
         {
-            _log.LogPhotoTaken(sender.ToString());
+            _log.LogPhotoTaken(sender?.ToString());
             try
             {
                 await TakePhoto();
