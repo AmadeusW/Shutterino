@@ -33,7 +33,7 @@ namespace AmadeusW.Shutterino.App.Features
 
             LastSync = (string)(_localSettings.Values["log-LogStart"] ?? "never");
             PhotoCount = (int)(_localSettings.Values["log-PhotoCount"] ?? 0);
-            IsActive = (bool)(_localSettings.Values["timer-IsActive"] ?? false);
+            IsActive = (bool)(_localSettings.Values["log-IsActive"] ?? false);
         }
 
         public void LogPhotoTaken(string reason)
@@ -71,7 +71,7 @@ namespace AmadeusW.Shutterino.App.Features
                     appendHeader();
                 }
                 loggedData.Add(
-                    $"{date},{cameraFileName},{reason},{accelerometer},{pitch},{roll},{pitchOffset},{rollOffset},{targetPitch},{targetRoll},{precision},{location},{distance},{longitude},{latitude},{altitude},{camera},{timer},{arduino}\n"
+                    $"{date},{cameraFileName},{reason},{accelerometer},{pitch},{roll},{pitchOffset},{rollOffset},{targetPitch},{targetRoll},{precision},{location},{distance},{longitude},{latitude},{altitude},{camera},{timer},{arduino}"
                 );
                 PhotoCount++;
             }
@@ -112,11 +112,11 @@ namespace AmadeusW.Shutterino.App.Features
         private void appendHeader()
         {
             loggedData.Add(
-                $"date,cameraFileName,reason,accelerometer,pitch,roll,pitchOffset,rollOffset,targetPitch,targetRoll,precision,location,distance,longitude,latitude,altitude,camera,timer,arduino\n"
+                $"date,cameraFileName,reason,accelerometer,pitch,roll,pitchOffset,rollOffset,targetPitch,targetRoll,precision,location,distance,longitude,latitude,altitude,camera,timer,arduino"
             );
         }
 
-        public override async Task ActivateAsync()
+        protected override async Task ActivateAsyncCore()
         {
             if (!IsAvailable || _isActuallyActive)
                 return;
@@ -128,7 +128,7 @@ namespace AmadeusW.Shutterino.App.Features
             }
         }
 
-        public override async Task CleanupAsync()
+        protected override async Task CleanupAsyncCore()
         {
             
             _localSettings.Values["log-LogStart"] = LastSync;
@@ -152,7 +152,7 @@ namespace AmadeusW.Shutterino.App.Features
             }
         }
 
-        public override async Task DeactivateAsync()
+        protected override async Task DeactivateAsyncCore()
         {
             if (!IsAvailable || !_isActuallyActive)
                 return;
@@ -162,7 +162,7 @@ namespace AmadeusW.Shutterino.App.Features
             _isActuallyActive = false;
         }
 
-        public override async Task InitializeAsync()
+        protected override async Task InitializeAsyncCore()
         {
             // nothing to initialize
         }

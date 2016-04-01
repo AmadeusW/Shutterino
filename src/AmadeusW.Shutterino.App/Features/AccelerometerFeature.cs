@@ -17,8 +17,8 @@ namespace AmadeusW.Shutterino.App.Features
         public int RateLimiter { get; internal set; }
 
         // Readings
-        public double Roll => IsActive ? _currentReading.AccelerationX : 0d;
-        public double Pitch => IsActive ? _currentReading.AccelerationZ : 0d;
+        public double Roll => _isActuallyActive ? _currentReading.AccelerationX /** Math.Sign(_currentReading.AccelerationY)*/ : 0d;
+        public double Pitch => _isActuallyActive ? _currentReading.AccelerationZ : 0d;
 
         public double TargetRoll => CapturedRoll + RollOffset;
         public double TargetPitch => CapturedPitch + PitchOffset;
@@ -26,12 +26,8 @@ namespace AmadeusW.Shutterino.App.Features
         public double CapturedRoll { get; private set; }
         public double CapturedPitch { get; private set; }
 
-        public double DeltaRoll => Math.Abs(TargetRoll - CapturedPitch);
-        public double DeltaPitch => Math.Abs(TargetPitch - CapturedPitch);
-
-        public const double HIGH_PRECISION = 0.01;
-        public const double LOW_PRECISION = 0.05;
-        public const double HINT_PRECISION = 0.1;
+        public double DeltaRoll => Math.Abs(TargetRoll - Roll);
+        public double DeltaPitch => Math.Abs(TargetPitch - Pitch);
 
         private readonly Accelerometer _accelerometer = Accelerometer.GetDefault();
         private AccelerometerReading _currentReading = default(AccelerometerReading);
@@ -47,22 +43,22 @@ namespace AmadeusW.Shutterino.App.Features
             Instance = this;
             IsAvailable = _accelerometer != null;
 
-            Precision = (double)(_localSettings.Values["accelerometer-Precision"] ?? LOW_PRECISION);
+            Precision = (double)(_localSettings.Values["accelerometer-Precision"] ?? 0.05);
             RollOffset = (double)(_localSettings.Values["accelerometer-RollOffset"] ?? 0d);
             PitchOffset = (double)(_localSettings.Values["accelerometer-PitchOffset"] ?? 0d);
             RateLimiter = (int)(_localSettings.Values["accelerometer-RateLimiter"] ?? Convert.ToInt32(TimeSpan.TicksPerSecond * 2));
             IsActive = (bool)(_localSettings.Values["accelerometer-IsActive"] ?? false);
         }
 
-        public async override Task DeactivateAsync()
+        protected async override Task DeactivateAsyncCore()
         {
             if (!IsAvailable || !_isActuallyActive)
                 return;
 
             if (_displayInformation != null)
             {
-                _displayInformation.OrientationChanged -= displayInformation_OrientationChanged;
-                _accelerometer.ReadingTransform = _displayInformation.CurrentOrientation;
+                //_displayInformation.OrientationChanged -= displayInformation_OrientationChanged;
+                //_accelerometer.ReadingTransform = _displayInformation.CurrentOrientation;
             }
 
             _accelerometer.ReportInterval = 0;
@@ -70,7 +66,7 @@ namespace AmadeusW.Shutterino.App.Features
             _isActuallyActive = false;
         }
 
-        public async override Task ActivateAsync()
+        protected async override Task ActivateAsyncCore()
         {
             if (!IsAvailable || _isActuallyActive)
                 return;
@@ -80,10 +76,10 @@ namespace AmadeusW.Shutterino.App.Features
             {
                 if (_displayInformation != null)
                 {
-                    _displayInformation.OrientationChanged += displayInformation_OrientationChanged;
+                    //_displayInformation.OrientationChanged += displayInformation_OrientationChanged;
                 }
 
-                _accelerometer.ReportInterval = 20;
+                _accelerometer.ReportInterval = 10;
                 _accelerometer.ReadingChanged += _accelerometer_ReadingChanged;
                 _isActuallyActive = true;
             }
@@ -108,6 +104,7 @@ namespace AmadeusW.Shutterino.App.Features
                     && DeltaRoll < Precision
                     && DeltaPitch < Precision)
                 {
+                    Callibrate(); // record current reading for future reference
                     _lastPhotoTime = _currentReading.Timestamp.UtcTicks;
                     Task.Run(async () => await ShutterinoLogic.Instance.SuggestPhotoOpportunity(this));
                 }
@@ -125,21 +122,15 @@ namespace AmadeusW.Shutterino.App.Features
             CapturedPitch = Pitch;
         }
 
-        public bool IsPhotoOpportunity()
-        {
-            return DeltaRoll < Precision
-                && DeltaPitch < Precision;
-        }
-
-        public override async Task InitializeAsync()
+        protected override async Task InitializeAsyncCore()
         {
             // There is nothing to do
             return;
         }
 
-        public override async Task CleanupAsync()
+        protected override async Task CleanupAsyncCore()
         {
-            await DeactivateAsync();
+            await DeactivateAsyncCore();
 
             _localSettings.Values["accelerometer-Precision"] = Precision;
             _localSettings.Values["accelerometer-RollOffset"] = RollOffset;

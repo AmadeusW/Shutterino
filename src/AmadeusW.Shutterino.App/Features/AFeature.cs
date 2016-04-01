@@ -74,10 +74,66 @@ namespace AmadeusW.Shutterino.App.Features
             }
         }
 
-        public abstract Task InitializeAsync();
-        public abstract Task ActivateAsync();
-        public abstract Task DeactivateAsync();
-        public abstract Task CleanupAsync();
+        public async Task InitializeAsync()
+        {
+            try
+            {
+                await InitializeAsyncCore();
+            }
+            catch (Exception ex)
+            {
+                // TODO: log with App Insights
+                Status = "Init error: " + ex.ToString();
+                IsActive = false;
+            }
+        }
+
+        public async Task CleanupAsync()
+        {
+            try
+            {
+                await CleanupAsyncCore();
+            }
+            catch (Exception ex)
+            {
+                // TODO: log with App Insights
+                Status = "Cleanup error: " + ex.ToString();
+                IsActive = false;
+            }
+        }
+
+        public async Task ActivateAsync()
+        {
+            try
+            {
+                await ActivateAsyncCore();
+            }
+            catch (Exception ex)
+            {
+                // TODO: log with App Insights
+                Status = "Activate error: " + ex.ToString();
+                IsActive = false;
+            }
+        }
+
+        public async Task DeactivateAsync()
+        {
+            try
+            {
+                await DeactivateAsyncCore();
+            }
+            catch (Exception ex)
+            {
+                // TODO: log with App Insights
+                Status = "Deactivate error: " + ex.ToString();
+                IsActive = false;
+            }
+        }
+
+        protected abstract Task InitializeAsyncCore();
+        protected abstract Task ActivateAsyncCore();
+        protected abstract Task DeactivateAsyncCore();
+        protected abstract Task CleanupAsyncCore();
 
         protected ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 

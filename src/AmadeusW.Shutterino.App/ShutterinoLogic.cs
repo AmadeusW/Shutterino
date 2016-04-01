@@ -29,25 +29,28 @@ namespace AmadeusW.Shutterino.App
         public bool TakesPhotos { get; internal set; }
 
         private bool _initialized;
+        private Func<Task> PhotoTakenCallback;
 
-        internal static ShutterinoLogic Get(CoreDispatcher dispatcher, CaptureElement previewControl)
+        internal static ShutterinoLogic Get(CoreDispatcher dispatcher, CaptureElement previewControl, Func<Task> photoTakenCallback)
         {
             if (Instance != null)
             {
                 Instance.CameraPreviewControl = previewControl;
+                Instance.PhotoTakenCallback = photoTakenCallback;
                 return Instance;
             }
             else
             {
-                return new ShutterinoLogic(dispatcher, previewControl);
+                return new ShutterinoLogic(dispatcher, previewControl, photoTakenCallback);
             }
         }
 
-        private ShutterinoLogic(CoreDispatcher dispatcher, CaptureElement cameraPreviewControl)
+        private ShutterinoLogic(CoreDispatcher dispatcher, CaptureElement cameraPreviewControl, Func<Task> photoTakenCallback)
         {
             Instance = this;
             Dispatcher = dispatcher;
             CameraPreviewControl = cameraPreviewControl;
+            PhotoTakenCallback = photoTakenCallback;
         }
         
         public async Task CleanUpAsync()
@@ -117,7 +120,7 @@ namespace AmadeusW.Shutterino.App
             _log.LogPhotoTaken(reason);
 
             Task<bool> servoTask = null;
-            if (_arduino != null)
+            if (_arduino?.IsActive == true)
             {
                 servoTask = _arduino.MoveServo();
             }
@@ -133,6 +136,17 @@ namespace AmadeusW.Shutterino.App
 
         internal async Task SuggestPhotoOpportunity(AFeature sender)
         {
+            if (!TakesPhotos)
+                return;
+
+            try
+            {
+                // Animate the button for programatically-triggered photos.
+                if (sender != null)
+                    await PhotoTakenCallback?.Invoke();
+            }
+            catch { } // swallow 
+
             try
             {
                 await TakePhoto(sender?.ToString());
@@ -147,11 +161,6 @@ namespace AmadeusW.Shutterino.App
         internal void Callibrate()
         {
             _accelerometer.Callibrate();
-        }
-
-        private bool IsPhotoOpportunity()
-        {
-            return (AccelerometerFeature.Instance?.IsPhotoOpportunity()).Value;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _precision = value;
                     NotifyPropertyChanged();
-                    _accelerometer.Precision = _precision / 100;
+                    _accelerometer.Precision = _precision / 100d;
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _rollOffset = value;
                     NotifyPropertyChanged();
-                    _accelerometer.RollOffset = _rollOffset / 100;
+                    _accelerometer.RollOffset = _rollOffset / 100d;
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace AmadeusW.Shutterino.App.Settings
                 {
                     _pitchOffset = value;
                     NotifyPropertyChanged();
-                    _accelerometer.PitchOffset = _pitchOffset / 100;
+                    _accelerometer.PitchOffset = _pitchOffset / 100d;
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace AmadeusW.Shutterino.App.Settings
             _precision = (int)(_accelerometer.Precision * 100);
             _rollOffset = (int)(_accelerometer.RollOffset * 100);
             _pitchOffset = (int)(_accelerometer.PitchOffset * 100);
-            _rateLimiter = (int)(_accelerometer.RateLimiter / TimeSpan.TicksPerMillisecond);
+            _rateLimiter = (int)(_accelerometer.RateLimiter / (double)TimeSpan.TicksPerMillisecond);
         }
 
         #region Backing Fields

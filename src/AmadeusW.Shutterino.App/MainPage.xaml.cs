@@ -24,6 +24,7 @@ using Windows.Media.Capture;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI;
 using AmadeusW.Shutterino.App.Features;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -41,13 +42,14 @@ namespace AmadeusW.Shutterino.App
         SolidColorBrush lowPrecisionBrush = new SolidColorBrush(Colors.Yellow);
         SolidColorBrush hintPrecisionBrush = new SolidColorBrush(Colors.Orange);
         SolidColorBrush noPrecisionBrush = new SolidColorBrush(Colors.Red);
+        private bool _initializedShapePosition;
 
         #region Constructor, lifecycle and navigation
 
         public MainPage()
         {
             this.InitializeComponent();
-            _logic = ShutterinoLogic.Get(Dispatcher, PreviewControl);
+            _logic = ShutterinoLogic.Get(Dispatcher, PreviewControl, PhotoTakenCallback);
 
             // Do not cache the state of the UI when suspending/navigating
             NavigationCacheMode = NavigationCacheMode.Disabled;
@@ -109,8 +111,18 @@ namespace AmadeusW.Shutterino.App
 
         #endregion Constructor, lifecycle and navigation
 
+        private async Task PhotoTakenCallback()
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                PhotoNowButton.Background = highPrecisionBrush;
+                await Task.Delay(200);
+                PhotoNowButton.Background = Resources["TranslucentBlackBrush"] as SolidColorBrush;
+            });
+        }
+
         // TODO: use a viewmodel for all this:
-        private void PhotoButton_Checked(object sender, RoutedEventArgs e)
+        private void PhotoButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (PhotoButton.IsChecked.Value)
             {
@@ -132,29 +144,6 @@ namespace AmadeusW.Shutterino.App
             _logic.Callibrate();
         }
 
-        /*
-        private async void ArduinoButton_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (ArduinoButton.IsChecked.Value)
-                {
-                    var status = await _logic.initializeArduino(4, 30, 90, 10, "192.168.137.164", 3030);
-                    System.Diagnostics.Debug.WriteLine("Connection: " + status.ToString());
-                }
-                else
-                {
-                    var status = await _logic.disableArduino();
-                    System.Diagnostics.Debug.WriteLine("Disconnecting: " + status.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                System.Diagnostics.Debugger.Break();
-            }
-        }*/
-
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
@@ -168,16 +157,6 @@ namespace AmadeusW.Shutterino.App
                 currentRoll.Visibility = Visibility.Visible;
                 capturedRoll.Visibility = Visibility.Visible;
                 targetRoll.Visibility = Visibility.Visible;
-
-                var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
-                var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2, currentRoll.ActualHeight / 2);
-
-                Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
-                Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
-                Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
-                Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
-                Canvas.SetLeft(targetRoll, canvasMiddle.X - rollCanvasMiddle.X);
-                Canvas.SetTop(targetRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
             }
             else
             {
@@ -189,8 +168,22 @@ namespace AmadeusW.Shutterino.App
 
         private void placeShapes()
         {
-            var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
-            var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2, currentRoll.ActualHeight / 2);
+            var canvasMiddle = new Point(visualization.ActualWidth / 2d, visualization.ActualHeight / 2d);
+            var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2d, currentRoll.ActualHeight / 2d);
+
+            if (!_initializedShapePosition)
+            {
+                if (visualization.ActualWidth != 0)
+                {
+                    Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                    Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                    Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                    Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                    Canvas.SetLeft(targetRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                    Canvas.SetTop(targetRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                    _initializedShapePosition = true;
+                }
+            }
 
             var scaleY = canvasMiddle.Y;
             var scaleX = canvasMiddle.X;
@@ -207,20 +200,21 @@ namespace AmadeusW.Shutterino.App
 
             // Rotation shows roll (X)
             currentRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.Roll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
-            targetRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
+            targetRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.TargetRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
             if (shouldShowPreviousReading)
                 capturedRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
 
             currentPitch.Stroke =
-                accelerometer.DeltaPitch < AccelerometerFeature.HIGH_PRECISION ? highPrecisionBrush
-                : accelerometer.DeltaPitch < AccelerometerFeature.LOW_PRECISION ? lowPrecisionBrush
-                : accelerometer.DeltaPitch < AccelerometerFeature.HINT_PRECISION ? hintPrecisionBrush
+                accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision ? highPrecisionBrush
+                : accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision * 2 ? lowPrecisionBrush
+                : accelerometer.DeltaPitch < AccelerometerFeature.Instance.Precision * 4 ? hintPrecisionBrush
                 : noPrecisionBrush;
             currentRollRectangle.Stroke =
-                accelerometer.DeltaRoll < AccelerometerFeature.HIGH_PRECISION ? highPrecisionBrush
-                : accelerometer.DeltaRoll < AccelerometerFeature.LOW_PRECISION ? lowPrecisionBrush
-                : accelerometer.DeltaRoll < AccelerometerFeature.HINT_PRECISION ? hintPrecisionBrush
+                accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision ? highPrecisionBrush
+                : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 2 ? lowPrecisionBrush
+                : accelerometer.DeltaRoll < AccelerometerFeature.Instance.Precision * 4 ? hintPrecisionBrush
                 : noPrecisionBrush;
         }
+
     }
 }

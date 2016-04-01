@@ -31,6 +31,8 @@ namespace AmadeusW.Shutterino.App.Settings
                 Available = Device.IsAvailable;
             if (e.PropertyName == nameof(Device.IsActive))
                 Active = Device.IsActive;
+            if (e.PropertyName == nameof(Device.Status))
+                Status = Device.Status;
         }
 
         public ICommand ToggleCommand { get; }
@@ -81,6 +83,8 @@ namespace AmadeusW.Shutterino.App.Settings
                 device = value;
             }
         }
+
+        public string Status { get; internal set; }
 
         #region Backing fields
 
