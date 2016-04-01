@@ -37,6 +37,8 @@ namespace AmadeusW.Shutterino.App.Features
         public CameraFeature() : base()
         {
             Instance = this;
+
+            _savedPhotosCount = (int)(_localSettings.Values["camera-photoCount"] ?? 0);
         }
 
         public async override Task DeactivateAsync()
@@ -208,6 +210,7 @@ namespace AmadeusW.Shutterino.App.Features
                 var photoOrientation = PhotoOrientation.Rotate90;// ConvertOrientationToPhotoOrientation(DOrientation.Instance.DeviceOrientation);
                 _savedPhotosCount++;
                 await ReencodeAndSavePhotoAsync(stream, $"Shutterino {_savedPhotosCount}.jpg", photoOrientation);
+                _localSettings.Values["camera-photoCount"] = _savedPhotosCount;
             }
             catch (Exception ex)
             {
