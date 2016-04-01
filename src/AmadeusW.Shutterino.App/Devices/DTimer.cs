@@ -77,7 +77,7 @@ namespace AmadeusW.Shutterino.App.Devices
             switch (_currentDelayId)
             {
                 case 1:
-                    if (Delay2Active)
+                    if (Delay2Active && Delay2.TotalSeconds > 0)
                     {
                         _photoTakingTimer.Interval = Delay2;
                         _currentDelayId = 2;
@@ -89,7 +89,7 @@ namespace AmadeusW.Shutterino.App.Devices
                     }
                     break;
                 case 2:
-                    if (Delay3Active)
+                    if (Delay3Active && Delay3.TotalSeconds > 0)
                     {
                         _photoTakingTimer.Interval = Delay3;
                         _currentDelayId = 3;
@@ -101,7 +101,7 @@ namespace AmadeusW.Shutterino.App.Devices
                     }
                     break;
                 case 3:
-                    if (Delay4Active)
+                    if (Delay4Active && Delay4.TotalSeconds > 0)
                     {
                         _photoTakingTimer.Interval = Delay4;
                         _currentDelayId = 4;
