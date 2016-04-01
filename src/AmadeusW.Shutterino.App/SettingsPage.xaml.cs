@@ -64,11 +64,11 @@ namespace AmadeusW.Shutterino.App
         {
             ListBox settingsListBox = sender as ListBox;
             var s = settingsListBox.SelectedItem as ShutterinoSettingDefinition;
-            if (s != null && s.DeviceViewModel.Available)
+            if (s?.DeviceViewModel?.Available == true)
             {
                 SettingsFrame.Navigate(s.ViewType);
                 // TODO: this should be properly done with binding
-                StatusBlock.Text = s.DeviceViewModel.Status;
+                StatusBlock.Text = s.DeviceViewModel.Status ?? String.Empty;
             }
         }
     }
