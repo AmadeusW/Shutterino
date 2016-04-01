@@ -20,6 +20,7 @@ namespace AmadeusW.Shutterino.App.Settings
             PositionReady = _arduino.PositionReady;
             PositionDepressed = _arduino.PositionDepressed;
             PinNumber = _arduino.PinNumber;
+            PressTime = _arduino.PressTime;
         }
 
         /// <summary>
@@ -141,6 +142,20 @@ namespace AmadeusW.Shutterino.App.Settings
             }
         }
 
+        public int PressTime
+        {
+            get { return _pressTime; }
+            set
+            {
+                if (_pressTime != value)
+                {
+                    _pressTime = value;
+                    NotifyPropertyChanged();
+                    _arduino.PressTime = _pressTime;
+                }
+            }
+        }
+
         #region Backing Fields
 
         private ushort _portNumber;
@@ -150,6 +165,7 @@ namespace AmadeusW.Shutterino.App.Settings
         private byte _positionIdle;
         private byte _positionReady;
         private byte _positionDepressed;
+        private int _pressTime;
 
         #endregion
 

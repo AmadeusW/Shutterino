@@ -19,6 +19,7 @@ namespace AmadeusW.Shutterino.App.Devices
         public byte PositionIdle { get; internal set; } = 30;
         public byte PositionReady { get; internal set; } = 40;
         public byte PositionDepressed { get; internal set; } = 50;
+        public int PressTime { get; internal set; } = 100;
 
         public override string ToString() => "Arduino";
 
@@ -58,7 +59,7 @@ namespace AmadeusW.Shutterino.App.Devices
 
         public override async Task InitializeAsync()
         {
-            _arduino = new ArduinoConnection(PinNumber, PositionOff, PositionIdle, PositionReady, PositionDepressed);
+            _arduino = new ArduinoConnection(PinNumber, PositionOff, PositionIdle, PositionReady, PositionDepressed, PressTime);
             return;
         }
 
