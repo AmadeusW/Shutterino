@@ -112,9 +112,9 @@ namespace AmadeusW.Shutterino.App
             );
         }
 
-        private async Task TakePhoto()
+        private async Task TakePhoto(string reason)
         {
-            _log.LogPhotoTaken(sender?.ToString());
+            _log.LogPhotoTaken(reason);
 
             Task<bool> servoTask = null;
             if (_arduino != null)
@@ -135,7 +135,7 @@ namespace AmadeusW.Shutterino.App
         {
             try
             {
-                await TakePhoto();
+                await TakePhoto(sender?.ToString());
             }
             catch (Exception ex)
             {
