@@ -67,7 +67,7 @@ namespace AmadeusW.Shutterino.Arduino
             if (_arduino != null)
             {
                 _arduino.analogWrite(_servoPin, _servoOff);
-                await Task.Delay(100);
+                await Task.Delay(_pressTime);
             }
             _connection?.end();
             _arduino?.Dispose();
@@ -82,7 +82,7 @@ namespace AmadeusW.Shutterino.Arduino
                 _arduino.analogWrite(_servoPin, _servoPressed);
                 await Task.Delay(_pressTime);
                 _arduino.analogWrite(_servoPin, _servoIdle);
-                await Task.Delay(50);
+                await Task.Delay(_pressTime);
                 return true;
             }
             return false;
