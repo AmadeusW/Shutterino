@@ -59,7 +59,8 @@ namespace AmadeusW.Shutterino.App
                 _phone.CleanupAsync(),
                 _location.CleanupAsync(),
                 _accelerometer.CleanupAsync(),
-                _camera.CleanupAsync()
+                _camera.CleanupAsync(),
+                _timer.CleanupAsync(),
             );
             _initialized = false;
         }
@@ -73,7 +74,8 @@ namespace AmadeusW.Shutterino.App
                 _phone.InitializeAsync(),
                 _location.InitializeAsync(),
                 _accelerometer.InitializeAsync(),
-                _camera.InitializeAsync()
+                _camera.InitializeAsync(),
+                _timer.InitializeAsync(),
             );
 
             _initialized = true;
@@ -85,7 +87,8 @@ namespace AmadeusW.Shutterino.App
                 _phone.ActivateAsync(),
                 _location.ActivateAsync(),
                 _accelerometer.ActivateAsync(),
-                _camera.ActivateAsync()
+                _camera.ActivateAsync(),
+                _timer.ActivateAsync(),
             );
         }
 
@@ -95,7 +98,8 @@ namespace AmadeusW.Shutterino.App
                 _phone.DeactivateAsync(),
                 _location.DeactivateAsync(),
                 _accelerometer.DeactivateAsync(),
-                _camera.DeactivateAsync()
+                _camera.DeactivateAsync(),
+                _timer.DeactivateAsync(),
             );
         }
 
