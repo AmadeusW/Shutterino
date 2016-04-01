@@ -99,7 +99,7 @@ namespace AmadeusW.Shutterino.App.Settings
             {
                 if (_positionReady != value)
                 {
-                    _hostName = value;
+                    _positionReady = value;
                     NotifyPropertyChanged();
                     _arduino.PositionReady = _positionReady;
                 }

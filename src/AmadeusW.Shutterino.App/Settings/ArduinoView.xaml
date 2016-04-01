@@ -31,48 +31,68 @@
             Text="Active" />
         <ToggleButton
             Grid.Row="0" Grid.Column="1"
-            IsChecked="{Binding Path=Active}" />
+            IsChecked="{Binding Path=Active, Mode=TwoWay}" />
 
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
             Text="Host" />
         <TextBox
             Grid.Row="1" Grid.Column="1"
-            Text="{Binding Path=HostName}" />
+            Text="{Binding Path=HostName, Mode=TwoWay}" />
         
         <TextBlock 
             Grid.Row="2" Grid.Column="0"
             Text="Port" />
         <TextBox
             Grid.Row="2" Grid.Column="1"
-            Text="{Binding Path=PortNumber}" />
+            Text="{Binding Path=PortNumber, Mode=TwoWay}" />
 
         <TextBlock 
             Grid.Row="3" Grid.Column="0"
             Text="Servo: Off" />
+        <Slider 
+            Grid.Column="1" Grid.Row="3" 
+            Value="{Binding Path=PositionOff, Mode=TwoWay}" 
+            Maximum="160" Minimum="0" SmallChange="5" LargeChange="5" TickFrequency="10"/>
         <TextBox
-            Grid.Row="3" Grid.Column="1"
-            Text="{Binding Path=PositionOff}" />
+            Grid.Row="3" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=PositionOff, Mode=TwoWay}" />
 
         <TextBlock 
             Grid.Row="4" Grid.Column="0"
             Text="Servo: Idle" />
+        <Slider 
+            Grid.Column="1" Grid.Row="3" 
+            Value="{Binding Path=PositionIdle, Mode=TwoWay}" 
+            Maximum="160" Minimum="0" SmallChange="5" LargeChange="5" TickFrequency="10"/>
         <TextBox
-            Grid.Row="4" Grid.Column="1"
-            Text="{Binding Path=PositionIdle}" />
+            Grid.Row="3" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=PositionIdle, Mode=TwoWay}" />
 
         <TextBlock 
             Grid.Row="5" Grid.Column="0"
             Text="Servo: Ready" />
+        <Slider 
+            Grid.Column="1" Grid.Row="3" 
+            Value="{Binding Path=PositionReady, Mode=TwoWay}" 
+            Maximum="160" Minimum="0" SmallChange="5" LargeChange="5" TickFrequency="10"/>
         <TextBox
-            Grid.Row="5" Grid.Column="1"
-            Text="{Binding Path=PositionReady}" />
+            Grid.Row="3" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=PositionReady, Mode=TwoWay}" />
 
         <TextBlock 
             Grid.Row="6" Grid.Column="0"
             Text="Servo: Depressed" />
+        <Slider 
+            Grid.Column="1" Grid.Row="3" 
+            Value="{Binding Path=PositionDepressed, Mode=TwoWay}" 
+            Maximum="160" Minimum="0" SmallChange="5" LargeChange="5" TickFrequency="10"/>
         <TextBox
-            Grid.Row="6" Grid.Column="1"
-            Text="{Binding Path=PositionDeressed}" />
+            Grid.Row="3" Grid.Column="2"
+            InputScope="Number"
+            Text="{Binding Path=PositionDepressed, Mode=TwoWay}" />
     </Grid>
 </Page>
