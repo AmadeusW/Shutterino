@@ -35,7 +35,7 @@
         <ToggleButton
             Command="{Binding Path=ToggleCommand}"
             Grid.Row="0" Grid.Column="1"
-            IsChecked="{Binding Path=Active, Converter={StaticResource DC}}" />
+            IsChecked="{Binding Path=Active}" />
         
         <TextBlock 
             Grid.Row="1" Grid.Column="0"
