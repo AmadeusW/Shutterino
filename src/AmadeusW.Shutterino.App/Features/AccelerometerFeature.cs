@@ -106,7 +106,6 @@ namespace AmadeusW.Shutterino.App.Features
             try
             {
                 _currentReading = args.Reading;
-                System.Diagnostics.Debug.WriteLine($"Reading: {_currentReading.AccelerationX:f3}, {_currentReading.AccelerationY:f3}, {_currentReading.AccelerationZ:f3}");
 
                 if (ShutterinoLogic.Instance.TakesPhotos
                     && _currentReading.Timestamp.UtcTicks > _lastPhotoTime + RateLimiter
