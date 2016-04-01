@@ -59,7 +59,7 @@ namespace AmadeusW.Shutterino.App
 
         private void _timer_Tick(object sender, object e)
         {
-            if (Devices.DAccelerometer.Instance.IsAvailable)
+            if (Devices.DAccelerometer.Instance.IsAvailable &&  Devices.DAccelerometer.Instance.IsActive)
                 placeShapes();
         }
 
@@ -163,15 +163,28 @@ namespace AmadeusW.Shutterino.App
 
         private void initializeCanvas()
         {
-            var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
-            var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2, currentRoll.ActualHeight / 2);
+            if (Devices.DAccelerometer.Instance.IsActive)
+            {
+                currentRoll.Visibility = Visibility.Visible;
+                capturedRoll.Visibility = Visibility.Visible;
+                targetRoll.Visibility = Visibility.Visible;
 
-            Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
-            Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
-            Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
-            Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
-            Canvas.SetLeft(targetRoll, canvasMiddle.X - rollCanvasMiddle.X);
-            Canvas.SetTop(targetRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                var canvasMiddle = new Point(visualization.ActualWidth / 2, visualization.ActualHeight / 2);
+                var rollCanvasMiddle = new Point(currentRoll.ActualWidth / 2, currentRoll.ActualHeight / 2);
+
+                Canvas.SetLeft(currentRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                Canvas.SetTop(currentRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                Canvas.SetLeft(capturedRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                Canvas.SetTop(capturedRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+                Canvas.SetLeft(targetRoll, canvasMiddle.X - rollCanvasMiddle.X);
+                Canvas.SetTop(targetRoll, canvasMiddle.Y - rollCanvasMiddle.Y);
+            }
+            else
+            {
+                currentRoll.Visibility = Visibility.Collapsed;
+                capturedRoll.Visibility = Visibility.Collapsed;
+                targetRoll.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void placeShapes()
