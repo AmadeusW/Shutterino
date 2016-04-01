@@ -27,8 +27,7 @@ namespace AmadeusW.Shutterino.App.Features
 
         private bool _externalCamera;
         private bool _mirroringPreview;
-
-        private int _savedPhotosCount = 0;
+        public int PhotoCount { get; set; }
 
         public static CameraFeature Instance { get; private set; }
 
@@ -38,7 +37,7 @@ namespace AmadeusW.Shutterino.App.Features
         {
             Instance = this;
 
-            _savedPhotosCount = (int)(_localSettings.Values["camera-photoCount"] ?? 0);
+            PhotoCount = (int)(_localSettings.Values["camera-PhotoCount"] ?? 0);
         }
 
         public async override Task DeactivateAsync()
@@ -208,9 +207,9 @@ namespace AmadeusW.Shutterino.App.Features
                 Debug.WriteLine("Photo taken!");
 
                 var photoOrientation = PhotoOrientation.Rotate90;// ConvertOrientationToPhotoOrientation(DOrientation.Instance.DeviceOrientation);
-                _savedPhotosCount++;
-                await ReencodeAndSavePhotoAsync(stream, $"Shutterino {_savedPhotosCount}.jpg", photoOrientation);
-                _localSettings.Values["camera-photoCount"] = _savedPhotosCount;
+                PhotoCount++;
+                await ReencodeAndSavePhotoAsync(stream, $"Shutterino {PhotoCount}.jpg", photoOrientation);
+                _localSettings.Values["camera-photoCount"] = PhotoCount;
             }
             catch (Exception ex)
             {
