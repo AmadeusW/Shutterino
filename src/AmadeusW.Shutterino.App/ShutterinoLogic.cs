@@ -19,7 +19,7 @@ namespace AmadeusW.Shutterino.App
         DAccelerometer _accelerometer = new DAccelerometer();
         DCamera _camera = new DCamera();
         DTimer _timer = new DTimer();
-        ArduinoConnection _arduino = null;
+        DArduino _arduino = new DArduino();
 
         public CoreDispatcher Dispatcher { get; }
         public CaptureElement CameraPreviewControl { get; set; }
@@ -60,7 +60,8 @@ namespace AmadeusW.Shutterino.App
                 _location.CleanupAsync(),
                 _accelerometer.CleanupAsync(),
                 _camera.CleanupAsync(),
-                _timer.CleanupAsync()
+                _timer.CleanupAsync(),
+                _arduino.CleanupAsync()
             );
             _initialized = false;
         }
@@ -75,7 +76,8 @@ namespace AmadeusW.Shutterino.App
                 _location.InitializeAsync(),
                 _accelerometer.InitializeAsync(),
                 _camera.InitializeAsync(),
-                _timer.InitializeAsync()
+                _timer.InitializeAsync(),
+                _arduino.InitializeAsync()
             );
 
             _initialized = true;
@@ -88,7 +90,8 @@ namespace AmadeusW.Shutterino.App
                 _location.ActivateAsync(),
                 _accelerometer.ActivateAsync(),
                 _camera.ActivateAsync(),
-                _timer.ActivateAsync()
+                _timer.ActivateAsync(),
+                _arduino.ActivateAsync()
             );
         }
 
@@ -99,23 +102,9 @@ namespace AmadeusW.Shutterino.App
                 _location.DeactivateAsync(),
                 _accelerometer.DeactivateAsync(),
                 _camera.DeactivateAsync(),
-                _timer.DeactivateAsync()
+                _timer.DeactivateAsync(),
+                _arduino.DeactivateAsync()
             );
-        }
-
-        public async Task<bool> initializeArduino(byte servoPin, byte servoIdle, byte servoOff, byte servoPressed, string host, ushort port)
-        {
-            _arduino = new ArduinoConnection(servoPin, servoIdle, servoOff, servoPressed);
-            return await _arduino.Connect(host, port);
-        }
-
-        internal async Task<bool> disableArduino()
-        {
-            if (_arduino != null)
-            {
-                return await _arduino.Disconnect();
-            }
-            return false;
         }
 
         private async Task TakePhoto()
@@ -147,18 +136,6 @@ namespace AmadeusW.Shutterino.App
                 // TODO: LOG
                 sender.Status = ex.ToString();
             }
-        }
-
-        internal void UseHighPrecision()
-        {
-            if (DAccelerometer.Instance != null)
-                DAccelerometer.Instance.Precision = DAccelerometer.HIGH_PRECISION;
-        }
-
-        internal void UseLowPrecision()
-        {
-            if (DAccelerometer.Instance != null)
-                DAccelerometer.Instance.Precision = DAccelerometer.LOW_PRECISION;
         }
 
         internal void Callibrate()

@@ -18,7 +18,7 @@ namespace AmadeusW.Shutterino.Arduino
         byte _servoOff;
         byte _servoPressed;
 
-        public ArduinoConnection(byte servoPin, byte servoIdle, byte servoOff, byte servoPressed)
+        public ArduinoConnection(byte servoPin, byte servoOff, byte servoIdle, byte servoReady, byte servoPressed)
         {
             _servoPin = servoPin;
             _servoIdle = servoIdle;

@@ -19,6 +19,7 @@ namespace AmadeusW.Shutterino.App.Settings
             PositionIdle = _arduino.PositionIdle;
             PositionReady = _arduino.PositionReady;
             PositionDepressed = _arduino.PositionDepressed;
+            PinNumber = _arduino.PinNumber;
         }
 
         /// <summary>
@@ -41,16 +42,33 @@ namespace AmadeusW.Shutterino.App.Settings
         /// <summary>
         /// Connection setting
         /// </summary>
-        public string PortNumber
+        public ushort PortNumber
         {
             get { return _portNumber; }
             set
             {
-                if (_hostName != value)
+                if (_portNumber != value)
                 {
-                    _hostName = value;
+                    _portNumber = value;
                     NotifyPropertyChanged();
-                    _arduino.HostName = _hostName;
+                    _arduino.PortNumber = _portNumber;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Servo pin
+        /// </summary>
+        public byte PinNumber
+        {
+            get { return _pinNumber; }
+            set
+            {
+                if (_pinNumber != value)
+                {
+                    _pinNumber = value;
+                    NotifyPropertyChanged();
+                    _arduino.PinNumber = _pinNumber;
                 }
             }
         }
@@ -125,8 +143,9 @@ namespace AmadeusW.Shutterino.App.Settings
 
         #region Backing Fields
 
-        private string _portNumber;
+        private ushort _portNumber;
         private string _hostName;
+        private byte _pinNumber;
         private byte _positionOff;
         private byte _positionIdle;
         private byte _positionReady;
