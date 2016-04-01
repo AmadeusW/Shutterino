@@ -189,7 +189,7 @@ namespace AmadeusW.Shutterino.App
 
             // Rotation shows roll (X)
             currentRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.Roll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
-            targetRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
+            targetRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.TargetRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
             if (shouldShowPreviousReading)
                 capturedRoll.RenderTransform = new RotateTransform() { Angle = accelerometer.CapturedRoll * 180, CenterX = rollCanvasMiddle.X, CenterY = rollCanvasMiddle.Y };
 
