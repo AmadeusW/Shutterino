@@ -72,6 +72,7 @@ namespace AmadeusW.Shutterino.App.Features
                 loggedData.Add(
                     $"{date},{cameraFileName},{reason},{accelerometer},{pitch},{roll},{pitchOffset},{rollOffset},{targetPitch},{targetRoll},{precision},{location},{distance},{longitude},{latitude},{altitude},{camera},{timer},{arduino}\n"
                 );
+                PhotoCount++;
             }
             catch (Exception ex)
             {
