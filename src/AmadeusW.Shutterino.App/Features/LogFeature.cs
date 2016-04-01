@@ -71,7 +71,7 @@ namespace AmadeusW.Shutterino.App.Features
                     appendHeader();
                 }
                 loggedData.Add(
-                    $"{date},{cameraFileName},{reason},{accelerometer},{pitch},{roll},{pitchOffset},{rollOffset},{targetPitch},{targetRoll},{precision},{location},{distance},{longitude},{latitude},{altitude},{camera},{timer},{arduino}\n"
+                    $"{date},{cameraFileName},{reason},{accelerometer},{pitch},{roll},{pitchOffset},{rollOffset},{targetPitch},{targetRoll},{precision},{location},{distance},{longitude},{latitude},{altitude},{camera},{timer},{arduino}"
                 );
                 PhotoCount++;
             }
@@ -112,7 +112,7 @@ namespace AmadeusW.Shutterino.App.Features
         private void appendHeader()
         {
             loggedData.Add(
-                $"date,cameraFileName,reason,accelerometer,pitch,roll,pitchOffset,rollOffset,targetPitch,targetRoll,precision,location,distance,longitude,latitude,altitude,camera,timer,arduino\n"
+                $"date,cameraFileName,reason,accelerometer,pitch,roll,pitchOffset,rollOffset,targetPitch,targetRoll,precision,location,distance,longitude,latitude,altitude,camera,timer,arduino"
             );
         }
 
