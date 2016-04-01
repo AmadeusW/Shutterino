@@ -81,7 +81,7 @@
             Grid.Row="5" Grid.Column="2"
             InputScope="Number"
             Text="{Binding Path=PositionIdle, Mode=TwoWay}" />
-
+<!-- not used
         <TextBlock 
             Grid.Row="6" Grid.Column="0"
             Text="Servo: Ready" />
@@ -93,28 +93,28 @@
             Grid.Row="6" Grid.Column="2"
             InputScope="Number"
             Text="{Binding Path=PositionReady, Mode=TwoWay}" />
-
+-->
         <TextBlock 
-            Grid.Row="7" Grid.Column="0"
+            Grid.Row="6" Grid.Column="0"
             Text="Servo: Depressed" />
         <Slider 
-            Grid.Column="1" Grid.Row="7" 
+            Grid.Column="1" Grid.Row="6" 
             Value="{Binding Path=PositionDepressed, Mode=TwoWay}" 
             Maximum="160" Minimum="0" SmallChange="5" LargeChange="5" TickFrequency="10"/>
         <TextBox
-            Grid.Row="7" Grid.Column="2"
+            Grid.Row="6" Grid.Column="2"
             InputScope="Number"
             Text="{Binding Path=PositionDepressed, Mode=TwoWay}" />
         
         <TextBlock 
-            Grid.Row="8" Grid.Column="0"
+            Grid.Row="7" Grid.Column="0"
             Text="Motion time" />
         <Slider 
-            Grid.Column="1" Grid.Row="8" 
+            Grid.Column="1" Grid.Row="7" 
             Value="{Binding Path=PressTime, Mode=TwoWay}" 
             Maximum="1000" Minimum="20" SmallChange="20" LargeChange="20" TickFrequency="100"/>
         <TextBox
-            Grid.Row="8" Grid.Column="2"
+            Grid.Row="7" Grid.Column="2"
             InputScope="Number"
             Text="{Binding Path=PressTime, Mode=TwoWay}" />
     </Grid>
